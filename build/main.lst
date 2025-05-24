@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccN2srVj.s 			page 1
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc4x78PP.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -24,51 +24,126 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccN2srVj.s 			page 1
   21              		.thumb_func
   23              	main:
   24              		@ Volatile: function does not return.
-  25              		@ args = 0, pretend = 0, frame = 8
+  25              		@ args = 0, pretend = 0, frame = 104
   26              		@ frame_needed = 0, uses_anonymous_args = 0
-  27              		@ link register save eliminated.
-  28 0000 82B0     		sub	sp, sp, #8
-  29 0002 0D4A     		ldr	r2, .L6
-  30 0004 136B     		ldr	r3, [r2, #48]
-  31 0006 43F00103 		orr	r3, r3, #1
-  32 000a 1363     		str	r3, [r2, #48]
-  33 000c A2F54052 		sub	r2, r2, #12288
-  34 0010 1368     		ldr	r3, [r2]
-  35 0012 43F48063 		orr	r3, r3, #1024
-  36 0016 1360     		str	r3, [r2]
-  37              	.L4:
-  38 0018 084A     		ldr	r2, .L6+4
-  39 001a 5369     		ldr	r3, [r2, #20]
-  40 001c 83F02003 		eor	r3, r3, #32
-  41 0020 5361     		str	r3, [r2, #20]
-  42 0022 0023     		movs	r3, #0
-  43 0024 0193     		str	r3, [sp, #4]
-  44              	.L2:
-  45 0026 019A     		ldr	r2, [sp, #4]
-  46 0028 054B     		ldr	r3, .L6+8
-  47 002a 9A42     		cmp	r2, r3
-  48 002c F4DC     		bgt	.L4
-  49 002e 019B     		ldr	r3, [sp, #4]
-  50 0030 0133     		adds	r3, r3, #1
-  51 0032 0193     		str	r3, [sp, #4]
-  52 0034 F7E7     		b	.L2
-  53              	.L7:
-  54 0036 00BF     		.align	2
-  55              	.L6:
-  56 0038 00380240 		.word	1073887232
-  57 003c 00080240 		.word	1073874944
-  58 0040 9F860100 		.word	99999
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccN2srVj.s 			page 2
+  27 0000 00B5     		push	{lr}
+  28 0002 9BB0     		sub	sp, sp, #108
+  29 0004 324B     		ldr	r3, .L5
+  30 0006 1B68     		ldr	r3, [r3]
+  31 0008 324A     		ldr	r2, .L5+4
+  32 000a A2FB0323 		umull	r2, r3, r2, r3
+  33 000e 9B09     		lsrs	r3, r3, #6
+  34 0010 013B     		subs	r3, r3, #1
+  35 0012 B3F1807F 		cmp	r3, #16777216
+  36 0016 0AD2     		bcs	.L2
+  37 0018 4FF0E022 		mov	r2, #-536813568
+  38 001c 5361     		str	r3, [r2, #20]
+  39 001e 2E4B     		ldr	r3, .L5+8
+  40 0020 F021     		movs	r1, #240
+  41 0022 83F82310 		strb	r1, [r3, #35]
+  42 0026 0023     		movs	r3, #0
+  43 0028 9361     		str	r3, [r2, #24]
+  44 002a 0723     		movs	r3, #7
+  45 002c 1361     		str	r3, [r2, #16]
+  46              	.L2:
+  47 002e 2B4A     		ldr	r2, .L5+12
+  48 0030 136B     		ldr	r3, [r2, #48]
+  49 0032 43F00403 		orr	r3, r3, #4
+  50 0036 1363     		str	r3, [r2, #48]
+  51 0038 294B     		ldr	r3, .L5+16
+  52 003a 1A68     		ldr	r2, [r3]
+  53 003c 42F08062 		orr	r2, r2, #67108864
+  54 0040 1A60     		str	r2, [r3]
+  55 0042 5A68     		ldr	r2, [r3, #4]
+  56 0044 22F40052 		bic	r2, r2, #8192
+  57 0048 5A60     		str	r2, [r3, #4]
+  58 004a DA68     		ldr	r2, [r3, #12]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc4x78PP.s 			page 2
 
 
-  60              		.ident	"GCC: (GNU Arm Embedded Toolchain 10.3-2021.10) 10.3.1 20210824 (release)"
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccN2srVj.s 			page 3
+  59 004c 42F00062 		orr	r2, r2, #134217728
+  60 0050 DA60     		str	r2, [r3, #12]
+  61 0052 4FF4E130 		mov	r0, #115200
+  62 0056 FFF7FEFF 		bl	uart_init
+  63 005a 0024     		movs	r4, #0
+  64 005c 0D94     		str	r4, [sp, #52]
+  65 005e 2E25     		movs	r5, #46
+  66 0060 2A46     		mov	r2, r5
+  67 0062 2146     		mov	r1, r4
+  68 0064 0EA8     		add	r0, sp, #56
+  69 0066 FFF7FEFF 		bl	memset
+  70 006a 0094     		str	r4, [sp]
+  71 006c 2A46     		mov	r2, r5
+  72 006e 2146     		mov	r1, r4
+  73 0070 01A8     		add	r0, sp, #4
+  74 0072 FFF7FEFF 		bl	memset
+  75              	.L3:
+  76 0076 1A4C     		ldr	r4, .L5+16
+  77 0078 A369     		ldr	r3, [r4, #24]
+  78 007a 43F40053 		orr	r3, r3, #8192
+  79 007e A361     		str	r3, [r4, #24]
+  80 0080 4FF47A70 		mov	r0, #1000
+  81 0084 FFF7FEFF 		bl	delay_ms
+  82 0088 3221     		movs	r1, #50
+  83 008a 0DA8     		add	r0, sp, #52
+  84 008c FFF7FEFF 		bl	uart_receive
+  85 0090 EE46     		mov	lr, sp
+  86 0092 0DF1340C 		add	ip, sp, #52
+  87 0096 BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+  88 009a AEE80F00 		stmia	lr!, {r0, r1, r2, r3}
+  89 009e BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+  90 00a2 AEE80F00 		stmia	lr!, {r0, r1, r2, r3}
+  91 00a6 BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+  92 00aa AEE80F00 		stmia	lr!, {r0, r1, r2, r3}
+  93 00ae DCF80030 		ldr	r3, [ip]
+  94 00b2 AEF80030 		strh	r3, [lr]	@ movhi
+  95 00b6 3221     		movs	r1, #50
+  96 00b8 6846     		mov	r0, sp
+  97 00ba FFF7FEFF 		bl	uart_send
+  98 00be A369     		ldr	r3, [r4, #24]
+  99 00c0 43F00053 		orr	r3, r3, #536870912
+ 100 00c4 A361     		str	r3, [r4, #24]
+ 101 00c6 4FF47A70 		mov	r0, #1000
+ 102 00ca FFF7FEFF 		bl	delay_ms
+ 103 00ce D2E7     		b	.L3
+ 104              	.L6:
+ 105              		.align	2
+ 106              	.L5:
+ 107 00d0 00000000 		.word	SystemCoreClock
+ 108 00d4 D34D6210 		.word	274877907
+ 109 00d8 00ED00E0 		.word	-536810240
+ 110 00dc 00380240 		.word	1073887232
+ 111 00e0 00080240 		.word	1073874944
+ 113              		.global	msg
+ 114              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 115              		.align	2
+ 116              	.LC0:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc4x78PP.s 			page 3
+
+
+ 117 0000 68656C6C 		.ascii	"hello\000"
+ 117      6F00
+ 118              		.data
+ 119              		.align	2
+ 122              	msg:
+ 123 0000 00000000 		.word	.LC0
+ 124              		.ident	"GCC: (GNU Arm Embedded Toolchain 10.3-2021.10) 10.3.1 20210824 (release)"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc4x78PP.s 			page 4
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\clay0\AppData\Local\Temp\ccN2srVj.s:17     .text:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccN2srVj.s:23     .text:00000000 main
-C:\Users\clay0\AppData\Local\Temp\ccN2srVj.s:56     .text:00000038 $d
+C:\Users\clay0\AppData\Local\Temp\cc4x78PP.s:17     .text:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc4x78PP.s:23     .text:00000000 main
+C:\Users\clay0\AppData\Local\Temp\cc4x78PP.s:107    .text:000000d0 $d
+C:\Users\clay0\AppData\Local\Temp\cc4x78PP.s:122    .data:00000000 msg
+C:\Users\clay0\AppData\Local\Temp\cc4x78PP.s:115    .rodata.str1.4:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc4x78PP.s:119    .data:00000000 $d
 
-NO UNDEFINED SYMBOLS
+UNDEFINED SYMBOLS
+uart_init
+memset
+delay_ms
+uart_receive
+uart_send
+SystemCoreClock

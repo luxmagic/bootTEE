@@ -5,17 +5,12 @@
 extern "C" {
 #endif
 
-// #define STM32F401xC
 #include <stm32f4xx.h>
+#include <mbedtls/sha256.h>
+#include <mbedtls/ecdsa.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
-
-
-// #define SYSCLOCK		
-// #define HAL_MAX_DELAY		
-// #define FLASH_PAGE_SIZE			
-// #define APPLICATION_ADDRESS			
+#include <stdbool.h>		
 
 #ifdef __cplusplus
 }

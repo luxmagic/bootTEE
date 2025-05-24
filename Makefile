@@ -24,19 +24,18 @@ FLOAT-ABI = -mfloat-abi=hard
 MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
 
 C_INCLUDES = \
-			-I./CMSIS/Include \
-        	-I./CMSIS/Device/ST/STM32F4xx/Include
+			-ICore \
+			-ICMSIS/Include \
+        	-ICMSIS/Device/ST/STM32F4xx/Include
 
 C_SOURCES = \
+			Core/uart.c \
+			Core/clock.c \
 			Core/main.c \
 			CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
 
 C_DEFS =  \
 			-DSTM32F401xC
-
-# CFLAGS = $(MCU) $(C_INCLUDES) $(OPT) -Wall
-
-# ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 
 AS_DEFS = 
 
@@ -46,12 +45,10 @@ LDSCRIPT = stm32f401.ld
 
 ASM_SOURCES = startup_stm32f401xc.s
 
-# OBJS = $(SRCS:.c=.o)
 
+ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES)
 
-ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) -Wall
-
-CFLAGS = $(MCU) $(C_INCLUDES) $(OPT) -Wall
+CFLAGS = $(MCU) $(C_INCLUDES) $(OPT)
 
 
 # Generate dependency information
@@ -65,22 +62,6 @@ LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BU
 
 
 all: $(BUILD_DIR)/$(TARGET).bin $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).elf
-
-# %.o: %.c
-# 	$(CC) $(CFLAGS) -c $< -o $@
-
-# %.o: %.s
-# 	$(AS) -mcpu=cortex-m4 -mthumb $< -o $@
-
-# $(TARGET).elf: $(OBJS)
-# 	$(CC) $(CFLAGS) $(OBJS) -T$(LDSCRIPT) -o $@
-
-# $(TARGET).bin: $(TARGET).elf
-# 	$(OBJCOPY) -O binary $< $@
-
-# $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
-# 	$(HEX) $< $@
-
 
 OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))

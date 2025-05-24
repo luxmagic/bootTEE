@@ -1,0 +1,84 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"clock.c"
+  16              		.text
+  17              		.align	1
+  18              		.global	SysTick_Handler
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  23              	SysTick_Handler:
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26              		@ link register save eliminated.
+  27 0000 024A     		ldr	r2, .L2
+  28 0002 1368     		ldr	r3, [r2]
+  29 0004 0133     		adds	r3, r3, #1
+  30 0006 1360     		str	r3, [r2]
+  31 0008 7047     		bx	lr
+  32              	.L3:
+  33 000a 00BF     		.align	2
+  34              	.L2:
+  35 000c 00000000 		.word	.LANCHOR0
+  37              		.align	1
+  38              		.global	delay_ms
+  39              		.syntax unified
+  40              		.thumb
+  41              		.thumb_func
+  43              	delay_ms:
+  44              		@ args = 0, pretend = 0, frame = 0
+  45              		@ frame_needed = 0, uses_anonymous_args = 0
+  46              		@ link register save eliminated.
+  47 0010 034B     		ldr	r3, .L6
+  48 0012 1A68     		ldr	r2, [r3]
+  49              	.L5:
+  50 0014 024B     		ldr	r3, .L6
+  51 0016 1B68     		ldr	r3, [r3]
+  52 0018 9B1A     		subs	r3, r3, r2
+  53 001a 8342     		cmp	r3, r0
+  54 001c FAD9     		bls	.L5
+  55 001e 7047     		bx	lr
+  56              	.L7:
+  57              		.align	2
+  58              	.L6:
+  59 0020 00000000 		.word	.LANCHOR0
+  61              		.global	ticks
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s 			page 2
+
+
+  62              		.bss
+  63              		.align	2
+  64              		.set	.LANCHOR0,. + 0
+  67              	ticks:
+  68 0000 00000000 		.space	4
+  69              		.ident	"GCC: (GNU Arm Embedded Toolchain 10.3-2021.10) 10.3.1 20210824 (release)"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 clock.c
+C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s:17     .text:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s:23     .text:00000000 SysTick_Handler
+C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s:35     .text:0000000c $d
+C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s:37     .text:00000010 $t
+C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s:43     .text:00000010 delay_ms
+C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s:59     .text:00000020 $d
+C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s:67     .bss:00000000 ticks
+C:\Users\clay0\AppData\Local\Temp\ccG9qUn0.s:63     .bss:00000000 $d
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,135 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"uart.c"
+  16              		.text
+  17              		.align	1
+  18              		.global	uart_init
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  23              	uart_init:
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26              		@ link register save eliminated.
+  27 0000 0E4B     		ldr	r3, .L2
+  28 0002 5A6C     		ldr	r2, [r3, #68]
+  29 0004 42F01002 		orr	r2, r2, #16
+  30 0008 5A64     		str	r2, [r3, #68]
+  31 000a 1A6B     		ldr	r2, [r3, #48]
+  32 000c 42F00102 		orr	r2, r2, #1
+  33 0010 1A63     		str	r2, [r3, #48]
+  34 0012 A3F56053 		sub	r3, r3, #14336
+  35 0016 1A68     		ldr	r2, [r3]
+  36 0018 42F42012 		orr	r2, r2, #2621440
+  37 001c 1A60     		str	r2, [r3]
+  38 001e 5A6A     		ldr	r2, [r3, #36]
+  39 0020 42F4EE62 		orr	r2, r2, #1904
+  40 0024 5A62     		str	r2, [r3, #36]
+  41 0026 064B     		ldr	r3, .L2+4
+  42 0028 1B68     		ldr	r3, [r3]
+  43 002a B3FBF0F3 		udiv	r3, r3, r0
+  44 002e 054A     		ldr	r2, .L2+8
+  45 0030 9360     		str	r3, [r2, #8]
+  46 0032 42F20C03 		movw	r3, #8204
+  47 0036 D360     		str	r3, [r2, #12]
+  48 0038 7047     		bx	lr
+  49              	.L3:
+  50 003a 00BF     		.align	2
+  51              	.L2:
+  52 003c 00380240 		.word	1073887232
+  53 0040 00000000 		.word	SystemCoreClock
+  54 0044 00100140 		.word	1073811456
+  56              		.align	1
+  57              		.global	uart_send
+  58              		.syntax unified
+  59              		.thumb
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s 			page 2
+
+
+  60              		.thumb_func
+  62              	uart_send:
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
+  66 0048 8C46     		mov	ip, r1
+  67 004a 0022     		movs	r2, #0
+  68 004c 08E0     		b	.L5
+  69              	.L6:
+  70 004e 064B     		ldr	r3, .L7
+  71 0050 1B68     		ldr	r3, [r3]
+  72 0052 13F0800F 		tst	r3, #128
+  73 0056 FAD0     		beq	.L6
+  74 0058 815C     		ldrb	r1, [r0, r2]	@ zero_extendqisi2
+  75 005a 034B     		ldr	r3, .L7
+  76 005c 5960     		str	r1, [r3, #4]
+  77 005e 0132     		adds	r2, r2, #1
+  78              	.L5:
+  79 0060 6245     		cmp	r2, ip
+  80 0062 F4D3     		bcc	.L6
+  81 0064 7047     		bx	lr
+  82              	.L8:
+  83 0066 00BF     		.align	2
+  84              	.L7:
+  85 0068 00100140 		.word	1073811456
+  87              		.align	1
+  88              		.global	uart_receive
+  89              		.syntax unified
+  90              		.thumb
+  91              		.thumb_func
+  93              	uart_receive:
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96              		@ link register save eliminated.
+  97 006c 0022     		movs	r2, #0
+  98 006e 08E0     		b	.L10
+  99              	.L11:
+ 100 0070 064B     		ldr	r3, .L12
+ 101 0072 1B68     		ldr	r3, [r3]
+ 102 0074 13F0200F 		tst	r3, #32
+ 103 0078 FAD0     		beq	.L11
+ 104 007a 044B     		ldr	r3, .L12
+ 105 007c 5B68     		ldr	r3, [r3, #4]
+ 106 007e 8354     		strb	r3, [r0, r2]
+ 107 0080 0132     		adds	r2, r2, #1
+ 108              	.L10:
+ 109 0082 8A42     		cmp	r2, r1
+ 110 0084 F4D3     		bcc	.L11
+ 111 0086 0020     		movs	r0, #0
+ 112 0088 7047     		bx	lr
+ 113              	.L13:
+ 114 008a 00BF     		.align	2
+ 115              	.L12:
+ 116 008c 00100140 		.word	1073811456
+ 118              		.ident	"GCC: (GNU Arm Embedded Toolchain 10.3-2021.10) 10.3.1 20210824 (release)"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 uart.c
+C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s:17     .text:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s:23     .text:00000000 uart_init
+C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s:52     .text:0000003c $d
+C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s:56     .text:00000048 $t
+C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s:62     .text:00000048 uart_send
+C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s:85     .text:00000068 $d
+C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s:87     .text:0000006c $t
+C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s:93     .text:0000006c uart_receive
+C:\Users\clay0\AppData\Local\Temp\ccLBGIHd.s:116    .text:0000008c $d
+
+UNDEFINED SYMBOLS
+SystemCoreClock

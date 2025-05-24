@@ -1,20 +1,52 @@
 ENTRY(Reset_Handler)
 
-/* Highest address of the user mode stack */
-_estack = ORIGIN(RAM) + LENGTH(RAM);    /* end of RAM */
 
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0x200;      /* required amount of heap  */
-_Min_Stack_Size = 0x400; /* required amount of stack */
+_Min_Stack_Size = 0x400;      /* required amount of stack */
 
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 512K
+  FLASH (rx) : ORIGIN = 0x08000000, LENGTH = 384K
   RAM (xrw)  : ORIGIN = 0x20000000, LENGTH = 96K
 }
 
+/* Highest address of the user mode stack */
+_estack = ORIGIN(RAM) + LENGTH(RAM);    /* end of RAM */
+
+
+/* TEE sections */
+/* _stee      = 0x08000000;
+_shash     = 0x08000100;
+_sauth_tag = 0x08000120;
+_sboot     = 0x08000220; */
+
+/* START User App */
+/* _app_start = 0x08001000; */
+
+
 SECTIONS
 {
+  /* The savety area .tee: */
+  /* . = ALIGN(8);             
+  _stee = .;                
+
+  .tee :
+  {
+    KEEP(*(.tee))
+    . = ALIGN(8);           
+  } > FLASH
+
+  _etee = .;                 */
+
+  /* Size check section .tee */
+  /* ASSERT((_etee - _stee) <= 1024, "ERROR: .tee section too big! (max 1024 bytes)")
+  ASSERT((_sboot - _stee) >= 0, "TEE layout overlap error!")
+  ASSERT((_app_start - _sauth_tag) >= 0x100, "Too small gap after .auth_tag") */
+
+  /* START User App */
+  /* . = _app_start; */
+
   /* The startup code goes first into FLASH */
   .isr_vector :
   {
@@ -79,4 +111,28 @@ SECTIONS
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
   } >RAM
+
+   /* User_heap_stack section, used to check that there is enough RAM left */
+  ._user_heap_stack :
+  {
+    . = ALIGN(8);
+    PROVIDE ( end = . );
+    PROVIDE ( _end = . );
+    . = . + _Min_Heap_Size;
+    . = . + _Min_Stack_Size;
+    . = ALIGN(8);
+  } >RAM
+
+  /* Remove information from the standard libraries */
+  /DISCARD/ :
+  {
+    libc.a ( * )
+    libm.a ( * )
+    libgcc.a ( * )
+  }
+
+  .ARM.attributes 0 : 
+  { 
+    *(.ARM.attributes) 
+  }
 }

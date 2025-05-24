@@ -1,0 +1,18 @@
+#ifndef MBEDTLS_CONFIG_H
+#define MBEDTLS_CONFIG_H
+
+// #define MBEDTLS_PLATFORM_MEMORY
+// #define MBEDTLS_PLATFORM_NO_STD_FUNCTIONS
+
+// #define MBEDTLS_AES_C
+#define MBEDTLS_SHA256_C
+#define MBEDTLS_ECDSA_C
+
+// #define MBEDTLS_NO_DEFAULT_ENTROPY_SOURCES
+// #define MBEDTLS_NO_PLATFORM_ENTROPY
+// #define MBEDTLS_ENTROPY_C
+// #define MBEDTLS_ENTROPY_HARDWARE_ALT
+
+#include <mbedtls/check_config.h>
+
+#endif
