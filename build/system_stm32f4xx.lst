@@ -1,0 +1,162 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciunOvn.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"system_stm32f4xx.c"
+  16              		.text
+  17              		.align	1
+  18              		.global	SystemInit
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  23              	SystemInit:
+  24              		@ args = 0, pretend = 0, frame = 0
+  25              		@ frame_needed = 0, uses_anonymous_args = 0
+  26              		@ link register save eliminated.
+  27 0000 034A     		ldr	r2, .L2
+  28 0002 D2F88830 		ldr	r3, [r2, #136]
+  29 0006 43F47003 		orr	r3, r3, #15728640
+  30 000a C2F88830 		str	r3, [r2, #136]
+  31 000e 7047     		bx	lr
+  32              	.L3:
+  33              		.align	2
+  34              	.L2:
+  35 0010 00ED00E0 		.word	-536810240
+  37              		.align	1
+  38              		.global	SystemCoreClockUpdate
+  39              		.syntax unified
+  40              		.thumb
+  41              		.thumb_func
+  43              	SystemCoreClockUpdate:
+  44              		@ args = 0, pretend = 0, frame = 0
+  45              		@ frame_needed = 0, uses_anonymous_args = 0
+  46              		@ link register save eliminated.
+  47 0014 224B     		ldr	r3, .L12
+  48 0016 9B68     		ldr	r3, [r3, #8]
+  49 0018 03F00C03 		and	r3, r3, #12
+  50 001c 042B     		cmp	r3, #4
+  51 001e 14D0     		beq	.L5
+  52 0020 082B     		cmp	r3, #8
+  53 0022 16D0     		beq	.L6
+  54 0024 1BB1     		cbz	r3, .L11
+  55 0026 1F4B     		ldr	r3, .L12+4
+  56 0028 1F4A     		ldr	r2, .L12+8
+  57 002a 1A60     		str	r2, [r3]
+  58 002c 02E0     		b	.L8
+  59              	.L11:
+  60 002e 1D4B     		ldr	r3, .L12+4
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciunOvn.s 			page 2
+
+
+  61 0030 1D4A     		ldr	r2, .L12+8
+  62 0032 1A60     		str	r2, [r3]
+  63              	.L8:
+  64 0034 1A4B     		ldr	r3, .L12
+  65 0036 9B68     		ldr	r3, [r3, #8]
+  66 0038 C3F30313 		ubfx	r3, r3, #4, #4
+  67 003c 1B4A     		ldr	r2, .L12+12
+  68 003e D15C     		ldrb	r1, [r2, r3]	@ zero_extendqisi2
+  69 0040 184A     		ldr	r2, .L12+4
+  70 0042 1368     		ldr	r3, [r2]
+  71 0044 CB40     		lsrs	r3, r3, r1
+  72 0046 1360     		str	r3, [r2]
+  73 0048 7047     		bx	lr
+  74              	.L5:
+  75 004a 164B     		ldr	r3, .L12+4
+  76 004c 184A     		ldr	r2, .L12+16
+  77 004e 1A60     		str	r2, [r3]
+  78 0050 F0E7     		b	.L8
+  79              	.L6:
+  80 0052 134B     		ldr	r3, .L12
+  81 0054 5968     		ldr	r1, [r3, #4]
+  82 0056 5A68     		ldr	r2, [r3, #4]
+  83 0058 02F03F02 		and	r2, r2, #63
+  84 005c 11F4800F 		tst	r1, #4194304
+  85 0060 13D0     		beq	.L9
+  86 0062 134B     		ldr	r3, .L12+16
+  87 0064 B3FBF2F3 		udiv	r3, r3, r2
+  88 0068 0D4A     		ldr	r2, .L12
+  89 006a 5268     		ldr	r2, [r2, #4]
+  90 006c C2F38812 		ubfx	r2, r2, #6, #9
+  91 0070 02FB03F3 		mul	r3, r2, r3
+  92              	.L10:
+  93 0074 0A4A     		ldr	r2, .L12
+  94 0076 5268     		ldr	r2, [r2, #4]
+  95 0078 C2F30142 		ubfx	r2, r2, #16, #2
+  96 007c 0132     		adds	r2, r2, #1
+  97 007e 5200     		lsls	r2, r2, #1
+  98 0080 B3FBF2F3 		udiv	r3, r3, r2
+  99 0084 074A     		ldr	r2, .L12+4
+ 100 0086 1360     		str	r3, [r2]
+ 101 0088 D4E7     		b	.L8
+ 102              	.L9:
+ 103 008a 074B     		ldr	r3, .L12+8
+ 104 008c B3FBF2F3 		udiv	r3, r3, r2
+ 105 0090 034A     		ldr	r2, .L12
+ 106 0092 5268     		ldr	r2, [r2, #4]
+ 107 0094 C2F38812 		ubfx	r2, r2, #6, #9
+ 108 0098 02FB03F3 		mul	r3, r2, r3
+ 109 009c EAE7     		b	.L10
+ 110              	.L13:
+ 111 009e 00BF     		.align	2
+ 112              	.L12:
+ 113 00a0 00380240 		.word	1073887232
+ 114 00a4 00000000 		.word	.LANCHOR0
+ 115 00a8 0024F400 		.word	16000000
+ 116 00ac 00000000 		.word	.LANCHOR1
+ 117 00b0 40787D01 		.word	25000000
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciunOvn.s 			page 3
+
+
+ 119              		.global	APBPrescTable
+ 120              		.global	AHBPrescTable
+ 121              		.global	SystemCoreClock
+ 122              		.section	.rodata
+ 123              		.align	2
+ 124              		.set	.LANCHOR1,. + 0
+ 127              	AHBPrescTable:
+ 128 0000 00000000 		.ascii	"\000\000\000\000\000\000\000\000\001\002\003\004\006"
+ 128      00000000 
+ 128      01020304 
+ 128      06
+ 129 000d 070809   		.ascii	"\007\010\011"
+ 132              	APBPrescTable:
+ 133 0010 00000000 		.ascii	"\000\000\000\000\001\002\003\004"
+ 133      01020304 
+ 134              		.data
+ 135              		.align	2
+ 136              		.set	.LANCHOR0,. + 0
+ 139              	SystemCoreClock:
+ 140 0000 0024F400 		.word	16000000
+ 141              		.ident	"GCC: (GNU Arm Embedded Toolchain 10.3-2021.10) 10.3.1 20210824 (release)"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciunOvn.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 system_stm32f4xx.c
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:17     .text:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:23     .text:00000000 SystemInit
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:35     .text:00000010 $d
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:37     .text:00000014 $t
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:43     .text:00000014 SystemCoreClockUpdate
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:113    .text:000000a0 $d
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:132    .rodata:00000010 APBPrescTable
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:127    .rodata:00000000 AHBPrescTable
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:139    .data:00000000 SystemCoreClock
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:123    .rodata:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cciunOvn.s:135    .data:00000000 $d
+
+NO UNDEFINED SYMBOLS
