@@ -1,7 +1,7 @@
 TARGET = tee_boot
 BUILD_DIR = build
 
-OPT = -Og
+OPT = -O0
 
 CC = arm-none-eabi-gcc
 AS = arm-none-eabi-as
@@ -26,16 +26,35 @@ MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
 C_INCLUDES = \
 			-ICore \
 			-ICMSIS/Include \
+			-IioLIB \
+			-IioLIB/W5500 \
+			-IcoapLIB \
+			-ImbedTLS/include \
         	-ICMSIS/Device/ST/STM32F4xx/Include
 
 C_SOURCES = \
+			Core/blink.c\
+			Core/tee.c\
+			Core/boot.c \
 			Core/uart.c \
 			Core/clock.c \
 			Core/main.c \
+			Core/w5500_run.c \
+			Core/ext_int.c \
+			coapLIB/coap_port.c \
+			coapLIB/coap.c \
+			coapLIB/endpoints.c \
+			ioLIB/dhcp.c \
+			ioLIB/socket.c \
+			ioLIB/w5500_host_config.c \
+			ioLIB/w5500_phy.c \
+			ioLIB/w5500_spi.c \
+			ioLIB/wizchip_conf.c \
+			ioLIB/W5500/w5500.c \
+			mbedTLS/library/sha256.c \
 			CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
 
-C_DEFS =  \
-			-DSTM32F401xC
+C_DEFS =
 
 AS_DEFS = 
 
@@ -43,20 +62,21 @@ AS_INCLUDES =
 
 LDSCRIPT = stm32f401.ld
 
-ASM_SOURCES = startup_stm32f401xc.s
+ASM_SOURCES = startup_stm32f401.s
 
 
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES)
 
-CFLAGS = $(MCU) $(C_INCLUDES) $(OPT)
+CFLAGS = $(MCU) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 
 
 # Generate dependency information
+CFLAGS += -g -gdwarf-2
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
 
 # libraries
-LIBS = -lc -lm -lnosys 
+LIBS = -lc -lm -lnosys
 LIBDIR = 
 LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 

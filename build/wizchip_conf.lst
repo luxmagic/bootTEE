@@ -1,0 +1,4055 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"wizchip_conf.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.wizchip_cris_enter,"ax",%progbits
+  20              		.align	1
+  21              		.global	wizchip_cris_enter
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	wizchip_cris_enter:
+  27              	.LFB0:
+  28              		.file 1 "ioLIB/wizchip_conf.c"
+   1:ioLIB/wizchip_conf.c **** //****************************************************************************/ 
+   2:ioLIB/wizchip_conf.c **** //!
+   3:ioLIB/wizchip_conf.c **** //! \file wizchip_conf.c
+   4:ioLIB/wizchip_conf.c **** //! \brief WIZCHIP Config Header File.
+   5:ioLIB/wizchip_conf.c **** //! \version 1.0.1
+   6:ioLIB/wizchip_conf.c **** //! \date 2013/10/21
+   7:ioLIB/wizchip_conf.c **** //! \par  Revision history
+   8:ioLIB/wizchip_conf.c **** //!       <2015/02/05> Notice
+   9:ioLIB/wizchip_conf.c **** //!        The version history is not updated after this point.
+  10:ioLIB/wizchip_conf.c **** //!        Download the latest version directly from GitHub. Please visit the our GitHub repository
+  11:ioLIB/wizchip_conf.c **** //!        >> https://github.com/Wiznet/ioLibrary_Driver
+  12:ioLIB/wizchip_conf.c **** //!       <2014/05/01> V1.0.1  Refer to M20140501
+  13:ioLIB/wizchip_conf.c **** //!        1. Explicit type casting in wizchip_bus_readdata() & wizchip_bus_writedata()
+  14:ioLIB/wizchip_conf.c **** //            Issued by Mathias ClauBen.
+  15:ioLIB/wizchip_conf.c **** //!           uint32_t type converts into ptrdiff_t first. And then recoverting it into uint8_t*
+  16:ioLIB/wizchip_conf.c **** //!           For remove the warning when pointer type size is not 32bit.
+  17:ioLIB/wizchip_conf.c **** //!           If ptrdiff_t doesn't support in your complier, You should must replace ptrdiff_t into
+  18:ioLIB/wizchip_conf.c **** //!       <2013/10/21> 1st Release
+  19:ioLIB/wizchip_conf.c **** //! \author MidnightCow
+  20:ioLIB/wizchip_conf.c **** //! \copyright
+  21:ioLIB/wizchip_conf.c **** //!
+  22:ioLIB/wizchip_conf.c **** //! Copyright (c)  2013, WIZnet Co., LTD.
+  23:ioLIB/wizchip_conf.c **** //! All rights reserved.
+  24:ioLIB/wizchip_conf.c **** //! 
+  25:ioLIB/wizchip_conf.c **** //! Redistribution and use in source and binary forms, with or without 
+  26:ioLIB/wizchip_conf.c **** //! modification, are permitted provided that the following conditions 
+  27:ioLIB/wizchip_conf.c **** //! are met: 
+  28:ioLIB/wizchip_conf.c **** //! 
+  29:ioLIB/wizchip_conf.c **** //!     * Redistributions of source code must retain the above copyright 
+  30:ioLIB/wizchip_conf.c **** //! notice, this list of conditions and the following disclaimer. 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 2
+
+
+  31:ioLIB/wizchip_conf.c **** //!     * Redistributions in binary form must reproduce the above copyright
+  32:ioLIB/wizchip_conf.c **** //! notice, this list of conditions and the following disclaimer in the
+  33:ioLIB/wizchip_conf.c **** //! documentation and/or other materials provided with the distribution. 
+  34:ioLIB/wizchip_conf.c **** //!     * Neither the name of the <ORGANIZATION> nor the names of its 
+  35:ioLIB/wizchip_conf.c **** //! contributors may be used to endorse or promote products derived 
+  36:ioLIB/wizchip_conf.c **** //! from this software without specific prior written permission. 
+  37:ioLIB/wizchip_conf.c **** //! 
+  38:ioLIB/wizchip_conf.c **** //! THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  39:ioLIB/wizchip_conf.c **** //! AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+  40:ioLIB/wizchip_conf.c **** //! IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  41:ioLIB/wizchip_conf.c **** //! ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+  42:ioLIB/wizchip_conf.c **** //! LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+  43:ioLIB/wizchip_conf.c **** //! CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+  44:ioLIB/wizchip_conf.c **** //! SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  45:ioLIB/wizchip_conf.c **** //! INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+  46:ioLIB/wizchip_conf.c **** //! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  47:ioLIB/wizchip_conf.c **** //! ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+  48:ioLIB/wizchip_conf.c **** //! THE POSSIBILITY OF SUCH DAMAGE.
+  49:ioLIB/wizchip_conf.c **** //
+  50:ioLIB/wizchip_conf.c **** //*****************************************************************************/
+  51:ioLIB/wizchip_conf.c **** //A20140501 : for use the type - ptrdiff_t
+  52:ioLIB/wizchip_conf.c **** #include <stddef.h>
+  53:ioLIB/wizchip_conf.c **** //
+  54:ioLIB/wizchip_conf.c **** 
+  55:ioLIB/wizchip_conf.c **** #include "wizchip_conf.h"
+  56:ioLIB/wizchip_conf.c **** 
+  57:ioLIB/wizchip_conf.c **** /////////////
+  58:ioLIB/wizchip_conf.c **** //M20150401 : Remove ; in the default callback function such as wizchip_cris_enter(), wizchip_cs_se
+  59:ioLIB/wizchip_conf.c **** /////////////
+  60:ioLIB/wizchip_conf.c **** 
+  61:ioLIB/wizchip_conf.c **** /**
+  62:ioLIB/wizchip_conf.c ****  * @brief Default function to enable interrupt.
+  63:ioLIB/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  64:ioLIB/wizchip_conf.c ****  * null function is called.
+  65:ioLIB/wizchip_conf.c ****  */
+  66:ioLIB/wizchip_conf.c **** //void 	  wizchip_cris_enter(void)           {};
+  67:ioLIB/wizchip_conf.c **** void 	  wizchip_cris_enter(void)           {}
+  29              		.loc 1 67 44
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 7, -4
+  38 0002 00AF     		add	r7, sp, #0
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_register 7
+  41              		.loc 1 67 45
+  42 0004 00BF     		nop
+  43 0006 BD46     		mov	sp, r7
+  44              	.LCFI2:
+  45              		.cfi_def_cfa_register 13
+  46              		@ sp needed
+  47 0008 5DF8047B 		ldr	r7, [sp], #4
+  48              	.LCFI3:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 3
+
+
+  49              		.cfi_restore 7
+  50              		.cfi_def_cfa_offset 0
+  51 000c 7047     		bx	lr
+  52              		.cfi_endproc
+  53              	.LFE0:
+  55              		.section	.text.wizchip_cris_exit,"ax",%progbits
+  56              		.align	1
+  57              		.global	wizchip_cris_exit
+  58              		.syntax unified
+  59              		.thumb
+  60              		.thumb_func
+  62              	wizchip_cris_exit:
+  63              	.LFB1:
+  68:ioLIB/wizchip_conf.c **** 
+  69:ioLIB/wizchip_conf.c **** /**
+  70:ioLIB/wizchip_conf.c ****  * @brief Default function to disable interrupt.
+  71:ioLIB/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  72:ioLIB/wizchip_conf.c ****  * null function is called.
+  73:ioLIB/wizchip_conf.c ****  */
+  74:ioLIB/wizchip_conf.c **** //void 	  wizchip_cris_exit(void)          {};
+  75:ioLIB/wizchip_conf.c **** void 	  wizchip_cris_exit(void)          {}
+  64              		.loc 1 75 42
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 0
+  67              		@ frame_needed = 1, uses_anonymous_args = 0
+  68              		@ link register save eliminated.
+  69 0000 80B4     		push	{r7}
+  70              	.LCFI4:
+  71              		.cfi_def_cfa_offset 4
+  72              		.cfi_offset 7, -4
+  73 0002 00AF     		add	r7, sp, #0
+  74              	.LCFI5:
+  75              		.cfi_def_cfa_register 7
+  76              		.loc 1 75 43
+  77 0004 00BF     		nop
+  78 0006 BD46     		mov	sp, r7
+  79              	.LCFI6:
+  80              		.cfi_def_cfa_register 13
+  81              		@ sp needed
+  82 0008 5DF8047B 		ldr	r7, [sp], #4
+  83              	.LCFI7:
+  84              		.cfi_restore 7
+  85              		.cfi_def_cfa_offset 0
+  86 000c 7047     		bx	lr
+  87              		.cfi_endproc
+  88              	.LFE1:
+  90              		.section	.text.wizchip_cs_select,"ax",%progbits
+  91              		.align	1
+  92              		.global	wizchip_cs_select
+  93              		.syntax unified
+  94              		.thumb
+  95              		.thumb_func
+  97              	wizchip_cs_select:
+  98              	.LFB2:
+  76:ioLIB/wizchip_conf.c **** 
+  77:ioLIB/wizchip_conf.c **** /**
+  78:ioLIB/wizchip_conf.c ****  * @brief Default function to select chip.
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 4
+
+
+  79:ioLIB/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  80:ioLIB/wizchip_conf.c ****  * null function is called.
+  81:ioLIB/wizchip_conf.c ****  */
+  82:ioLIB/wizchip_conf.c **** //void 	wizchip_cs_select(void)            {};
+  83:ioLIB/wizchip_conf.c **** void 	wizchip_cs_select(void)            {}
+  99              		.loc 1 83 42
+ 100              		.cfi_startproc
+ 101              		@ args = 0, pretend = 0, frame = 0
+ 102              		@ frame_needed = 1, uses_anonymous_args = 0
+ 103              		@ link register save eliminated.
+ 104 0000 80B4     		push	{r7}
+ 105              	.LCFI8:
+ 106              		.cfi_def_cfa_offset 4
+ 107              		.cfi_offset 7, -4
+ 108 0002 00AF     		add	r7, sp, #0
+ 109              	.LCFI9:
+ 110              		.cfi_def_cfa_register 7
+ 111              		.loc 1 83 43
+ 112 0004 00BF     		nop
+ 113 0006 BD46     		mov	sp, r7
+ 114              	.LCFI10:
+ 115              		.cfi_def_cfa_register 13
+ 116              		@ sp needed
+ 117 0008 5DF8047B 		ldr	r7, [sp], #4
+ 118              	.LCFI11:
+ 119              		.cfi_restore 7
+ 120              		.cfi_def_cfa_offset 0
+ 121 000c 7047     		bx	lr
+ 122              		.cfi_endproc
+ 123              	.LFE2:
+ 125              		.section	.text.wizchip_cs_deselect,"ax",%progbits
+ 126              		.align	1
+ 127              		.global	wizchip_cs_deselect
+ 128              		.syntax unified
+ 129              		.thumb
+ 130              		.thumb_func
+ 132              	wizchip_cs_deselect:
+ 133              	.LFB3:
+  84:ioLIB/wizchip_conf.c **** 
+  85:ioLIB/wizchip_conf.c **** /**
+  86:ioLIB/wizchip_conf.c ****  * @brief Default function to deselect chip.
+  87:ioLIB/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  88:ioLIB/wizchip_conf.c ****  * null function is called.
+  89:ioLIB/wizchip_conf.c ****  */
+  90:ioLIB/wizchip_conf.c **** //void 	wizchip_cs_deselect(void)          {};
+  91:ioLIB/wizchip_conf.c **** void 	wizchip_cs_deselect(void)          {}
+ 134              		.loc 1 91 42
+ 135              		.cfi_startproc
+ 136              		@ args = 0, pretend = 0, frame = 0
+ 137              		@ frame_needed = 1, uses_anonymous_args = 0
+ 138              		@ link register save eliminated.
+ 139 0000 80B4     		push	{r7}
+ 140              	.LCFI12:
+ 141              		.cfi_def_cfa_offset 4
+ 142              		.cfi_offset 7, -4
+ 143 0002 00AF     		add	r7, sp, #0
+ 144              	.LCFI13:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 5
+
+
+ 145              		.cfi_def_cfa_register 7
+ 146              		.loc 1 91 43
+ 147 0004 00BF     		nop
+ 148 0006 BD46     		mov	sp, r7
+ 149              	.LCFI14:
+ 150              		.cfi_def_cfa_register 13
+ 151              		@ sp needed
+ 152 0008 5DF8047B 		ldr	r7, [sp], #4
+ 153              	.LCFI15:
+ 154              		.cfi_restore 7
+ 155              		.cfi_def_cfa_offset 0
+ 156 000c 7047     		bx	lr
+ 157              		.cfi_endproc
+ 158              	.LFE3:
+ 160              		.section	.text.wizchip_bus_readdata,"ax",%progbits
+ 161              		.align	1
+ 162              		.global	wizchip_bus_readdata
+ 163              		.syntax unified
+ 164              		.thumb
+ 165              		.thumb_func
+ 167              	wizchip_bus_readdata:
+ 168              	.LFB4:
+  92:ioLIB/wizchip_conf.c **** 
+  93:ioLIB/wizchip_conf.c **** /**
+  94:ioLIB/wizchip_conf.c ****  * @brief Default function to read in direct or indirect interface.
+  95:ioLIB/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  96:ioLIB/wizchip_conf.c ****  * null function is called.
+  97:ioLIB/wizchip_conf.c ****  */
+  98:ioLIB/wizchip_conf.c ****  //M20150601 : Rename the function for integrating with W5300
+  99:ioLIB/wizchip_conf.c **** //uint8_t wizchip_bus_readbyte(uint32_t AddrSel) { return * ((volatile uint8_t *)((ptrdiff_t) AddrS
+ 100:ioLIB/wizchip_conf.c **** iodata_t wizchip_bus_readdata(uint32_t AddrSel) { return * ((volatile iodata_t *)((ptrdiff_t) AddrS
+ 169              		.loc 1 100 49
+ 170              		.cfi_startproc
+ 171              		@ args = 0, pretend = 0, frame = 8
+ 172              		@ frame_needed = 1, uses_anonymous_args = 0
+ 173              		@ link register save eliminated.
+ 174 0000 80B4     		push	{r7}
+ 175              	.LCFI16:
+ 176              		.cfi_def_cfa_offset 4
+ 177              		.cfi_offset 7, -4
+ 178 0002 83B0     		sub	sp, sp, #12
+ 179              	.LCFI17:
+ 180              		.cfi_def_cfa_offset 16
+ 181 0004 00AF     		add	r7, sp, #0
+ 182              	.LCFI18:
+ 183              		.cfi_def_cfa_register 7
+ 184 0006 7860     		str	r0, [r7, #4]
+ 185              		.loc 1 100 61
+ 186 0008 7B68     		ldr	r3, [r7, #4]
+ 187              		.loc 1 100 58
+ 188 000a 1B78     		ldrb	r3, [r3]
+ 189 000c DBB2     		uxtb	r3, r3
+ 190              		.loc 1 100 106
+ 191 000e 1846     		mov	r0, r3
+ 192 0010 0C37     		adds	r7, r7, #12
+ 193              	.LCFI19:
+ 194              		.cfi_def_cfa_offset 4
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 6
+
+
+ 195 0012 BD46     		mov	sp, r7
+ 196              	.LCFI20:
+ 197              		.cfi_def_cfa_register 13
+ 198              		@ sp needed
+ 199 0014 5DF8047B 		ldr	r7, [sp], #4
+ 200              	.LCFI21:
+ 201              		.cfi_restore 7
+ 202              		.cfi_def_cfa_offset 0
+ 203 0018 7047     		bx	lr
+ 204              		.cfi_endproc
+ 205              	.LFE4:
+ 207              		.section	.text.wizchip_bus_writedata,"ax",%progbits
+ 208              		.align	1
+ 209              		.global	wizchip_bus_writedata
+ 210              		.syntax unified
+ 211              		.thumb
+ 212              		.thumb_func
+ 214              	wizchip_bus_writedata:
+ 215              	.LFB5:
+ 101:ioLIB/wizchip_conf.c **** 
+ 102:ioLIB/wizchip_conf.c **** /**
+ 103:ioLIB/wizchip_conf.c ****  * @brief Default function to write in direct or indirect interface.
+ 104:ioLIB/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+ 105:ioLIB/wizchip_conf.c ****  * null function is called.
+ 106:ioLIB/wizchip_conf.c ****  */
+ 107:ioLIB/wizchip_conf.c **** //M20150601 : Rename the function for integrating with W5300
+ 108:ioLIB/wizchip_conf.c **** //void 	wizchip_bus_writebyte(uint32_t AddrSel, uint8_t wb)  { *((volatile uint8_t*)((ptrdiff_t)Add
+ 109:ioLIB/wizchip_conf.c **** void 	wizchip_bus_writedata(uint32_t AddrSel, iodata_t wb)  { *((volatile iodata_t*)((ptrdiff_t)Add
+ 216              		.loc 1 109 61
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 8
+ 219              		@ frame_needed = 1, uses_anonymous_args = 0
+ 220              		@ link register save eliminated.
+ 221 0000 80B4     		push	{r7}
+ 222              	.LCFI22:
+ 223              		.cfi_def_cfa_offset 4
+ 224              		.cfi_offset 7, -4
+ 225 0002 83B0     		sub	sp, sp, #12
+ 226              	.LCFI23:
+ 227              		.cfi_def_cfa_offset 16
+ 228 0004 00AF     		add	r7, sp, #0
+ 229              	.LCFI24:
+ 230              		.cfi_def_cfa_register 7
+ 231 0006 7860     		str	r0, [r7, #4]
+ 232 0008 0B46     		mov	r3, r1
+ 233 000a FB70     		strb	r3, [r7, #3]
+ 234              		.loc 1 109 65
+ 235 000c 7B68     		ldr	r3, [r7, #4]
+ 236              		.loc 1 109 107
+ 237 000e FA78     		ldrb	r2, [r7, #3]
+ 238 0010 1A70     		strb	r2, [r3]
+ 239              		.loc 1 109 113
+ 240 0012 00BF     		nop
+ 241 0014 0C37     		adds	r7, r7, #12
+ 242              	.LCFI25:
+ 243              		.cfi_def_cfa_offset 4
+ 244 0016 BD46     		mov	sp, r7
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 7
+
+
+ 245              	.LCFI26:
+ 246              		.cfi_def_cfa_register 13
+ 247              		@ sp needed
+ 248 0018 5DF8047B 		ldr	r7, [sp], #4
+ 249              	.LCFI27:
+ 250              		.cfi_restore 7
+ 251              		.cfi_def_cfa_offset 0
+ 252 001c 7047     		bx	lr
+ 253              		.cfi_endproc
+ 254              	.LFE5:
+ 256              		.section	.text.wizchip_spi_readbyte,"ax",%progbits
+ 257              		.align	1
+ 258              		.global	wizchip_spi_readbyte
+ 259              		.syntax unified
+ 260              		.thumb
+ 261              		.thumb_func
+ 263              	wizchip_spi_readbyte:
+ 264              	.LFB6:
+ 110:ioLIB/wizchip_conf.c **** 
+ 111:ioLIB/wizchip_conf.c **** /**
+ 112:ioLIB/wizchip_conf.c ****  * @brief Default function to read in SPI interface.
+ 113:ioLIB/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+ 114:ioLIB/wizchip_conf.c ****  * null function is called.
+ 115:ioLIB/wizchip_conf.c ****  */
+ 116:ioLIB/wizchip_conf.c **** //uint8_t wizchip_spi_readbyte(void)        {return 0;};
+ 117:ioLIB/wizchip_conf.c **** uint8_t wizchip_spi_readbyte(void)        {return 0;}
+ 265              		.loc 1 117 43
+ 266              		.cfi_startproc
+ 267              		@ args = 0, pretend = 0, frame = 0
+ 268              		@ frame_needed = 1, uses_anonymous_args = 0
+ 269              		@ link register save eliminated.
+ 270 0000 80B4     		push	{r7}
+ 271              	.LCFI28:
+ 272              		.cfi_def_cfa_offset 4
+ 273              		.cfi_offset 7, -4
+ 274 0002 00AF     		add	r7, sp, #0
+ 275              	.LCFI29:
+ 276              		.cfi_def_cfa_register 7
+ 277              		.loc 1 117 51
+ 278 0004 0023     		movs	r3, #0
+ 279              		.loc 1 117 53
+ 280 0006 1846     		mov	r0, r3
+ 281 0008 BD46     		mov	sp, r7
+ 282              	.LCFI30:
+ 283              		.cfi_def_cfa_register 13
+ 284              		@ sp needed
+ 285 000a 5DF8047B 		ldr	r7, [sp], #4
+ 286              	.LCFI31:
+ 287              		.cfi_restore 7
+ 288              		.cfi_def_cfa_offset 0
+ 289 000e 7047     		bx	lr
+ 290              		.cfi_endproc
+ 291              	.LFE6:
+ 293              		.section	.text.wizchip_spi_writebyte,"ax",%progbits
+ 294              		.align	1
+ 295              		.global	wizchip_spi_writebyte
+ 296              		.syntax unified
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 8
+
+
+ 297              		.thumb
+ 298              		.thumb_func
+ 300              	wizchip_spi_writebyte:
+ 301              	.LFB7:
+ 118:ioLIB/wizchip_conf.c **** 
+ 119:ioLIB/wizchip_conf.c **** /**
+ 120:ioLIB/wizchip_conf.c ****  * @brief Default function to write in SPI interface.
+ 121:ioLIB/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+ 122:ioLIB/wizchip_conf.c ****  * null function is called.
+ 123:ioLIB/wizchip_conf.c ****  */
+ 124:ioLIB/wizchip_conf.c **** //void 	wizchip_spi_writebyte(uint8_t wb) {};
+ 125:ioLIB/wizchip_conf.c **** void 	wizchip_spi_writebyte(uint8_t wb) {}
+ 302              		.loc 1 125 41
+ 303              		.cfi_startproc
+ 304              		@ args = 0, pretend = 0, frame = 8
+ 305              		@ frame_needed = 1, uses_anonymous_args = 0
+ 306              		@ link register save eliminated.
+ 307 0000 80B4     		push	{r7}
+ 308              	.LCFI32:
+ 309              		.cfi_def_cfa_offset 4
+ 310              		.cfi_offset 7, -4
+ 311 0002 83B0     		sub	sp, sp, #12
+ 312              	.LCFI33:
+ 313              		.cfi_def_cfa_offset 16
+ 314 0004 00AF     		add	r7, sp, #0
+ 315              	.LCFI34:
+ 316              		.cfi_def_cfa_register 7
+ 317 0006 0346     		mov	r3, r0
+ 318 0008 FB71     		strb	r3, [r7, #7]
+ 319              		.loc 1 125 42
+ 320 000a 00BF     		nop
+ 321 000c 0C37     		adds	r7, r7, #12
+ 322              	.LCFI35:
+ 323              		.cfi_def_cfa_offset 4
+ 324 000e BD46     		mov	sp, r7
+ 325              	.LCFI36:
+ 326              		.cfi_def_cfa_register 13
+ 327              		@ sp needed
+ 328 0010 5DF8047B 		ldr	r7, [sp], #4
+ 329              	.LCFI37:
+ 330              		.cfi_restore 7
+ 331              		.cfi_def_cfa_offset 0
+ 332 0014 7047     		bx	lr
+ 333              		.cfi_endproc
+ 334              	.LFE7:
+ 336              		.section	.text.wizchip_spi_readburst,"ax",%progbits
+ 337              		.align	1
+ 338              		.global	wizchip_spi_readburst
+ 339              		.syntax unified
+ 340              		.thumb
+ 341              		.thumb_func
+ 343              	wizchip_spi_readburst:
+ 344              	.LFB8:
+ 126:ioLIB/wizchip_conf.c **** 
+ 127:ioLIB/wizchip_conf.c **** /**
+ 128:ioLIB/wizchip_conf.c ****  * @brief Default function to burst read in SPI interface.
+ 129:ioLIB/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 9
+
+
+ 130:ioLIB/wizchip_conf.c ****  * null function is called.
+ 131:ioLIB/wizchip_conf.c ****  */
+ 132:ioLIB/wizchip_conf.c **** //void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	{}; 
+ 133:ioLIB/wizchip_conf.c **** void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	{}
+ 345              		.loc 1 133 59
+ 346              		.cfi_startproc
+ 347              		@ args = 0, pretend = 0, frame = 8
+ 348              		@ frame_needed = 1, uses_anonymous_args = 0
+ 349              		@ link register save eliminated.
+ 350 0000 80B4     		push	{r7}
+ 351              	.LCFI38:
+ 352              		.cfi_def_cfa_offset 4
+ 353              		.cfi_offset 7, -4
+ 354 0002 83B0     		sub	sp, sp, #12
+ 355              	.LCFI39:
+ 356              		.cfi_def_cfa_offset 16
+ 357 0004 00AF     		add	r7, sp, #0
+ 358              	.LCFI40:
+ 359              		.cfi_def_cfa_register 7
+ 360 0006 7860     		str	r0, [r7, #4]
+ 361 0008 0B46     		mov	r3, r1
+ 362 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 363              		.loc 1 133 60
+ 364 000c 00BF     		nop
+ 365 000e 0C37     		adds	r7, r7, #12
+ 366              	.LCFI41:
+ 367              		.cfi_def_cfa_offset 4
+ 368 0010 BD46     		mov	sp, r7
+ 369              	.LCFI42:
+ 370              		.cfi_def_cfa_register 13
+ 371              		@ sp needed
+ 372 0012 5DF8047B 		ldr	r7, [sp], #4
+ 373              	.LCFI43:
+ 374              		.cfi_restore 7
+ 375              		.cfi_def_cfa_offset 0
+ 376 0016 7047     		bx	lr
+ 377              		.cfi_endproc
+ 378              	.LFE8:
+ 380              		.section	.text.wizchip_spi_writeburst,"ax",%progbits
+ 381              		.align	1
+ 382              		.global	wizchip_spi_writeburst
+ 383              		.syntax unified
+ 384              		.thumb
+ 385              		.thumb_func
+ 387              	wizchip_spi_writeburst:
+ 388              	.LFB9:
+ 134:ioLIB/wizchip_conf.c **** 
+ 135:ioLIB/wizchip_conf.c **** /**
+ 136:ioLIB/wizchip_conf.c ****  * @brief Default function to burst write in SPI interface.
+ 137:ioLIB/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+ 138:ioLIB/wizchip_conf.c ****  * null function is called.
+ 139:ioLIB/wizchip_conf.c ****  */
+ 140:ioLIB/wizchip_conf.c **** //void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len) {};
+ 141:ioLIB/wizchip_conf.c **** void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len) {}
+ 389              		.loc 1 141 59
+ 390              		.cfi_startproc
+ 391              		@ args = 0, pretend = 0, frame = 8
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 10
+
+
+ 392              		@ frame_needed = 1, uses_anonymous_args = 0
+ 393              		@ link register save eliminated.
+ 394 0000 80B4     		push	{r7}
+ 395              	.LCFI44:
+ 396              		.cfi_def_cfa_offset 4
+ 397              		.cfi_offset 7, -4
+ 398 0002 83B0     		sub	sp, sp, #12
+ 399              	.LCFI45:
+ 400              		.cfi_def_cfa_offset 16
+ 401 0004 00AF     		add	r7, sp, #0
+ 402              	.LCFI46:
+ 403              		.cfi_def_cfa_register 7
+ 404 0006 7860     		str	r0, [r7, #4]
+ 405 0008 0B46     		mov	r3, r1
+ 406 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 407              		.loc 1 141 60
+ 408 000c 00BF     		nop
+ 409 000e 0C37     		adds	r7, r7, #12
+ 410              	.LCFI47:
+ 411              		.cfi_def_cfa_offset 4
+ 412 0010 BD46     		mov	sp, r7
+ 413              	.LCFI48:
+ 414              		.cfi_def_cfa_register 13
+ 415              		@ sp needed
+ 416 0012 5DF8047B 		ldr	r7, [sp], #4
+ 417              	.LCFI49:
+ 418              		.cfi_restore 7
+ 419              		.cfi_def_cfa_offset 0
+ 420 0016 7047     		bx	lr
+ 421              		.cfi_endproc
+ 422              	.LFE9:
+ 424              		.global	WIZCHIP
+ 425              		.section	.data.WIZCHIP,"aw"
+ 426              		.align	2
+ 429              	WIZCHIP:
+ 430 0000 0102     		.short	513
+ 431 0002 57353530 		.ascii	"W5500\000\000"
+ 431      300000
+ 432 0009 00       		.space	1
+ 433 000a 0000     		.space	2
+ 434 000c 00000000 		.word	wizchip_cris_enter
+ 435 0010 00000000 		.word	wizchip_cris_exit
+ 436 0014 00000000 		.word	wizchip_cs_select
+ 437 0018 00000000 		.word	wizchip_cs_deselect
+ 438 001c 00000000 		.word	wizchip_bus_readdata
+ 439 0020 00000000 		.word	wizchip_bus_writedata
+ 440 0024 00000000 		.space	8
+ 440      00000000 
+ 441              		.section	.bss._DNS_,"aw",%nobits
+ 442              		.align	2
+ 445              	_DNS_:
+ 446 0000 00000000 		.space	4
+ 447              		.section	.bss._DHCP_,"aw",%nobits
+ 450              	_DHCP_:
+ 451 0000 00       		.space	1
+ 452              		.section	.text.reg_wizchip_cris_cbfunc,"ax",%progbits
+ 453              		.align	1
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 11
+
+
+ 454              		.global	reg_wizchip_cris_cbfunc
+ 455              		.syntax unified
+ 456              		.thumb
+ 457              		.thumb_func
+ 459              	reg_wizchip_cris_cbfunc:
+ 460              	.LFB10:
+ 142:ioLIB/wizchip_conf.c **** 
+ 143:ioLIB/wizchip_conf.c **** /**
+ 144:ioLIB/wizchip_conf.c ****  * @\ref _WIZCHIP instance
+ 145:ioLIB/wizchip_conf.c ****  */
+ 146:ioLIB/wizchip_conf.c **** //
+ 147:ioLIB/wizchip_conf.c **** //M20150401 : For a compiler didnot support a member of structure
+ 148:ioLIB/wizchip_conf.c **** //            Replace the assignment of struct members with the assingment of array
+ 149:ioLIB/wizchip_conf.c **** //
+ 150:ioLIB/wizchip_conf.c **** /*
+ 151:ioLIB/wizchip_conf.c **** _WIZCHIP  WIZCHIP =
+ 152:ioLIB/wizchip_conf.c ****       {
+ 153:ioLIB/wizchip_conf.c ****       .id                  = _WIZCHIP_ID_,
+ 154:ioLIB/wizchip_conf.c ****       .if_mode             = _WIZCHIP_IO_MODE_,
+ 155:ioLIB/wizchip_conf.c ****       .CRIS._enter         = wizchip_cris_enter,
+ 156:ioLIB/wizchip_conf.c ****       .CRIS._exit          = wizchip_cris_exit,
+ 157:ioLIB/wizchip_conf.c ****       .CS._select          = wizchip_cs_select,
+ 158:ioLIB/wizchip_conf.c ****       .CS._deselect        = wizchip_cs_deselect,
+ 159:ioLIB/wizchip_conf.c ****       .IF.BUS._read_byte   = wizchip_bus_readbyte,
+ 160:ioLIB/wizchip_conf.c ****       .IF.BUS._write_byte  = wizchip_bus_writebyte
+ 161:ioLIB/wizchip_conf.c **** //    .IF.SPI._read_byte   = wizchip_spi_readbyte,
+ 162:ioLIB/wizchip_conf.c **** //    .IF.SPI._write_byte  = wizchip_spi_writebyte
+ 163:ioLIB/wizchip_conf.c ****       };
+ 164:ioLIB/wizchip_conf.c **** */      
+ 165:ioLIB/wizchip_conf.c **** _WIZCHIP  WIZCHIP =
+ 166:ioLIB/wizchip_conf.c **** {
+ 167:ioLIB/wizchip_conf.c ****     _WIZCHIP_IO_MODE_,
+ 168:ioLIB/wizchip_conf.c ****     _WIZCHIP_ID_ ,
+ 169:ioLIB/wizchip_conf.c ****     {
+ 170:ioLIB/wizchip_conf.c ****         wizchip_cris_enter,
+ 171:ioLIB/wizchip_conf.c ****         wizchip_cris_exit
+ 172:ioLIB/wizchip_conf.c ****     },
+ 173:ioLIB/wizchip_conf.c ****     {
+ 174:ioLIB/wizchip_conf.c ****         wizchip_cs_select,
+ 175:ioLIB/wizchip_conf.c ****         wizchip_cs_deselect
+ 176:ioLIB/wizchip_conf.c ****     },
+ 177:ioLIB/wizchip_conf.c ****     {
+ 178:ioLIB/wizchip_conf.c ****         {
+ 179:ioLIB/wizchip_conf.c ****             //M20150601 : Rename the function 
+ 180:ioLIB/wizchip_conf.c ****             //wizchip_bus_readbyte,
+ 181:ioLIB/wizchip_conf.c ****             //wizchip_bus_writebyte
+ 182:ioLIB/wizchip_conf.c ****             wizchip_bus_readdata,
+ 183:ioLIB/wizchip_conf.c ****             wizchip_bus_writedata
+ 184:ioLIB/wizchip_conf.c ****         },
+ 185:ioLIB/wizchip_conf.c **** 
+ 186:ioLIB/wizchip_conf.c ****     }
+ 187:ioLIB/wizchip_conf.c **** };
+ 188:ioLIB/wizchip_conf.c **** 
+ 189:ioLIB/wizchip_conf.c **** 
+ 190:ioLIB/wizchip_conf.c **** static uint8_t    _DNS_[4];      // DNS server ip address
+ 191:ioLIB/wizchip_conf.c **** static dhcp_mode  _DHCP_;        // DHCP mode
+ 192:ioLIB/wizchip_conf.c **** 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 12
+
+
+ 193:ioLIB/wizchip_conf.c **** void reg_wizchip_cris_cbfunc(void(*cris_en)(void), void(*cris_ex)(void))
+ 194:ioLIB/wizchip_conf.c **** {
+ 461              		.loc 1 194 1
+ 462              		.cfi_startproc
+ 463              		@ args = 0, pretend = 0, frame = 8
+ 464              		@ frame_needed = 1, uses_anonymous_args = 0
+ 465              		@ link register save eliminated.
+ 466 0000 80B4     		push	{r7}
+ 467              	.LCFI50:
+ 468              		.cfi_def_cfa_offset 4
+ 469              		.cfi_offset 7, -4
+ 470 0002 83B0     		sub	sp, sp, #12
+ 471              	.LCFI51:
+ 472              		.cfi_def_cfa_offset 16
+ 473 0004 00AF     		add	r7, sp, #0
+ 474              	.LCFI52:
+ 475              		.cfi_def_cfa_register 7
+ 476 0006 7860     		str	r0, [r7, #4]
+ 477 0008 3960     		str	r1, [r7]
+ 195:ioLIB/wizchip_conf.c ****    if(!cris_en || !cris_ex)
+ 478              		.loc 1 195 6
+ 479 000a 7B68     		ldr	r3, [r7, #4]
+ 480 000c 002B     		cmp	r3, #0
+ 481 000e 02D0     		beq	.L14
+ 482              		.loc 1 195 16 discriminator 1
+ 483 0010 3B68     		ldr	r3, [r7]
+ 484 0012 002B     		cmp	r3, #0
+ 485 0014 06D1     		bne	.L15
+ 486              	.L14:
+ 196:ioLIB/wizchip_conf.c ****    {
+ 197:ioLIB/wizchip_conf.c ****       WIZCHIP.CRIS._enter = wizchip_cris_enter;
+ 487              		.loc 1 197 27
+ 488 0016 0A4B     		ldr	r3, .L17
+ 489 0018 0A4A     		ldr	r2, .L17+4
+ 490 001a DA60     		str	r2, [r3, #12]
+ 198:ioLIB/wizchip_conf.c ****       WIZCHIP.CRIS._exit  = wizchip_cris_exit;
+ 491              		.loc 1 198 27
+ 492 001c 084B     		ldr	r3, .L17
+ 493 001e 0A4A     		ldr	r2, .L17+8
+ 494 0020 1A61     		str	r2, [r3, #16]
+ 495 0022 06E0     		b	.L16
+ 496              	.L15:
+ 199:ioLIB/wizchip_conf.c ****    }
+ 200:ioLIB/wizchip_conf.c ****    else
+ 201:ioLIB/wizchip_conf.c ****    {
+ 202:ioLIB/wizchip_conf.c ****       WIZCHIP.CRIS._enter = cris_en;
+ 497              		.loc 1 202 27
+ 498 0024 064A     		ldr	r2, .L17
+ 499 0026 7B68     		ldr	r3, [r7, #4]
+ 500 0028 D360     		str	r3, [r2, #12]
+ 203:ioLIB/wizchip_conf.c ****       WIZCHIP.CRIS._exit  = cris_ex;
+ 501              		.loc 1 203 27
+ 502 002a 054A     		ldr	r2, .L17
+ 503 002c 3B68     		ldr	r3, [r7]
+ 504 002e 1361     		str	r3, [r2, #16]
+ 204:ioLIB/wizchip_conf.c ****    }
+ 205:ioLIB/wizchip_conf.c **** }
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 13
+
+
+ 505              		.loc 1 205 1
+ 506 0030 00BF     		nop
+ 507              	.L16:
+ 508 0032 00BF     		nop
+ 509 0034 0C37     		adds	r7, r7, #12
+ 510              	.LCFI53:
+ 511              		.cfi_def_cfa_offset 4
+ 512 0036 BD46     		mov	sp, r7
+ 513              	.LCFI54:
+ 514              		.cfi_def_cfa_register 13
+ 515              		@ sp needed
+ 516 0038 5DF8047B 		ldr	r7, [sp], #4
+ 517              	.LCFI55:
+ 518              		.cfi_restore 7
+ 519              		.cfi_def_cfa_offset 0
+ 520 003c 7047     		bx	lr
+ 521              	.L18:
+ 522 003e 00BF     		.align	2
+ 523              	.L17:
+ 524 0040 00000000 		.word	WIZCHIP
+ 525 0044 00000000 		.word	wizchip_cris_enter
+ 526 0048 00000000 		.word	wizchip_cris_exit
+ 527              		.cfi_endproc
+ 528              	.LFE10:
+ 530              		.section	.text.reg_wizchip_cs_cbfunc,"ax",%progbits
+ 531              		.align	1
+ 532              		.global	reg_wizchip_cs_cbfunc
+ 533              		.syntax unified
+ 534              		.thumb
+ 535              		.thumb_func
+ 537              	reg_wizchip_cs_cbfunc:
+ 538              	.LFB11:
+ 206:ioLIB/wizchip_conf.c **** 
+ 207:ioLIB/wizchip_conf.c **** void reg_wizchip_cs_cbfunc(void(*cs_sel)(void), void(*cs_desel)(void))
+ 208:ioLIB/wizchip_conf.c **** {
+ 539              		.loc 1 208 1
+ 540              		.cfi_startproc
+ 541              		@ args = 0, pretend = 0, frame = 8
+ 542              		@ frame_needed = 1, uses_anonymous_args = 0
+ 543              		@ link register save eliminated.
+ 544 0000 80B4     		push	{r7}
+ 545              	.LCFI56:
+ 546              		.cfi_def_cfa_offset 4
+ 547              		.cfi_offset 7, -4
+ 548 0002 83B0     		sub	sp, sp, #12
+ 549              	.LCFI57:
+ 550              		.cfi_def_cfa_offset 16
+ 551 0004 00AF     		add	r7, sp, #0
+ 552              	.LCFI58:
+ 553              		.cfi_def_cfa_register 7
+ 554 0006 7860     		str	r0, [r7, #4]
+ 555 0008 3960     		str	r1, [r7]
+ 209:ioLIB/wizchip_conf.c ****    if(!cs_sel || !cs_desel)
+ 556              		.loc 1 209 6
+ 557 000a 7B68     		ldr	r3, [r7, #4]
+ 558 000c 002B     		cmp	r3, #0
+ 559 000e 02D0     		beq	.L20
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 14
+
+
+ 560              		.loc 1 209 15 discriminator 1
+ 561 0010 3B68     		ldr	r3, [r7]
+ 562 0012 002B     		cmp	r3, #0
+ 563 0014 06D1     		bne	.L21
+ 564              	.L20:
+ 210:ioLIB/wizchip_conf.c ****    {
+ 211:ioLIB/wizchip_conf.c ****       WIZCHIP.CS._select   = wizchip_cs_select;
+ 565              		.loc 1 211 28
+ 566 0016 0A4B     		ldr	r3, .L23
+ 567 0018 0A4A     		ldr	r2, .L23+4
+ 568 001a 5A61     		str	r2, [r3, #20]
+ 212:ioLIB/wizchip_conf.c ****       WIZCHIP.CS._deselect = wizchip_cs_deselect;
+ 569              		.loc 1 212 28
+ 570 001c 084B     		ldr	r3, .L23
+ 571 001e 0A4A     		ldr	r2, .L23+8
+ 572 0020 9A61     		str	r2, [r3, #24]
+ 573 0022 06E0     		b	.L22
+ 574              	.L21:
+ 213:ioLIB/wizchip_conf.c ****    }
+ 214:ioLIB/wizchip_conf.c ****    else
+ 215:ioLIB/wizchip_conf.c ****    {
+ 216:ioLIB/wizchip_conf.c ****       WIZCHIP.CS._select   = cs_sel;
+ 575              		.loc 1 216 28
+ 576 0024 064A     		ldr	r2, .L23
+ 577 0026 7B68     		ldr	r3, [r7, #4]
+ 578 0028 5361     		str	r3, [r2, #20]
+ 217:ioLIB/wizchip_conf.c ****       WIZCHIP.CS._deselect = cs_desel;
+ 579              		.loc 1 217 28
+ 580 002a 054A     		ldr	r2, .L23
+ 581 002c 3B68     		ldr	r3, [r7]
+ 582 002e 9361     		str	r3, [r2, #24]
+ 218:ioLIB/wizchip_conf.c ****    }
+ 219:ioLIB/wizchip_conf.c **** }
+ 583              		.loc 1 219 1
+ 584 0030 00BF     		nop
+ 585              	.L22:
+ 586 0032 00BF     		nop
+ 587 0034 0C37     		adds	r7, r7, #12
+ 588              	.LCFI59:
+ 589              		.cfi_def_cfa_offset 4
+ 590 0036 BD46     		mov	sp, r7
+ 591              	.LCFI60:
+ 592              		.cfi_def_cfa_register 13
+ 593              		@ sp needed
+ 594 0038 5DF8047B 		ldr	r7, [sp], #4
+ 595              	.LCFI61:
+ 596              		.cfi_restore 7
+ 597              		.cfi_def_cfa_offset 0
+ 598 003c 7047     		bx	lr
+ 599              	.L24:
+ 600 003e 00BF     		.align	2
+ 601              	.L23:
+ 602 0040 00000000 		.word	WIZCHIP
+ 603 0044 00000000 		.word	wizchip_cs_select
+ 604 0048 00000000 		.word	wizchip_cs_deselect
+ 605              		.cfi_endproc
+ 606              	.LFE11:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 15
+
+
+ 608              		.section	.text.reg_wizchip_bus_cbfunc,"ax",%progbits
+ 609              		.align	1
+ 610              		.global	reg_wizchip_bus_cbfunc
+ 611              		.syntax unified
+ 612              		.thumb
+ 613              		.thumb_func
+ 615              	reg_wizchip_bus_cbfunc:
+ 616              	.LFB12:
+ 220:ioLIB/wizchip_conf.c **** 
+ 221:ioLIB/wizchip_conf.c **** //M20150515 : For integrating with W5300
+ 222:ioLIB/wizchip_conf.c **** //void reg_wizchip_bus_cbfunc(uint8_t(*bus_rb)(uint32_t addr), void (*bus_wb)(uint32_t addr, uint8_
+ 223:ioLIB/wizchip_conf.c **** void reg_wizchip_bus_cbfunc(iodata_t(*bus_rb)(uint32_t addr), void (*bus_wb)(uint32_t addr, iodata_
+ 224:ioLIB/wizchip_conf.c **** {
+ 617              		.loc 1 224 1
+ 618              		.cfi_startproc
+ 619              		@ args = 0, pretend = 0, frame = 8
+ 620              		@ frame_needed = 1, uses_anonymous_args = 0
+ 621              		@ link register save eliminated.
+ 622 0000 80B4     		push	{r7}
+ 623              	.LCFI62:
+ 624              		.cfi_def_cfa_offset 4
+ 625              		.cfi_offset 7, -4
+ 626 0002 83B0     		sub	sp, sp, #12
+ 627              	.LCFI63:
+ 628              		.cfi_def_cfa_offset 16
+ 629 0004 00AF     		add	r7, sp, #0
+ 630              	.LCFI64:
+ 631              		.cfi_def_cfa_register 7
+ 632 0006 7860     		str	r0, [r7, #4]
+ 633 0008 3960     		str	r1, [r7]
+ 225:ioLIB/wizchip_conf.c ****    while(!(WIZCHIP.if_mode & _WIZCHIP_IO_MODE_BUS_));
+ 634              		.loc 1 225 9
+ 635 000a 00BF     		nop
+ 636              	.L26:
+ 637              		.loc 1 225 19 discriminator 1
+ 638 000c 0F4B     		ldr	r3, .L30
+ 639 000e 1B88     		ldrh	r3, [r3]
+ 640              		.loc 1 225 28 discriminator 1
+ 641 0010 03F48073 		and	r3, r3, #256
+ 642              		.loc 1 225 9 discriminator 1
+ 643 0014 002B     		cmp	r3, #0
+ 644 0016 F9D0     		beq	.L26
+ 226:ioLIB/wizchip_conf.c ****    //M20150601 : Rename call back function for integrating with W5300
+ 227:ioLIB/wizchip_conf.c ****    /*
+ 228:ioLIB/wizchip_conf.c ****    if(!bus_rb || !bus_wb)
+ 229:ioLIB/wizchip_conf.c ****    {
+ 230:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.BUS._read_byte   = wizchip_bus_readbyte;
+ 231:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.BUS._write_byte  = wizchip_bus_writebyte;
+ 232:ioLIB/wizchip_conf.c ****    }
+ 233:ioLIB/wizchip_conf.c ****    else
+ 234:ioLIB/wizchip_conf.c ****    {
+ 235:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.BUS._read_byte   = bus_rb;
+ 236:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.BUS._write_byte  = bus_wb;
+ 237:ioLIB/wizchip_conf.c ****    }
+ 238:ioLIB/wizchip_conf.c ****    */
+ 239:ioLIB/wizchip_conf.c ****    if(!bus_rb || !bus_wb)
+ 645              		.loc 1 239 6
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 16
+
+
+ 646 0018 7B68     		ldr	r3, [r7, #4]
+ 647 001a 002B     		cmp	r3, #0
+ 648 001c 02D0     		beq	.L27
+ 649              		.loc 1 239 15 discriminator 1
+ 650 001e 3B68     		ldr	r3, [r7]
+ 651 0020 002B     		cmp	r3, #0
+ 652 0022 06D1     		bne	.L28
+ 653              	.L27:
+ 240:ioLIB/wizchip_conf.c ****    {
+ 241:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.BUS._read_data   = wizchip_bus_readdata;
+ 654              		.loc 1 241 35
+ 655 0024 094B     		ldr	r3, .L30
+ 656 0026 0A4A     		ldr	r2, .L30+4
+ 657 0028 DA61     		str	r2, [r3, #28]
+ 242:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.BUS._write_data  = wizchip_bus_writedata;
+ 658              		.loc 1 242 35
+ 659 002a 084B     		ldr	r3, .L30
+ 660 002c 094A     		ldr	r2, .L30+8
+ 661 002e 1A62     		str	r2, [r3, #32]
+ 662 0030 06E0     		b	.L29
+ 663              	.L28:
+ 243:ioLIB/wizchip_conf.c ****    }
+ 244:ioLIB/wizchip_conf.c ****    else
+ 245:ioLIB/wizchip_conf.c ****    {
+ 246:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.BUS._read_data   = bus_rb;
+ 664              		.loc 1 246 35
+ 665 0032 064A     		ldr	r2, .L30
+ 666 0034 7B68     		ldr	r3, [r7, #4]
+ 667 0036 D361     		str	r3, [r2, #28]
+ 247:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.BUS._write_data  = bus_wb;
+ 668              		.loc 1 247 35
+ 669 0038 044A     		ldr	r2, .L30
+ 670 003a 3B68     		ldr	r3, [r7]
+ 671 003c 1362     		str	r3, [r2, #32]
+ 248:ioLIB/wizchip_conf.c ****    }
+ 249:ioLIB/wizchip_conf.c **** }
+ 672              		.loc 1 249 1
+ 673 003e 00BF     		nop
+ 674              	.L29:
+ 675 0040 00BF     		nop
+ 676 0042 0C37     		adds	r7, r7, #12
+ 677              	.LCFI65:
+ 678              		.cfi_def_cfa_offset 4
+ 679 0044 BD46     		mov	sp, r7
+ 680              	.LCFI66:
+ 681              		.cfi_def_cfa_register 13
+ 682              		@ sp needed
+ 683 0046 5DF8047B 		ldr	r7, [sp], #4
+ 684              	.LCFI67:
+ 685              		.cfi_restore 7
+ 686              		.cfi_def_cfa_offset 0
+ 687 004a 7047     		bx	lr
+ 688              	.L31:
+ 689              		.align	2
+ 690              	.L30:
+ 691 004c 00000000 		.word	WIZCHIP
+ 692 0050 00000000 		.word	wizchip_bus_readdata
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 17
+
+
+ 693 0054 00000000 		.word	wizchip_bus_writedata
+ 694              		.cfi_endproc
+ 695              	.LFE12:
+ 697              		.section	.text.reg_wizchip_spi_cbfunc,"ax",%progbits
+ 698              		.align	1
+ 699              		.global	reg_wizchip_spi_cbfunc
+ 700              		.syntax unified
+ 701              		.thumb
+ 702              		.thumb_func
+ 704              	reg_wizchip_spi_cbfunc:
+ 705              	.LFB13:
+ 250:ioLIB/wizchip_conf.c **** 
+ 251:ioLIB/wizchip_conf.c **** void reg_wizchip_spi_cbfunc(uint8_t (*spi_rb)(void), void (*spi_wb)(uint8_t wb))
+ 252:ioLIB/wizchip_conf.c **** {
+ 706              		.loc 1 252 1
+ 707              		.cfi_startproc
+ 708              		@ args = 0, pretend = 0, frame = 8
+ 709              		@ frame_needed = 1, uses_anonymous_args = 0
+ 710              		@ link register save eliminated.
+ 711 0000 80B4     		push	{r7}
+ 712              	.LCFI68:
+ 713              		.cfi_def_cfa_offset 4
+ 714              		.cfi_offset 7, -4
+ 715 0002 83B0     		sub	sp, sp, #12
+ 716              	.LCFI69:
+ 717              		.cfi_def_cfa_offset 16
+ 718 0004 00AF     		add	r7, sp, #0
+ 719              	.LCFI70:
+ 720              		.cfi_def_cfa_register 7
+ 721 0006 7860     		str	r0, [r7, #4]
+ 722 0008 3960     		str	r1, [r7]
+ 253:ioLIB/wizchip_conf.c ****    while(!(WIZCHIP.if_mode & _WIZCHIP_IO_MODE_SPI_));
+ 723              		.loc 1 253 9
+ 724 000a 00BF     		nop
+ 725              	.L33:
+ 726              		.loc 1 253 19 discriminator 1
+ 727 000c 0F4B     		ldr	r3, .L37
+ 728 000e 1B88     		ldrh	r3, [r3]
+ 729              		.loc 1 253 28 discriminator 1
+ 730 0010 03F40073 		and	r3, r3, #512
+ 731              		.loc 1 253 9 discriminator 1
+ 732 0014 002B     		cmp	r3, #0
+ 733 0016 F9D0     		beq	.L33
+ 254:ioLIB/wizchip_conf.c ****    
+ 255:ioLIB/wizchip_conf.c ****    if(!spi_rb || !spi_wb)
+ 734              		.loc 1 255 6
+ 735 0018 7B68     		ldr	r3, [r7, #4]
+ 736 001a 002B     		cmp	r3, #0
+ 737 001c 02D0     		beq	.L34
+ 738              		.loc 1 255 15 discriminator 1
+ 739 001e 3B68     		ldr	r3, [r7]
+ 740 0020 002B     		cmp	r3, #0
+ 741 0022 06D1     		bne	.L35
+ 742              	.L34:
+ 256:ioLIB/wizchip_conf.c ****    {
+ 257:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.SPI._read_byte   = wizchip_spi_readbyte;
+ 743              		.loc 1 257 35
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 18
+
+
+ 744 0024 094B     		ldr	r3, .L37
+ 745 0026 0A4A     		ldr	r2, .L37+4
+ 746 0028 DA61     		str	r2, [r3, #28]
+ 258:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.SPI._write_byte  = wizchip_spi_writebyte;
+ 747              		.loc 1 258 35
+ 748 002a 084B     		ldr	r3, .L37
+ 749 002c 094A     		ldr	r2, .L37+8
+ 750 002e 1A62     		str	r2, [r3, #32]
+ 751 0030 06E0     		b	.L36
+ 752              	.L35:
+ 259:ioLIB/wizchip_conf.c ****    }
+ 260:ioLIB/wizchip_conf.c ****    else
+ 261:ioLIB/wizchip_conf.c ****    {
+ 262:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.SPI._read_byte   = spi_rb;
+ 753              		.loc 1 262 35
+ 754 0032 064A     		ldr	r2, .L37
+ 755 0034 7B68     		ldr	r3, [r7, #4]
+ 756 0036 D361     		str	r3, [r2, #28]
+ 263:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.SPI._write_byte  = spi_wb;
+ 757              		.loc 1 263 35
+ 758 0038 044A     		ldr	r2, .L37
+ 759 003a 3B68     		ldr	r3, [r7]
+ 760 003c 1362     		str	r3, [r2, #32]
+ 264:ioLIB/wizchip_conf.c ****    }
+ 265:ioLIB/wizchip_conf.c **** }
+ 761              		.loc 1 265 1
+ 762 003e 00BF     		nop
+ 763              	.L36:
+ 764 0040 00BF     		nop
+ 765 0042 0C37     		adds	r7, r7, #12
+ 766              	.LCFI71:
+ 767              		.cfi_def_cfa_offset 4
+ 768 0044 BD46     		mov	sp, r7
+ 769              	.LCFI72:
+ 770              		.cfi_def_cfa_register 13
+ 771              		@ sp needed
+ 772 0046 5DF8047B 		ldr	r7, [sp], #4
+ 773              	.LCFI73:
+ 774              		.cfi_restore 7
+ 775              		.cfi_def_cfa_offset 0
+ 776 004a 7047     		bx	lr
+ 777              	.L38:
+ 778              		.align	2
+ 779              	.L37:
+ 780 004c 00000000 		.word	WIZCHIP
+ 781 0050 00000000 		.word	wizchip_spi_readbyte
+ 782 0054 00000000 		.word	wizchip_spi_writebyte
+ 783              		.cfi_endproc
+ 784              	.LFE13:
+ 786              		.section	.text.reg_wizchip_spiburst_cbfunc,"ax",%progbits
+ 787              		.align	1
+ 788              		.global	reg_wizchip_spiburst_cbfunc
+ 789              		.syntax unified
+ 790              		.thumb
+ 791              		.thumb_func
+ 793              	reg_wizchip_spiburst_cbfunc:
+ 794              	.LFB14:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 19
+
+
+ 266:ioLIB/wizchip_conf.c **** 
+ 267:ioLIB/wizchip_conf.c **** // 20140626 Eric Added for SPI burst operations
+ 268:ioLIB/wizchip_conf.c **** void reg_wizchip_spiburst_cbfunc(void (*spi_rb)(uint8_t* pBuf, uint16_t len), void (*spi_wb)(uint8_
+ 269:ioLIB/wizchip_conf.c **** {
+ 795              		.loc 1 269 1
+ 796              		.cfi_startproc
+ 797              		@ args = 0, pretend = 0, frame = 8
+ 798              		@ frame_needed = 1, uses_anonymous_args = 0
+ 799              		@ link register save eliminated.
+ 800 0000 80B4     		push	{r7}
+ 801              	.LCFI74:
+ 802              		.cfi_def_cfa_offset 4
+ 803              		.cfi_offset 7, -4
+ 804 0002 83B0     		sub	sp, sp, #12
+ 805              	.LCFI75:
+ 806              		.cfi_def_cfa_offset 16
+ 807 0004 00AF     		add	r7, sp, #0
+ 808              	.LCFI76:
+ 809              		.cfi_def_cfa_register 7
+ 810 0006 7860     		str	r0, [r7, #4]
+ 811 0008 3960     		str	r1, [r7]
+ 270:ioLIB/wizchip_conf.c ****    while(!(WIZCHIP.if_mode & _WIZCHIP_IO_MODE_SPI_));
+ 812              		.loc 1 270 9
+ 813 000a 00BF     		nop
+ 814              	.L40:
+ 815              		.loc 1 270 19 discriminator 1
+ 816 000c 0F4B     		ldr	r3, .L44
+ 817 000e 1B88     		ldrh	r3, [r3]
+ 818              		.loc 1 270 28 discriminator 1
+ 819 0010 03F40073 		and	r3, r3, #512
+ 820              		.loc 1 270 9 discriminator 1
+ 821 0014 002B     		cmp	r3, #0
+ 822 0016 F9D0     		beq	.L40
+ 271:ioLIB/wizchip_conf.c **** 
+ 272:ioLIB/wizchip_conf.c ****    if(!spi_rb || !spi_wb)
+ 823              		.loc 1 272 6
+ 824 0018 7B68     		ldr	r3, [r7, #4]
+ 825 001a 002B     		cmp	r3, #0
+ 826 001c 02D0     		beq	.L41
+ 827              		.loc 1 272 15 discriminator 1
+ 828 001e 3B68     		ldr	r3, [r7]
+ 829 0020 002B     		cmp	r3, #0
+ 830 0022 06D1     		bne	.L42
+ 831              	.L41:
+ 273:ioLIB/wizchip_conf.c ****    {
+ 274:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.SPI._read_burst   = wizchip_spi_readburst;
+ 832              		.loc 1 274 36
+ 833 0024 094B     		ldr	r3, .L44
+ 834 0026 0A4A     		ldr	r2, .L44+4
+ 835 0028 5A62     		str	r2, [r3, #36]
+ 275:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.SPI._write_burst  = wizchip_spi_writeburst;
+ 836              		.loc 1 275 36
+ 837 002a 084B     		ldr	r3, .L44
+ 838 002c 094A     		ldr	r2, .L44+8
+ 839 002e 9A62     		str	r2, [r3, #40]
+ 840 0030 06E0     		b	.L43
+ 841              	.L42:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 20
+
+
+ 276:ioLIB/wizchip_conf.c ****    }
+ 277:ioLIB/wizchip_conf.c ****    else
+ 278:ioLIB/wizchip_conf.c ****    {
+ 279:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.SPI._read_burst   = spi_rb;
+ 842              		.loc 1 279 36
+ 843 0032 064A     		ldr	r2, .L44
+ 844 0034 7B68     		ldr	r3, [r7, #4]
+ 845 0036 5362     		str	r3, [r2, #36]
+ 280:ioLIB/wizchip_conf.c ****       WIZCHIP.IF.SPI._write_burst  = spi_wb;
+ 846              		.loc 1 280 36
+ 847 0038 044A     		ldr	r2, .L44
+ 848 003a 3B68     		ldr	r3, [r7]
+ 849 003c 9362     		str	r3, [r2, #40]
+ 281:ioLIB/wizchip_conf.c ****    }
+ 282:ioLIB/wizchip_conf.c **** }
+ 850              		.loc 1 282 1
+ 851 003e 00BF     		nop
+ 852              	.L43:
+ 853 0040 00BF     		nop
+ 854 0042 0C37     		adds	r7, r7, #12
+ 855              	.LCFI77:
+ 856              		.cfi_def_cfa_offset 4
+ 857 0044 BD46     		mov	sp, r7
+ 858              	.LCFI78:
+ 859              		.cfi_def_cfa_register 13
+ 860              		@ sp needed
+ 861 0046 5DF8047B 		ldr	r7, [sp], #4
+ 862              	.LCFI79:
+ 863              		.cfi_restore 7
+ 864              		.cfi_def_cfa_offset 0
+ 865 004a 7047     		bx	lr
+ 866              	.L45:
+ 867              		.align	2
+ 868              	.L44:
+ 869 004c 00000000 		.word	WIZCHIP
+ 870 0050 00000000 		.word	wizchip_spi_readburst
+ 871 0054 00000000 		.word	wizchip_spi_writeburst
+ 872              		.cfi_endproc
+ 873              	.LFE14:
+ 875              		.section	.text.ctlwizchip,"ax",%progbits
+ 876              		.align	1
+ 877              		.global	ctlwizchip
+ 878              		.syntax unified
+ 879              		.thumb
+ 880              		.thumb_func
+ 882              	ctlwizchip:
+ 883              	.LFB15:
+ 283:ioLIB/wizchip_conf.c **** 
+ 284:ioLIB/wizchip_conf.c **** int8_t ctlwizchip(ctlwizchip_type cwtype, void* arg)
+ 285:ioLIB/wizchip_conf.c **** {
+ 884              		.loc 1 285 1
+ 885              		.cfi_startproc
+ 886              		@ args = 0, pretend = 0, frame = 24
+ 887              		@ frame_needed = 1, uses_anonymous_args = 0
+ 888 0000 90B5     		push	{r4, r7, lr}
+ 889              	.LCFI80:
+ 890              		.cfi_def_cfa_offset 12
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 21
+
+
+ 891              		.cfi_offset 4, -12
+ 892              		.cfi_offset 7, -8
+ 893              		.cfi_offset 14, -4
+ 894 0002 87B0     		sub	sp, sp, #28
+ 895              	.LCFI81:
+ 896              		.cfi_def_cfa_offset 40
+ 897 0004 00AF     		add	r7, sp, #0
+ 898              	.LCFI82:
+ 899              		.cfi_def_cfa_register 7
+ 900 0006 0346     		mov	r3, r0
+ 901 0008 3960     		str	r1, [r7]
+ 902 000a FB71     		strb	r3, [r7, #7]
+ 286:ioLIB/wizchip_conf.c **** #if	_WIZCHIP_ == W5100S || _WIZCHIP_ == W5200 || _WIZCHIP_ == W5500
+ 287:ioLIB/wizchip_conf.c ****    uint8_t tmp = 0;
+ 903              		.loc 1 287 12
+ 904 000c 0023     		movs	r3, #0
+ 905 000e FB75     		strb	r3, [r7, #23]
+ 288:ioLIB/wizchip_conf.c **** #endif
+ 289:ioLIB/wizchip_conf.c ****    uint8_t* ptmp[2] = {0,0};
+ 906              		.loc 1 289 13
+ 907 0010 0023     		movs	r3, #0
+ 908 0012 FB60     		str	r3, [r7, #12]
+ 909 0014 0023     		movs	r3, #0
+ 910 0016 3B61     		str	r3, [r7, #16]
+ 290:ioLIB/wizchip_conf.c ****    switch(cwtype)
+ 911              		.loc 1 290 4
+ 912 0018 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 913 001a 0F2B     		cmp	r3, #15
+ 914 001c 00F2C780 		bhi	.L47
+ 915 0020 01A2     		adr	r2, .L49
+ 916 0022 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 917 0026 00BF     		.p2align 2
+ 918              	.L49:
+ 919 0028 69000000 		.word	.L64+1
+ 920 002c 6F000000 		.word	.L63+1
+ 921 0030 9B000000 		.word	.L62+1
+ 922 0034 8F000000 		.word	.L61+1
+ 923 0038 A9000000 		.word	.L60+1
+ 924 003c B5000000 		.word	.L59+1
+ 925 0040 C3000000 		.word	.L58+1
+ 926 0044 E9000000 		.word	.L57+1
+ 927 0048 0F010000 		.word	.L56+1
+ 928 004c 53010000 		.word	.L55+1
+ 929 0050 59010000 		.word	.L54+1
+ 930 0054 61010000 		.word	.L53+1
+ 931 0058 B5010000 		.word	.L71+1
+ 932 005c 69010000 		.word	.L51+1
+ 933 0060 77010000 		.word	.L50+1
+ 934 0064 93010000 		.word	.L48+1
+ 935              		.p2align 1
+ 936              	.L64:
+ 291:ioLIB/wizchip_conf.c ****    {
+ 292:ioLIB/wizchip_conf.c ****       case CW_RESET_WIZCHIP:
+ 293:ioLIB/wizchip_conf.c ****          wizchip_sw_reset();
+ 937              		.loc 1 293 10
+ 938 0068 FFF7FEFF 		bl	wizchip_sw_reset
+ 294:ioLIB/wizchip_conf.c ****          break;
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 22
+
+
+ 939              		.loc 1 294 10
+ 940 006c A3E0     		b	.L65
+ 941              	.L63:
+ 295:ioLIB/wizchip_conf.c ****       case CW_INIT_WIZCHIP:
+ 296:ioLIB/wizchip_conf.c ****          if(arg != 0) 
+ 942              		.loc 1 296 12
+ 943 006e 3B68     		ldr	r3, [r7]
+ 944 0070 002B     		cmp	r3, #0
+ 945 0072 04D0     		beq	.L66
+ 297:ioLIB/wizchip_conf.c ****          {
+ 298:ioLIB/wizchip_conf.c ****             ptmp[0] = (uint8_t*)arg;
+ 946              		.loc 1 298 21
+ 947 0074 3B68     		ldr	r3, [r7]
+ 948 0076 FB60     		str	r3, [r7, #12]
+ 299:ioLIB/wizchip_conf.c ****             ptmp[1] = ptmp[0] + _WIZCHIP_SOCK_NUM_;
+ 949              		.loc 1 299 27
+ 950 0078 FB68     		ldr	r3, [r7, #12]
+ 951              		.loc 1 299 31
+ 952 007a 0833     		adds	r3, r3, #8
+ 953              		.loc 1 299 21
+ 954 007c 3B61     		str	r3, [r7, #16]
+ 955              	.L66:
+ 300:ioLIB/wizchip_conf.c ****          }
+ 301:ioLIB/wizchip_conf.c ****          return wizchip_init(ptmp[0], ptmp[1]);
+ 956              		.loc 1 301 17
+ 957 007e FB68     		ldr	r3, [r7, #12]
+ 958 0080 3A69     		ldr	r2, [r7, #16]
+ 959 0082 1146     		mov	r1, r2
+ 960 0084 1846     		mov	r0, r3
+ 961 0086 FFF7FEFF 		bl	wizchip_init
+ 962 008a 0346     		mov	r3, r0
+ 963 008c 94E0     		b	.L70
+ 964              	.L61:
+ 302:ioLIB/wizchip_conf.c ****       case CW_CLR_INTERRUPT:
+ 303:ioLIB/wizchip_conf.c ****          wizchip_clrinterrupt(*((intr_kind*)arg));
+ 965              		.loc 1 303 10
+ 966 008e 3B68     		ldr	r3, [r7]
+ 967 0090 1B88     		ldrh	r3, [r3]
+ 968 0092 1846     		mov	r0, r3
+ 969 0094 FFF7FEFF 		bl	wizchip_clrinterrupt
+ 304:ioLIB/wizchip_conf.c ****          break;
+ 970              		.loc 1 304 10
+ 971 0098 8DE0     		b	.L65
+ 972              	.L62:
+ 305:ioLIB/wizchip_conf.c ****       case CW_GET_INTERRUPT:
+ 306:ioLIB/wizchip_conf.c ****         *((intr_kind*)arg) = wizchip_getinterrupt();
+ 973              		.loc 1 306 30
+ 974 009a FFF7FEFF 		bl	wizchip_getinterrupt
+ 975 009e 0346     		mov	r3, r0
+ 976 00a0 1A46     		mov	r2, r3
+ 977              		.loc 1 306 28
+ 978 00a2 3B68     		ldr	r3, [r7]
+ 979 00a4 1A80     		strh	r2, [r3]	@ movhi
+ 307:ioLIB/wizchip_conf.c ****          break;
+ 980              		.loc 1 307 10
+ 981 00a6 86E0     		b	.L65
+ 982              	.L60:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 23
+
+
+ 308:ioLIB/wizchip_conf.c ****       case CW_SET_INTRMASK:
+ 309:ioLIB/wizchip_conf.c ****          wizchip_setinterruptmask(*((intr_kind*)arg));
+ 983              		.loc 1 309 10
+ 984 00a8 3B68     		ldr	r3, [r7]
+ 985 00aa 1B88     		ldrh	r3, [r3]
+ 986 00ac 1846     		mov	r0, r3
+ 987 00ae FFF7FEFF 		bl	wizchip_setinterruptmask
+ 310:ioLIB/wizchip_conf.c ****          break;         
+ 988              		.loc 1 310 10
+ 989 00b2 80E0     		b	.L65
+ 990              	.L59:
+ 311:ioLIB/wizchip_conf.c ****       case CW_GET_INTRMASK:
+ 312:ioLIB/wizchip_conf.c ****          *((intr_kind*)arg) = wizchip_getinterruptmask();
+ 991              		.loc 1 312 31
+ 992 00b4 FFF7FEFF 		bl	wizchip_getinterruptmask
+ 993 00b8 0346     		mov	r3, r0
+ 994 00ba 1A46     		mov	r2, r3
+ 995              		.loc 1 312 29
+ 996 00bc 3B68     		ldr	r3, [r7]
+ 997 00be 1A80     		strh	r2, [r3]	@ movhi
+ 313:ioLIB/wizchip_conf.c ****          break;
+ 998              		.loc 1 313 10
+ 999 00c0 79E0     		b	.L65
+ 1000              	.L58:
+ 314:ioLIB/wizchip_conf.c ****    //M20150601 : This can be supported by W5200, W5500
+ 315:ioLIB/wizchip_conf.c ****    //#if _WIZCHIP_ > W5100
+ 316:ioLIB/wizchip_conf.c ****    #if (_WIZCHIP_ == W5200 || _WIZCHIP_ == W5500)
+ 317:ioLIB/wizchip_conf.c ****       case CW_SET_INTRTIME:
+ 318:ioLIB/wizchip_conf.c ****          setINTLEVEL(*(uint16_t*)arg);
+ 1001              		.loc 1 318 10
+ 1002 00c2 3B68     		ldr	r3, [r7]
+ 1003 00c4 1B88     		ldrh	r3, [r3]
+ 1004 00c6 1B0A     		lsrs	r3, r3, #8
+ 1005 00c8 9BB2     		uxth	r3, r3
+ 1006 00ca DBB2     		uxtb	r3, r3
+ 1007 00cc 1946     		mov	r1, r3
+ 1008 00ce 4FF49850 		mov	r0, #4864
+ 1009 00d2 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 1010 00d6 3B68     		ldr	r3, [r7]
+ 1011 00d8 1B88     		ldrh	r3, [r3]
+ 1012 00da DBB2     		uxtb	r3, r3
+ 1013 00dc 1946     		mov	r1, r3
+ 1014 00de 4FF4A050 		mov	r0, #5120
+ 1015 00e2 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 319:ioLIB/wizchip_conf.c ****          break;
+ 1016              		.loc 1 319 10
+ 1017 00e6 66E0     		b	.L65
+ 1018              	.L57:
+ 320:ioLIB/wizchip_conf.c ****       case CW_GET_INTRTIME:
+ 321:ioLIB/wizchip_conf.c ****          *(uint16_t*)arg = getINTLEVEL();
+ 1019              		.loc 1 321 28
+ 1020 00e8 4FF49850 		mov	r0, #4864
+ 1021 00ec FFF7FEFF 		bl	WIZCHIP_READ
+ 1022 00f0 0346     		mov	r3, r0
+ 1023 00f2 9BB2     		uxth	r3, r3
+ 1024 00f4 1B02     		lsls	r3, r3, #8
+ 1025 00f6 9CB2     		uxth	r4, r3
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 24
+
+
+ 1026 00f8 4FF4A050 		mov	r0, #5120
+ 1027 00fc FFF7FEFF 		bl	WIZCHIP_READ
+ 1028 0100 0346     		mov	r3, r0
+ 1029 0102 9BB2     		uxth	r3, r3
+ 1030 0104 2344     		add	r3, r3, r4
+ 1031 0106 9AB2     		uxth	r2, r3
+ 1032              		.loc 1 321 26
+ 1033 0108 3B68     		ldr	r3, [r7]
+ 1034 010a 1A80     		strh	r2, [r3]	@ movhi
+ 322:ioLIB/wizchip_conf.c ****          break;
+ 1035              		.loc 1 322 10
+ 1036 010c 53E0     		b	.L65
+ 1037              	.L56:
+ 323:ioLIB/wizchip_conf.c ****    #endif
+ 324:ioLIB/wizchip_conf.c ****       case CW_GET_ID:
+ 325:ioLIB/wizchip_conf.c ****          ((uint8_t*)arg)[0] = WIZCHIP.id[0];
+ 1038              		.loc 1 325 41
+ 1039 010e 2C4B     		ldr	r3, .L72
+ 1040 0110 9A78     		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 1041              		.loc 1 325 29
+ 1042 0112 3B68     		ldr	r3, [r7]
+ 1043 0114 1A70     		strb	r2, [r3]
+ 326:ioLIB/wizchip_conf.c ****          ((uint8_t*)arg)[1] = WIZCHIP.id[1];
+ 1044              		.loc 1 326 25
+ 1045 0116 3B68     		ldr	r3, [r7]
+ 1046 0118 0133     		adds	r3, r3, #1
+ 1047              		.loc 1 326 41
+ 1048 011a 294A     		ldr	r2, .L72
+ 1049 011c D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 1050              		.loc 1 326 29
+ 1051 011e 1A70     		strb	r2, [r3]
+ 327:ioLIB/wizchip_conf.c ****          ((uint8_t*)arg)[2] = WIZCHIP.id[2];
+ 1052              		.loc 1 327 25
+ 1053 0120 3B68     		ldr	r3, [r7]
+ 1054 0122 0233     		adds	r3, r3, #2
+ 1055              		.loc 1 327 41
+ 1056 0124 264A     		ldr	r2, .L72
+ 1057 0126 1279     		ldrb	r2, [r2, #4]	@ zero_extendqisi2
+ 1058              		.loc 1 327 29
+ 1059 0128 1A70     		strb	r2, [r3]
+ 328:ioLIB/wizchip_conf.c ****          ((uint8_t*)arg)[3] = WIZCHIP.id[3];
+ 1060              		.loc 1 328 25
+ 1061 012a 3B68     		ldr	r3, [r7]
+ 1062 012c 0333     		adds	r3, r3, #3
+ 1063              		.loc 1 328 41
+ 1064 012e 244A     		ldr	r2, .L72
+ 1065 0130 5279     		ldrb	r2, [r2, #5]	@ zero_extendqisi2
+ 1066              		.loc 1 328 29
+ 1067 0132 1A70     		strb	r2, [r3]
+ 329:ioLIB/wizchip_conf.c ****          ((uint8_t*)arg)[4] = WIZCHIP.id[4];
+ 1068              		.loc 1 329 25
+ 1069 0134 3B68     		ldr	r3, [r7]
+ 1070 0136 0433     		adds	r3, r3, #4
+ 1071              		.loc 1 329 41
+ 1072 0138 214A     		ldr	r2, .L72
+ 1073 013a 9279     		ldrb	r2, [r2, #6]	@ zero_extendqisi2
+ 1074              		.loc 1 329 29
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 25
+
+
+ 1075 013c 1A70     		strb	r2, [r3]
+ 330:ioLIB/wizchip_conf.c ****          ((uint8_t*)arg)[5] = WIZCHIP.id[5];
+ 1076              		.loc 1 330 25
+ 1077 013e 3B68     		ldr	r3, [r7]
+ 1078 0140 0533     		adds	r3, r3, #5
+ 1079              		.loc 1 330 41
+ 1080 0142 1F4A     		ldr	r2, .L72
+ 1081 0144 D279     		ldrb	r2, [r2, #7]	@ zero_extendqisi2
+ 1082              		.loc 1 330 29
+ 1083 0146 1A70     		strb	r2, [r3]
+ 331:ioLIB/wizchip_conf.c ****          ((uint8_t*)arg)[6] = 0;
+ 1084              		.loc 1 331 25
+ 1085 0148 3B68     		ldr	r3, [r7]
+ 1086 014a 0633     		adds	r3, r3, #6
+ 1087              		.loc 1 331 29
+ 1088 014c 0022     		movs	r2, #0
+ 1089 014e 1A70     		strb	r2, [r3]
+ 332:ioLIB/wizchip_conf.c ****          break;
+ 1090              		.loc 1 332 10
+ 1091 0150 31E0     		b	.L65
+ 1092              	.L55:
+ 333:ioLIB/wizchip_conf.c ****    #if _WIZCHIP_ == W5100S || _WIZCHIP_ == W5500
+ 334:ioLIB/wizchip_conf.c ****       case CW_RESET_PHY:
+ 335:ioLIB/wizchip_conf.c ****          wizphy_reset();
+ 1093              		.loc 1 335 10
+ 1094 0152 FFF7FEFF 		bl	wizphy_reset
+ 336:ioLIB/wizchip_conf.c ****          break;
+ 1095              		.loc 1 336 10
+ 1096 0156 2EE0     		b	.L65
+ 1097              	.L54:
+ 337:ioLIB/wizchip_conf.c ****       case CW_SET_PHYCONF:
+ 338:ioLIB/wizchip_conf.c ****          wizphy_setphyconf((wiz_PhyConf*)arg);
+ 1098              		.loc 1 338 10
+ 1099 0158 3868     		ldr	r0, [r7]
+ 1100 015a FFF7FEFF 		bl	wizphy_setphyconf
+ 339:ioLIB/wizchip_conf.c ****          break;
+ 1101              		.loc 1 339 10
+ 1102 015e 2AE0     		b	.L65
+ 1103              	.L53:
+ 340:ioLIB/wizchip_conf.c ****       case CW_GET_PHYCONF:
+ 341:ioLIB/wizchip_conf.c ****          wizphy_getphyconf((wiz_PhyConf*)arg);
+ 1104              		.loc 1 341 10
+ 1105 0160 3868     		ldr	r0, [r7]
+ 1106 0162 FFF7FEFF 		bl	wizphy_getphyconf
+ 342:ioLIB/wizchip_conf.c ****          break;
+ 1107              		.loc 1 342 10
+ 1108 0166 26E0     		b	.L65
+ 1109              	.L51:
+ 343:ioLIB/wizchip_conf.c ****       case CW_GET_PHYSTATUS:
+ 344:ioLIB/wizchip_conf.c ****          break;
+ 345:ioLIB/wizchip_conf.c ****       case CW_SET_PHYPOWMODE:
+ 346:ioLIB/wizchip_conf.c ****          return wizphy_setphypmode(*(uint8_t*)arg);
+ 1110              		.loc 1 346 17
+ 1111 0168 3B68     		ldr	r3, [r7]
+ 1112 016a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1113 016c 1846     		mov	r0, r3
+ 1114 016e FFF7FEFF 		bl	wizphy_setphypmode
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 26
+
+
+ 1115 0172 0346     		mov	r3, r0
+ 1116 0174 20E0     		b	.L70
+ 1117              	.L50:
+ 347:ioLIB/wizchip_conf.c ****    #endif
+ 348:ioLIB/wizchip_conf.c ****    #if _WIZCHIP_ == W5100S || _WIZCHIP_ == W5200 || _WIZCHIP_ == W5500
+ 349:ioLIB/wizchip_conf.c ****       case CW_GET_PHYPOWMODE:
+ 350:ioLIB/wizchip_conf.c ****          tmp = wizphy_getphypmode();
+ 1118              		.loc 1 350 16
+ 1119 0176 FFF7FEFF 		bl	wizphy_getphypmode
+ 1120 017a 0346     		mov	r3, r0
+ 1121              		.loc 1 350 14
+ 1122 017c FB75     		strb	r3, [r7, #23]
+ 351:ioLIB/wizchip_conf.c ****          if((int8_t)tmp == -1) return -1;
+ 1123              		.loc 1 351 12
+ 1124 017e FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 1125 0180 FF2B     		cmp	r3, #255
+ 1126 0182 02D1     		bne	.L68
+ 1127              		.loc 1 351 39 discriminator 1
+ 1128 0184 4FF0FF33 		mov	r3, #-1
+ 1129 0188 16E0     		b	.L70
+ 1130              	.L68:
+ 352:ioLIB/wizchip_conf.c ****          *(uint8_t*)arg = tmp;
+ 1131              		.loc 1 352 25
+ 1132 018a 3B68     		ldr	r3, [r7]
+ 1133 018c FA7D     		ldrb	r2, [r7, #23]
+ 1134 018e 1A70     		strb	r2, [r3]
+ 353:ioLIB/wizchip_conf.c ****          break;
+ 1135              		.loc 1 353 10
+ 1136 0190 11E0     		b	.L65
+ 1137              	.L48:
+ 354:ioLIB/wizchip_conf.c ****       case CW_GET_PHYLINK:
+ 355:ioLIB/wizchip_conf.c ****          tmp = wizphy_getphylink();
+ 1138              		.loc 1 355 16
+ 1139 0192 FFF7FEFF 		bl	wizphy_getphylink
+ 1140 0196 0346     		mov	r3, r0
+ 1141              		.loc 1 355 14
+ 1142 0198 FB75     		strb	r3, [r7, #23]
+ 356:ioLIB/wizchip_conf.c ****          if((int8_t)tmp == -1) return -1;
+ 1143              		.loc 1 356 12
+ 1144 019a FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 1145 019c FF2B     		cmp	r3, #255
+ 1146 019e 02D1     		bne	.L69
+ 1147              		.loc 1 356 39 discriminator 1
+ 1148 01a0 4FF0FF33 		mov	r3, #-1
+ 1149 01a4 08E0     		b	.L70
+ 1150              	.L69:
+ 357:ioLIB/wizchip_conf.c ****          *(uint8_t*)arg = tmp;
+ 1151              		.loc 1 357 25
+ 1152 01a6 3B68     		ldr	r3, [r7]
+ 1153 01a8 FA7D     		ldrb	r2, [r7, #23]
+ 1154 01aa 1A70     		strb	r2, [r3]
+ 358:ioLIB/wizchip_conf.c ****          break;
+ 1155              		.loc 1 358 10
+ 1156 01ac 03E0     		b	.L65
+ 1157              	.L47:
+ 359:ioLIB/wizchip_conf.c ****    #endif      
+ 360:ioLIB/wizchip_conf.c ****       default:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 27
+
+
+ 361:ioLIB/wizchip_conf.c ****          return -1;
+ 1158              		.loc 1 361 17
+ 1159 01ae 4FF0FF33 		mov	r3, #-1
+ 1160 01b2 01E0     		b	.L70
+ 1161              	.L71:
+ 344:ioLIB/wizchip_conf.c ****       case CW_SET_PHYPOWMODE:
+ 1162              		.loc 1 344 10
+ 1163 01b4 00BF     		nop
+ 1164              	.L65:
+ 362:ioLIB/wizchip_conf.c ****    }
+ 363:ioLIB/wizchip_conf.c ****    return 0;
+ 1165              		.loc 1 363 11
+ 1166 01b6 0023     		movs	r3, #0
+ 1167              	.L70:
+ 364:ioLIB/wizchip_conf.c **** }
+ 1168              		.loc 1 364 1 discriminator 1
+ 1169 01b8 1846     		mov	r0, r3
+ 1170 01ba 1C37     		adds	r7, r7, #28
+ 1171              	.LCFI83:
+ 1172              		.cfi_def_cfa_offset 12
+ 1173 01bc BD46     		mov	sp, r7
+ 1174              	.LCFI84:
+ 1175              		.cfi_def_cfa_register 13
+ 1176              		@ sp needed
+ 1177 01be 90BD     		pop	{r4, r7, pc}
+ 1178              	.L73:
+ 1179              		.align	2
+ 1180              	.L72:
+ 1181 01c0 00000000 		.word	WIZCHIP
+ 1182              		.cfi_endproc
+ 1183              	.LFE15:
+ 1185              		.section	.text.ctlnetwork,"ax",%progbits
+ 1186              		.align	1
+ 1187              		.global	ctlnetwork
+ 1188              		.syntax unified
+ 1189              		.thumb
+ 1190              		.thumb_func
+ 1192              	ctlnetwork:
+ 1193              	.LFB16:
+ 365:ioLIB/wizchip_conf.c **** 
+ 366:ioLIB/wizchip_conf.c **** 
+ 367:ioLIB/wizchip_conf.c **** int8_t ctlnetwork(ctlnetwork_type cntype, void* arg)
+ 368:ioLIB/wizchip_conf.c **** {
+ 1194              		.loc 1 368 1
+ 1195              		.cfi_startproc
+ 1196              		@ args = 0, pretend = 0, frame = 8
+ 1197              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1198 0000 80B5     		push	{r7, lr}
+ 1199              	.LCFI85:
+ 1200              		.cfi_def_cfa_offset 8
+ 1201              		.cfi_offset 7, -8
+ 1202              		.cfi_offset 14, -4
+ 1203 0002 82B0     		sub	sp, sp, #8
+ 1204              	.LCFI86:
+ 1205              		.cfi_def_cfa_offset 16
+ 1206 0004 00AF     		add	r7, sp, #0
+ 1207              	.LCFI87:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 28
+
+
+ 1208              		.cfi_def_cfa_register 7
+ 1209 0006 0346     		mov	r3, r0
+ 1210 0008 3960     		str	r1, [r7]
+ 1211 000a FB71     		strb	r3, [r7, #7]
+ 369:ioLIB/wizchip_conf.c ****    
+ 370:ioLIB/wizchip_conf.c ****    switch(cntype)
+ 1212              		.loc 1 370 4
+ 1213 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1214 000e 052B     		cmp	r3, #5
+ 1215 0010 2CD8     		bhi	.L75
+ 1216 0012 01A2     		adr	r2, .L77
+ 1217 0014 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 1218              		.p2align 2
+ 1219              	.L77:
+ 1220 0018 31000000 		.word	.L82+1
+ 1221 001c 39000000 		.word	.L81+1
+ 1222 0020 41000000 		.word	.L80+1
+ 1223 0024 4F000000 		.word	.L79+1
+ 1224 0028 5D000000 		.word	.L78+1
+ 1225 002c 65000000 		.word	.L76+1
+ 1226              		.p2align 1
+ 1227              	.L82:
+ 371:ioLIB/wizchip_conf.c ****    {
+ 372:ioLIB/wizchip_conf.c ****       case CN_SET_NETINFO:
+ 373:ioLIB/wizchip_conf.c ****          wizchip_setnetinfo((wiz_NetInfo*)arg);
+ 1228              		.loc 1 373 10
+ 1229 0030 3868     		ldr	r0, [r7]
+ 1230 0032 FFF7FEFF 		bl	wizchip_setnetinfo
+ 374:ioLIB/wizchip_conf.c ****          break;
+ 1231              		.loc 1 374 10
+ 1232 0036 1CE0     		b	.L83
+ 1233              	.L81:
+ 375:ioLIB/wizchip_conf.c ****       case CN_GET_NETINFO:
+ 376:ioLIB/wizchip_conf.c ****          wizchip_getnetinfo((wiz_NetInfo*)arg);
+ 1234              		.loc 1 376 10
+ 1235 0038 3868     		ldr	r0, [r7]
+ 1236 003a FFF7FEFF 		bl	wizchip_getnetinfo
+ 377:ioLIB/wizchip_conf.c ****          break;
+ 1237              		.loc 1 377 10
+ 1238 003e 18E0     		b	.L83
+ 1239              	.L80:
+ 378:ioLIB/wizchip_conf.c ****       case CN_SET_NETMODE:
+ 379:ioLIB/wizchip_conf.c ****          return wizchip_setnetmode(*(netmode_type*)arg);
+ 1240              		.loc 1 379 17
+ 1241 0040 3B68     		ldr	r3, [r7]
+ 1242 0042 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1243 0044 1846     		mov	r0, r3
+ 1244 0046 FFF7FEFF 		bl	wizchip_setnetmode
+ 1245 004a 0346     		mov	r3, r0
+ 1246 004c 12E0     		b	.L84
+ 1247              	.L79:
+ 380:ioLIB/wizchip_conf.c ****       case CN_GET_NETMODE:
+ 381:ioLIB/wizchip_conf.c ****          *(netmode_type*)arg = wizchip_getnetmode();
+ 1248              		.loc 1 381 32
+ 1249 004e FFF7FEFF 		bl	wizchip_getnetmode
+ 1250 0052 0346     		mov	r3, r0
+ 1251 0054 1A46     		mov	r2, r3
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 29
+
+
+ 1252              		.loc 1 381 30
+ 1253 0056 3B68     		ldr	r3, [r7]
+ 1254 0058 1A70     		strb	r2, [r3]
+ 382:ioLIB/wizchip_conf.c ****          break;
+ 1255              		.loc 1 382 10
+ 1256 005a 0AE0     		b	.L83
+ 1257              	.L78:
+ 383:ioLIB/wizchip_conf.c ****       case CN_SET_TIMEOUT:
+ 384:ioLIB/wizchip_conf.c ****          wizchip_settimeout((wiz_NetTimeout*)arg);
+ 1258              		.loc 1 384 10
+ 1259 005c 3868     		ldr	r0, [r7]
+ 1260 005e FFF7FEFF 		bl	wizchip_settimeout
+ 385:ioLIB/wizchip_conf.c ****          break;
+ 1261              		.loc 1 385 10
+ 1262 0062 06E0     		b	.L83
+ 1263              	.L76:
+ 386:ioLIB/wizchip_conf.c ****       case CN_GET_TIMEOUT:
+ 387:ioLIB/wizchip_conf.c ****          wizchip_gettimeout((wiz_NetTimeout*)arg);
+ 1264              		.loc 1 387 10
+ 1265 0064 3868     		ldr	r0, [r7]
+ 1266 0066 FFF7FEFF 		bl	wizchip_gettimeout
+ 388:ioLIB/wizchip_conf.c ****          break;
+ 1267              		.loc 1 388 10
+ 1268 006a 02E0     		b	.L83
+ 1269              	.L75:
+ 389:ioLIB/wizchip_conf.c ****       default:
+ 390:ioLIB/wizchip_conf.c ****          return -1;
+ 1270              		.loc 1 390 17
+ 1271 006c 4FF0FF33 		mov	r3, #-1
+ 1272 0070 00E0     		b	.L84
+ 1273              	.L83:
+ 391:ioLIB/wizchip_conf.c ****    }
+ 392:ioLIB/wizchip_conf.c ****    return 0;
+ 1274              		.loc 1 392 11
+ 1275 0072 0023     		movs	r3, #0
+ 1276              	.L84:
+ 393:ioLIB/wizchip_conf.c **** }
+ 1277              		.loc 1 393 1
+ 1278 0074 1846     		mov	r0, r3
+ 1279 0076 0837     		adds	r7, r7, #8
+ 1280              	.LCFI88:
+ 1281              		.cfi_def_cfa_offset 8
+ 1282 0078 BD46     		mov	sp, r7
+ 1283              	.LCFI89:
+ 1284              		.cfi_def_cfa_register 13
+ 1285              		@ sp needed
+ 1286 007a 80BD     		pop	{r7, pc}
+ 1287              		.cfi_endproc
+ 1288              	.LFE16:
+ 1290              		.section	.text.wizchip_sw_reset,"ax",%progbits
+ 1291              		.align	1
+ 1292              		.global	wizchip_sw_reset
+ 1293              		.syntax unified
+ 1294              		.thumb
+ 1295              		.thumb_func
+ 1297              	wizchip_sw_reset:
+ 1298              	.LFB17:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 30
+
+
+ 394:ioLIB/wizchip_conf.c **** 
+ 395:ioLIB/wizchip_conf.c **** void wizchip_sw_reset(void)
+ 396:ioLIB/wizchip_conf.c **** {
+ 1299              		.loc 1 396 1
+ 1300              		.cfi_startproc
+ 1301              		@ args = 0, pretend = 0, frame = 24
+ 1302              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1303 0000 80B5     		push	{r7, lr}
+ 1304              	.LCFI90:
+ 1305              		.cfi_def_cfa_offset 8
+ 1306              		.cfi_offset 7, -8
+ 1307              		.cfi_offset 14, -4
+ 1308 0002 86B0     		sub	sp, sp, #24
+ 1309              	.LCFI91:
+ 1310              		.cfi_def_cfa_offset 32
+ 1311 0004 00AF     		add	r7, sp, #0
+ 1312              	.LCFI92:
+ 1313              		.cfi_def_cfa_register 7
+ 397:ioLIB/wizchip_conf.c ****    uint8_t gw[4], sn[4], sip[4];
+ 398:ioLIB/wizchip_conf.c ****    uint8_t mac[6];
+ 399:ioLIB/wizchip_conf.c **** //A20150601
+ 400:ioLIB/wizchip_conf.c **** #if _WIZCHIP_IO_MODE_  == _WIZCHIP_IO_MODE_BUS_INDIR_
+ 401:ioLIB/wizchip_conf.c ****    uint16_t mr = (uint16_t)getMR();
+ 402:ioLIB/wizchip_conf.c ****    setMR(mr | MR_IND);
+ 403:ioLIB/wizchip_conf.c **** #endif
+ 404:ioLIB/wizchip_conf.c **** //
+ 405:ioLIB/wizchip_conf.c ****    getSHAR(mac);
+ 1314              		.loc 1 405 4
+ 1315 0006 3B1D     		adds	r3, r7, #4
+ 1316 0008 0622     		movs	r2, #6
+ 1317 000a 1946     		mov	r1, r3
+ 1318 000c 4FF41060 		mov	r0, #2304
+ 1319 0010 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 406:ioLIB/wizchip_conf.c ****    getGAR(gw);  getSUBR(sn);  getSIPR(sip);
+ 1320              		.loc 1 406 4
+ 1321 0014 07F11403 		add	r3, r7, #20
+ 1322 0018 0422     		movs	r2, #4
+ 1323 001a 1946     		mov	r1, r3
+ 1324 001c 4FF48070 		mov	r0, #256
+ 1325 0020 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 1326              		.loc 1 406 17
+ 1327 0024 07F11003 		add	r3, r7, #16
+ 1328 0028 0422     		movs	r2, #4
+ 1329 002a 1946     		mov	r1, r3
+ 1330 002c 4FF4A060 		mov	r0, #1280
+ 1331 0030 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 1332              		.loc 1 406 31
+ 1333 0034 07F10C03 		add	r3, r7, #12
+ 1334 0038 0422     		movs	r2, #4
+ 1335 003a 1946     		mov	r1, r3
+ 1336 003c 4FF47060 		mov	r0, #3840
+ 1337 0040 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 407:ioLIB/wizchip_conf.c ****    setMR(MR_RST);
+ 1338              		.loc 1 407 4
+ 1339 0044 8021     		movs	r1, #128
+ 1340 0046 0020     		movs	r0, #0
+ 1341 0048 FFF7FEFF 		bl	WIZCHIP_WRITE
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 31
+
+
+ 408:ioLIB/wizchip_conf.c ****    getMR(); // for delay
+ 1342              		.loc 1 408 4
+ 1343 004c 0020     		movs	r0, #0
+ 1344 004e FFF7FEFF 		bl	WIZCHIP_READ
+ 409:ioLIB/wizchip_conf.c **** //A2015051 : For indirect bus mode 
+ 410:ioLIB/wizchip_conf.c **** #if _WIZCHIP_IO_MODE_  == _WIZCHIP_IO_MODE_BUS_INDIR_
+ 411:ioLIB/wizchip_conf.c ****    setMR(mr | MR_IND);
+ 412:ioLIB/wizchip_conf.c **** #endif
+ 413:ioLIB/wizchip_conf.c **** //
+ 414:ioLIB/wizchip_conf.c ****    setSHAR(mac);
+ 1345              		.loc 1 414 4
+ 1346 0052 3B1D     		adds	r3, r7, #4
+ 1347 0054 0622     		movs	r2, #6
+ 1348 0056 1946     		mov	r1, r3
+ 1349 0058 4FF41060 		mov	r0, #2304
+ 1350 005c FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 415:ioLIB/wizchip_conf.c ****    setGAR(gw);
+ 1351              		.loc 1 415 4
+ 1352 0060 07F11403 		add	r3, r7, #20
+ 1353 0064 0422     		movs	r2, #4
+ 1354 0066 1946     		mov	r1, r3
+ 1355 0068 4FF48070 		mov	r0, #256
+ 1356 006c FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 416:ioLIB/wizchip_conf.c ****    setSUBR(sn);
+ 1357              		.loc 1 416 4
+ 1358 0070 07F11003 		add	r3, r7, #16
+ 1359 0074 0422     		movs	r2, #4
+ 1360 0076 1946     		mov	r1, r3
+ 1361 0078 4FF4A060 		mov	r0, #1280
+ 1362 007c FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 417:ioLIB/wizchip_conf.c ****    setSIPR(sip);
+ 1363              		.loc 1 417 4
+ 1364 0080 07F10C03 		add	r3, r7, #12
+ 1365 0084 0422     		movs	r2, #4
+ 1366 0086 1946     		mov	r1, r3
+ 1367 0088 4FF47060 		mov	r0, #3840
+ 1368 008c FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 418:ioLIB/wizchip_conf.c **** }
+ 1369              		.loc 1 418 1
+ 1370 0090 00BF     		nop
+ 1371 0092 1837     		adds	r7, r7, #24
+ 1372              	.LCFI93:
+ 1373              		.cfi_def_cfa_offset 8
+ 1374 0094 BD46     		mov	sp, r7
+ 1375              	.LCFI94:
+ 1376              		.cfi_def_cfa_register 13
+ 1377              		@ sp needed
+ 1378 0096 80BD     		pop	{r7, pc}
+ 1379              		.cfi_endproc
+ 1380              	.LFE17:
+ 1382              		.section	.text.wizchip_init,"ax",%progbits
+ 1383              		.align	1
+ 1384              		.global	wizchip_init
+ 1385              		.syntax unified
+ 1386              		.thumb
+ 1387              		.thumb_func
+ 1389              	wizchip_init:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 32
+
+
+ 1390              	.LFB18:
+ 419:ioLIB/wizchip_conf.c **** 
+ 420:ioLIB/wizchip_conf.c **** int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
+ 421:ioLIB/wizchip_conf.c **** {
+ 1391              		.loc 1 421 1
+ 1392              		.cfi_startproc
+ 1393              		@ args = 0, pretend = 0, frame = 16
+ 1394              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1395 0000 80B5     		push	{r7, lr}
+ 1396              	.LCFI95:
+ 1397              		.cfi_def_cfa_offset 8
+ 1398              		.cfi_offset 7, -8
+ 1399              		.cfi_offset 14, -4
+ 1400 0002 84B0     		sub	sp, sp, #16
+ 1401              	.LCFI96:
+ 1402              		.cfi_def_cfa_offset 24
+ 1403 0004 00AF     		add	r7, sp, #0
+ 1404              	.LCFI97:
+ 1405              		.cfi_def_cfa_register 7
+ 1406 0006 7860     		str	r0, [r7, #4]
+ 1407 0008 3960     		str	r1, [r7]
+ 422:ioLIB/wizchip_conf.c ****    int8_t i;
+ 423:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5200
+ 424:ioLIB/wizchip_conf.c ****    int8_t j;
+ 425:ioLIB/wizchip_conf.c **** #endif
+ 426:ioLIB/wizchip_conf.c ****    int8_t tmp = 0;
+ 1408              		.loc 1 426 11
+ 1409 000a 0023     		movs	r3, #0
+ 1410 000c BB73     		strb	r3, [r7, #14]
+ 427:ioLIB/wizchip_conf.c ****    wizchip_sw_reset();
+ 1411              		.loc 1 427 4
+ 1412 000e FFF7FEFF 		bl	wizchip_sw_reset
+ 428:ioLIB/wizchip_conf.c ****    if(txsize)
+ 1413              		.loc 1 428 6
+ 1414 0012 7B68     		ldr	r3, [r7, #4]
+ 1415 0014 002B     		cmp	r3, #0
+ 1416 0016 3BD0     		beq	.L87
+ 429:ioLIB/wizchip_conf.c ****    {
+ 430:ioLIB/wizchip_conf.c ****       tmp = 0;
+ 1417              		.loc 1 430 11
+ 1418 0018 0023     		movs	r3, #0
+ 1419 001a BB73     		strb	r3, [r7, #14]
+ 431:ioLIB/wizchip_conf.c **** //M20150601 : For integrating with W5300
+ 432:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ == W5300
+ 433:ioLIB/wizchip_conf.c **** 		for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 434:ioLIB/wizchip_conf.c **** 		{
+ 435:ioLIB/wizchip_conf.c **** 			if(txsize[i] > 64) return -1;   //No use 64KB even if W5300 support max 64KB memory allocation
+ 436:ioLIB/wizchip_conf.c **** 			tmp += txsize[i];
+ 437:ioLIB/wizchip_conf.c **** 			if(tmp > 128) return -1;
+ 438:ioLIB/wizchip_conf.c **** 		}
+ 439:ioLIB/wizchip_conf.c **** 		if(tmp % 8) return -1;
+ 440:ioLIB/wizchip_conf.c **** #else
+ 441:ioLIB/wizchip_conf.c **** 		for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1420              		.loc 1 441 9
+ 1421 001c 0023     		movs	r3, #0
+ 1422 001e FB73     		strb	r3, [r7, #15]
+ 1423              		.loc 1 441 3
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 33
+
+
+ 1424 0020 15E0     		b	.L88
+ 1425              	.L91:
+ 442:ioLIB/wizchip_conf.c **** 		{
+ 443:ioLIB/wizchip_conf.c **** 			tmp += txsize[i];
+ 1426              		.loc 1 443 17
+ 1427 0022 97F90F30 		ldrsb	r3, [r7, #15]
+ 1428 0026 7A68     		ldr	r2, [r7, #4]
+ 1429 0028 1344     		add	r3, r3, r2
+ 1430 002a 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1431              		.loc 1 443 8
+ 1432 002c BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 1433 002e 1344     		add	r3, r3, r2
+ 1434 0030 DBB2     		uxtb	r3, r3
+ 1435 0032 BB73     		strb	r3, [r7, #14]
+ 444:ioLIB/wizchip_conf.c **** 
+ 445:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5200	//2016.10.28 peter add condition for w5100 and w5100s
+ 446:ioLIB/wizchip_conf.c **** 			if(tmp > 8) return -1;
+ 447:ioLIB/wizchip_conf.c **** #else
+ 448:ioLIB/wizchip_conf.c **** 			if(tmp > 16) return -1;
+ 1436              		.loc 1 448 6
+ 1437 0034 97F90E30 		ldrsb	r3, [r7, #14]
+ 1438 0038 102B     		cmp	r3, #16
+ 1439 003a 02DD     		ble	.L89
+ 1440              		.loc 1 448 24 discriminator 1
+ 1441 003c 4FF0FF33 		mov	r3, #-1
+ 1442 0040 66E0     		b	.L90
+ 1443              	.L89:
+ 441:ioLIB/wizchip_conf.c **** 		{
+ 1444              		.loc 1 441 40 discriminator 2
+ 1445 0042 97F90F30 		ldrsb	r3, [r7, #15]
+ 1446 0046 DBB2     		uxtb	r3, r3
+ 1447 0048 0133     		adds	r3, r3, #1
+ 1448 004a DBB2     		uxtb	r3, r3
+ 1449 004c FB73     		strb	r3, [r7, #15]
+ 1450              	.L88:
+ 441:ioLIB/wizchip_conf.c **** 		{
+ 1451              		.loc 1 441 3 discriminator 1
+ 1452 004e 97F90F30 		ldrsb	r3, [r7, #15]
+ 1453 0052 072B     		cmp	r3, #7
+ 1454 0054 E5DD     		ble	.L91
+ 449:ioLIB/wizchip_conf.c **** #endif
+ 450:ioLIB/wizchip_conf.c **** 		}
+ 451:ioLIB/wizchip_conf.c **** #endif
+ 452:ioLIB/wizchip_conf.c **** 		for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1455              		.loc 1 452 9
+ 1456 0056 0023     		movs	r3, #0
+ 1457 0058 FB73     		strb	r3, [r7, #15]
+ 1458              		.loc 1 452 3
+ 1459 005a 15E0     		b	.L92
+ 1460              	.L93:
+ 453:ioLIB/wizchip_conf.c **** 		{
+ 454:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5200	//2016.10.28 peter add condition for w5100
+ 455:ioLIB/wizchip_conf.c **** 			j = 0;
+ 456:ioLIB/wizchip_conf.c **** 			while((txsize[i] >> j != 1)&&(txsize[i] !=0)){j++;}
+ 457:ioLIB/wizchip_conf.c **** 			setSn_TXBUF_SIZE(i, j);
+ 458:ioLIB/wizchip_conf.c **** #else
+ 459:ioLIB/wizchip_conf.c **** 			setSn_TXBUF_SIZE(i, txsize[i]);
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 34
+
+
+ 1461              		.loc 1 459 4 discriminator 3
+ 1462 005c 97F90F30 		ldrsb	r3, [r7, #15]
+ 1463 0060 9B00     		lsls	r3, r3, #2
+ 1464 0062 0133     		adds	r3, r3, #1
+ 1465 0064 DB00     		lsls	r3, r3, #3
+ 1466 0066 03F5F853 		add	r3, r3, #7936
+ 1467 006a 1846     		mov	r0, r3
+ 1468 006c 97F90F30 		ldrsb	r3, [r7, #15]
+ 1469 0070 7A68     		ldr	r2, [r7, #4]
+ 1470 0072 1344     		add	r3, r3, r2
+ 1471 0074 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1472 0076 1946     		mov	r1, r3
+ 1473 0078 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 452:ioLIB/wizchip_conf.c **** 		{
+ 1474              		.loc 1 452 40 discriminator 3
+ 1475 007c 97F90F30 		ldrsb	r3, [r7, #15]
+ 1476 0080 DBB2     		uxtb	r3, r3
+ 1477 0082 0133     		adds	r3, r3, #1
+ 1478 0084 DBB2     		uxtb	r3, r3
+ 1479 0086 FB73     		strb	r3, [r7, #15]
+ 1480              	.L92:
+ 452:ioLIB/wizchip_conf.c **** 		{
+ 1481              		.loc 1 452 3 discriminator 1
+ 1482 0088 97F90F30 		ldrsb	r3, [r7, #15]
+ 1483 008c 072B     		cmp	r3, #7
+ 1484 008e E5DD     		ble	.L93
+ 1485              	.L87:
+ 460:ioLIB/wizchip_conf.c **** #endif
+ 461:ioLIB/wizchip_conf.c **** 		}	
+ 462:ioLIB/wizchip_conf.c ****    }
+ 463:ioLIB/wizchip_conf.c **** 
+ 464:ioLIB/wizchip_conf.c ****    if(rxsize)
+ 1486              		.loc 1 464 6
+ 1487 0090 3B68     		ldr	r3, [r7]
+ 1488 0092 002B     		cmp	r3, #0
+ 1489 0094 3BD0     		beq	.L94
+ 465:ioLIB/wizchip_conf.c ****    {
+ 466:ioLIB/wizchip_conf.c ****       tmp = 0;
+ 1490              		.loc 1 466 11
+ 1491 0096 0023     		movs	r3, #0
+ 1492 0098 BB73     		strb	r3, [r7, #14]
+ 467:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ == W5300
+ 468:ioLIB/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 469:ioLIB/wizchip_conf.c **** 		{
+ 470:ioLIB/wizchip_conf.c **** 			if(rxsize[i] > 64) return -1;   //No use 64KB even if W5300 support max 64KB memory allocation
+ 471:ioLIB/wizchip_conf.c **** 			tmp += rxsize[i];
+ 472:ioLIB/wizchip_conf.c **** 			if(tmp > 128) return -1;
+ 473:ioLIB/wizchip_conf.c **** 		}
+ 474:ioLIB/wizchip_conf.c **** 		if(tmp % 8) return -1;
+ 475:ioLIB/wizchip_conf.c **** #else
+ 476:ioLIB/wizchip_conf.c **** 		for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1493              		.loc 1 476 9
+ 1494 009a 0023     		movs	r3, #0
+ 1495 009c FB73     		strb	r3, [r7, #15]
+ 1496              		.loc 1 476 3
+ 1497 009e 15E0     		b	.L95
+ 1498              	.L97:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 35
+
+
+ 477:ioLIB/wizchip_conf.c **** 		{
+ 478:ioLIB/wizchip_conf.c **** 			tmp += rxsize[i];
+ 1499              		.loc 1 478 17
+ 1500 00a0 97F90F30 		ldrsb	r3, [r7, #15]
+ 1501 00a4 3A68     		ldr	r2, [r7]
+ 1502 00a6 1344     		add	r3, r3, r2
+ 1503 00a8 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1504              		.loc 1 478 8
+ 1505 00aa BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 1506 00ac 1344     		add	r3, r3, r2
+ 1507 00ae DBB2     		uxtb	r3, r3
+ 1508 00b0 BB73     		strb	r3, [r7, #14]
+ 479:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5200	//2016.10.28 peter add condition for w5100 and w5100s
+ 480:ioLIB/wizchip_conf.c **** 			if(tmp > 8) return -1;
+ 481:ioLIB/wizchip_conf.c **** #else
+ 482:ioLIB/wizchip_conf.c **** 			if(tmp > 16) return -1;
+ 1509              		.loc 1 482 6
+ 1510 00b2 97F90E30 		ldrsb	r3, [r7, #14]
+ 1511 00b6 102B     		cmp	r3, #16
+ 1512 00b8 02DD     		ble	.L96
+ 1513              		.loc 1 482 24 discriminator 1
+ 1514 00ba 4FF0FF33 		mov	r3, #-1
+ 1515 00be 27E0     		b	.L90
+ 1516              	.L96:
+ 476:ioLIB/wizchip_conf.c **** 		{
+ 1517              		.loc 1 476 40 discriminator 2
+ 1518 00c0 97F90F30 		ldrsb	r3, [r7, #15]
+ 1519 00c4 DBB2     		uxtb	r3, r3
+ 1520 00c6 0133     		adds	r3, r3, #1
+ 1521 00c8 DBB2     		uxtb	r3, r3
+ 1522 00ca FB73     		strb	r3, [r7, #15]
+ 1523              	.L95:
+ 476:ioLIB/wizchip_conf.c **** 		{
+ 1524              		.loc 1 476 3 discriminator 1
+ 1525 00cc 97F90F30 		ldrsb	r3, [r7, #15]
+ 1526 00d0 072B     		cmp	r3, #7
+ 1527 00d2 E5DD     		ble	.L97
+ 483:ioLIB/wizchip_conf.c **** #endif
+ 484:ioLIB/wizchip_conf.c **** 		}
+ 485:ioLIB/wizchip_conf.c **** #endif
+ 486:ioLIB/wizchip_conf.c **** 		for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1528              		.loc 1 486 9
+ 1529 00d4 0023     		movs	r3, #0
+ 1530 00d6 FB73     		strb	r3, [r7, #15]
+ 1531              		.loc 1 486 3
+ 1532 00d8 15E0     		b	.L98
+ 1533              	.L99:
+ 487:ioLIB/wizchip_conf.c **** 		{
+ 488:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5200	// add condition for w5100
+ 489:ioLIB/wizchip_conf.c **** 			j = 0;
+ 490:ioLIB/wizchip_conf.c **** 			while((rxsize[i] >> j != 1)&&(txsize[i] !=0)){j++;}
+ 491:ioLIB/wizchip_conf.c **** 			setSn_RXBUF_SIZE(i, j);
+ 492:ioLIB/wizchip_conf.c **** #else
+ 493:ioLIB/wizchip_conf.c **** 			setSn_RXBUF_SIZE(i, rxsize[i]);
+ 1534              		.loc 1 493 4 discriminator 3
+ 1535 00da 97F90F30 		ldrsb	r3, [r7, #15]
+ 1536 00de 9B00     		lsls	r3, r3, #2
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 36
+
+
+ 1537 00e0 0133     		adds	r3, r3, #1
+ 1538 00e2 DB00     		lsls	r3, r3, #3
+ 1539 00e4 03F5F053 		add	r3, r3, #7680
+ 1540 00e8 1846     		mov	r0, r3
+ 1541 00ea 97F90F30 		ldrsb	r3, [r7, #15]
+ 1542 00ee 3A68     		ldr	r2, [r7]
+ 1543 00f0 1344     		add	r3, r3, r2
+ 1544 00f2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1545 00f4 1946     		mov	r1, r3
+ 1546 00f6 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 486:ioLIB/wizchip_conf.c **** 		{
+ 1547              		.loc 1 486 40 discriminator 3
+ 1548 00fa 97F90F30 		ldrsb	r3, [r7, #15]
+ 1549 00fe DBB2     		uxtb	r3, r3
+ 1550 0100 0133     		adds	r3, r3, #1
+ 1551 0102 DBB2     		uxtb	r3, r3
+ 1552 0104 FB73     		strb	r3, [r7, #15]
+ 1553              	.L98:
+ 486:ioLIB/wizchip_conf.c **** 		{
+ 1554              		.loc 1 486 3 discriminator 1
+ 1555 0106 97F90F30 		ldrsb	r3, [r7, #15]
+ 1556 010a 072B     		cmp	r3, #7
+ 1557 010c E5DD     		ble	.L99
+ 1558              	.L94:
+ 494:ioLIB/wizchip_conf.c **** #endif
+ 495:ioLIB/wizchip_conf.c **** 		}
+ 496:ioLIB/wizchip_conf.c ****    }
+ 497:ioLIB/wizchip_conf.c ****    return 0;
+ 1559              		.loc 1 497 11
+ 1560 010e 0023     		movs	r3, #0
+ 1561              	.L90:
+ 498:ioLIB/wizchip_conf.c **** }
+ 1562              		.loc 1 498 1
+ 1563 0110 1846     		mov	r0, r3
+ 1564 0112 1037     		adds	r7, r7, #16
+ 1565              	.LCFI98:
+ 1566              		.cfi_def_cfa_offset 8
+ 1567 0114 BD46     		mov	sp, r7
+ 1568              	.LCFI99:
+ 1569              		.cfi_def_cfa_register 13
+ 1570              		@ sp needed
+ 1571 0116 80BD     		pop	{r7, pc}
+ 1572              		.cfi_endproc
+ 1573              	.LFE18:
+ 1575              		.section	.text.wizchip_clrinterrupt,"ax",%progbits
+ 1576              		.align	1
+ 1577              		.global	wizchip_clrinterrupt
+ 1578              		.syntax unified
+ 1579              		.thumb
+ 1580              		.thumb_func
+ 1582              	wizchip_clrinterrupt:
+ 1583              	.LFB19:
+ 499:ioLIB/wizchip_conf.c **** 
+ 500:ioLIB/wizchip_conf.c **** void wizchip_clrinterrupt(intr_kind intr)
+ 501:ioLIB/wizchip_conf.c **** {
+ 1584              		.loc 1 501 1
+ 1585              		.cfi_startproc
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 37
+
+
+ 1586              		@ args = 0, pretend = 0, frame = 16
+ 1587              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1588 0000 80B5     		push	{r7, lr}
+ 1589              	.LCFI100:
+ 1590              		.cfi_def_cfa_offset 8
+ 1591              		.cfi_offset 7, -8
+ 1592              		.cfi_offset 14, -4
+ 1593 0002 84B0     		sub	sp, sp, #16
+ 1594              	.LCFI101:
+ 1595              		.cfi_def_cfa_offset 24
+ 1596 0004 00AF     		add	r7, sp, #0
+ 1597              	.LCFI102:
+ 1598              		.cfi_def_cfa_register 7
+ 1599 0006 0346     		mov	r3, r0
+ 1600 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 502:ioLIB/wizchip_conf.c ****    uint8_t ir  = (uint8_t)intr;
+ 1601              		.loc 1 502 12
+ 1602 000a FB88     		ldrh	r3, [r7, #6]	@ movhi
+ 1603 000c FB73     		strb	r3, [r7, #15]
+ 503:ioLIB/wizchip_conf.c ****    uint8_t sir = (uint8_t)((uint16_t)intr >> 8);
+ 1604              		.loc 1 503 18
+ 1605 000e FB88     		ldrh	r3, [r7, #6]
+ 1606 0010 1B0A     		lsrs	r3, r3, #8
+ 1607 0012 9BB2     		uxth	r3, r3
+ 1608              		.loc 1 503 12
+ 1609 0014 BB73     		strb	r3, [r7, #14]
+ 504:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5500
+ 505:ioLIB/wizchip_conf.c ****    ir |= (1<<4); // IK_WOL
+ 506:ioLIB/wizchip_conf.c **** #endif
+ 507:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ == W5200
+ 508:ioLIB/wizchip_conf.c ****    ir |= (1 << 6);
+ 509:ioLIB/wizchip_conf.c **** #endif
+ 510:ioLIB/wizchip_conf.c ****    
+ 511:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5200
+ 512:ioLIB/wizchip_conf.c ****    sir &= 0x0F;
+ 513:ioLIB/wizchip_conf.c **** #endif
+ 514:ioLIB/wizchip_conf.c **** 
+ 515:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ <= W5100S
+ 516:ioLIB/wizchip_conf.c ****    ir |= sir;
+ 517:ioLIB/wizchip_conf.c ****    setIR(ir);
+ 518:ioLIB/wizchip_conf.c **** //A20150601 : For integrating with W5300
+ 519:ioLIB/wizchip_conf.c **** #elif _WIZCHIP_ == W5300
+ 520:ioLIB/wizchip_conf.c ****    setIR( ((((uint16_t)ir) << 8) | (((uint16_t)sir) & 0x00FF)) );
+ 521:ioLIB/wizchip_conf.c **** #else
+ 522:ioLIB/wizchip_conf.c ****    setIR(ir);
+ 1610              		.loc 1 522 4
+ 1611 0016 FB7B     		ldrb	r3, [r7, #15]
+ 1612 0018 23F00F03 		bic	r3, r3, #15
+ 1613 001c DBB2     		uxtb	r3, r3
+ 1614 001e 1946     		mov	r1, r3
+ 1615 0020 4FF4A850 		mov	r0, #5376
+ 1616 0024 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 523:ioLIB/wizchip_conf.c **** //M20200227 : For clear
+ 524:ioLIB/wizchip_conf.c ****    //setSIR(sir);
+ 525:ioLIB/wizchip_conf.c ****    for(ir=0; ir<8; ir++){
+ 1617              		.loc 1 525 10
+ 1618 0028 0023     		movs	r3, #0
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 38
+
+
+ 1619 002a FB73     		strb	r3, [r7, #15]
+ 1620              		.loc 1 525 4
+ 1621 002c 14E0     		b	.L101
+ 1622              	.L103:
+ 526:ioLIB/wizchip_conf.c ****        if(sir & (0x01 <<ir) ) setSn_IR(ir, 0xff);
+ 1623              		.loc 1 526 11
+ 1624 002e BA7B     		ldrb	r2, [r7, #14]	@ zero_extendqisi2
+ 1625 0030 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1626 0032 42FA03F3 		asr	r3, r2, r3
+ 1627 0036 03F00103 		and	r3, r3, #1
+ 1628              		.loc 1 526 10
+ 1629 003a 002B     		cmp	r3, #0
+ 1630 003c 09D0     		beq	.L102
+ 1631              		.loc 1 526 31 discriminator 1
+ 1632 003e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1633 0040 9B00     		lsls	r3, r3, #2
+ 1634 0042 0133     		adds	r3, r3, #1
+ 1635 0044 DB00     		lsls	r3, r3, #3
+ 1636 0046 03F50073 		add	r3, r3, #512
+ 1637 004a 1F21     		movs	r1, #31
+ 1638 004c 1846     		mov	r0, r3
+ 1639 004e FFF7FEFF 		bl	WIZCHIP_WRITE
+ 1640              	.L102:
+ 525:ioLIB/wizchip_conf.c ****        if(sir & (0x01 <<ir) ) setSn_IR(ir, 0xff);
+ 1641              		.loc 1 525 22 discriminator 2
+ 1642 0052 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1643 0054 0133     		adds	r3, r3, #1
+ 1644 0056 FB73     		strb	r3, [r7, #15]
+ 1645              	.L101:
+ 525:ioLIB/wizchip_conf.c ****        if(sir & (0x01 <<ir) ) setSn_IR(ir, 0xff);
+ 1646              		.loc 1 525 4 discriminator 1
+ 1647 0058 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1648 005a 072B     		cmp	r3, #7
+ 1649 005c E7D9     		bls	.L103
+ 527:ioLIB/wizchip_conf.c ****    }
+ 528:ioLIB/wizchip_conf.c **** 
+ 529:ioLIB/wizchip_conf.c **** #endif   
+ 530:ioLIB/wizchip_conf.c **** }
+ 1650              		.loc 1 530 1
+ 1651 005e 00BF     		nop
+ 1652 0060 00BF     		nop
+ 1653 0062 1037     		adds	r7, r7, #16
+ 1654              	.LCFI103:
+ 1655              		.cfi_def_cfa_offset 8
+ 1656 0064 BD46     		mov	sp, r7
+ 1657              	.LCFI104:
+ 1658              		.cfi_def_cfa_register 13
+ 1659              		@ sp needed
+ 1660 0066 80BD     		pop	{r7, pc}
+ 1661              		.cfi_endproc
+ 1662              	.LFE19:
+ 1664              		.section	.text.wizchip_getinterrupt,"ax",%progbits
+ 1665              		.align	1
+ 1666              		.global	wizchip_getinterrupt
+ 1667              		.syntax unified
+ 1668              		.thumb
+ 1669              		.thumb_func
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 39
+
+
+ 1671              	wizchip_getinterrupt:
+ 1672              	.LFB20:
+ 531:ioLIB/wizchip_conf.c **** 
+ 532:ioLIB/wizchip_conf.c **** intr_kind wizchip_getinterrupt(void)
+ 533:ioLIB/wizchip_conf.c **** {
+ 1673              		.loc 1 533 1
+ 1674              		.cfi_startproc
+ 1675              		@ args = 0, pretend = 0, frame = 8
+ 1676              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1677 0000 80B5     		push	{r7, lr}
+ 1678              	.LCFI105:
+ 1679              		.cfi_def_cfa_offset 8
+ 1680              		.cfi_offset 7, -8
+ 1681              		.cfi_offset 14, -4
+ 1682 0002 82B0     		sub	sp, sp, #8
+ 1683              	.LCFI106:
+ 1684              		.cfi_def_cfa_offset 16
+ 1685 0004 00AF     		add	r7, sp, #0
+ 1686              	.LCFI107:
+ 1687              		.cfi_def_cfa_register 7
+ 534:ioLIB/wizchip_conf.c ****    uint8_t ir  = 0;
+ 1688              		.loc 1 534 12
+ 1689 0006 0023     		movs	r3, #0
+ 1690 0008 FB71     		strb	r3, [r7, #7]
+ 535:ioLIB/wizchip_conf.c ****    uint8_t sir = 0;
+ 1691              		.loc 1 535 12
+ 1692 000a 0023     		movs	r3, #0
+ 1693 000c BB71     		strb	r3, [r7, #6]
+ 536:ioLIB/wizchip_conf.c ****    uint16_t ret = 0;
+ 1694              		.loc 1 536 13
+ 1695 000e 0023     		movs	r3, #0
+ 1696 0010 BB80     		strh	r3, [r7, #4]	@ movhi
+ 537:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ <= W5100S
+ 538:ioLIB/wizchip_conf.c ****    ir = getIR();
+ 539:ioLIB/wizchip_conf.c ****    sir = ir & 0x0F;
+ 540:ioLIB/wizchip_conf.c **** //A20150601 : For integrating with W5300
+ 541:ioLIB/wizchip_conf.c **** #elif _WIZCHIP_  == W5300
+ 542:ioLIB/wizchip_conf.c ****    ret = getIR();
+ 543:ioLIB/wizchip_conf.c ****    ir = (uint8_t)(ret >> 8);
+ 544:ioLIB/wizchip_conf.c ****    sir = (uint8_t)ret;
+ 545:ioLIB/wizchip_conf.c **** #else
+ 546:ioLIB/wizchip_conf.c ****    ir  = getIR();
+ 1697              		.loc 1 546 10
+ 1698 0012 4FF4A850 		mov	r0, #5376
+ 1699 0016 FFF7FEFF 		bl	WIZCHIP_READ
+ 1700 001a 0346     		mov	r3, r0
+ 1701              		.loc 1 546 8
+ 1702 001c 23F00F03 		bic	r3, r3, #15
+ 1703 0020 FB71     		strb	r3, [r7, #7]
+ 547:ioLIB/wizchip_conf.c ****    sir = getSIR();
+ 1704              		.loc 1 547 10
+ 1705 0022 4FF4B850 		mov	r0, #5888
+ 1706 0026 FFF7FEFF 		bl	WIZCHIP_READ
+ 1707 002a 0346     		mov	r3, r0
+ 1708 002c BB71     		strb	r3, [r7, #6]
+ 548:ioLIB/wizchip_conf.c **** #endif         
+ 549:ioLIB/wizchip_conf.c **** 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 40
+
+
+ 550:ioLIB/wizchip_conf.c **** //M20150601 : For Integrating with W5300
+ 551:ioLIB/wizchip_conf.c **** //#if _WIZCHIP_ < W5500
+ 552:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5200
+ 553:ioLIB/wizchip_conf.c ****    ir &= ~(1<<4); // IK_WOL
+ 554:ioLIB/wizchip_conf.c **** #endif
+ 555:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ == W5200
+ 556:ioLIB/wizchip_conf.c ****    ir &= ~(1 << 6);
+ 557:ioLIB/wizchip_conf.c **** #endif
+ 558:ioLIB/wizchip_conf.c ****   ret = sir;
+ 1709              		.loc 1 558 7
+ 1710 002e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1711 0030 BB80     		strh	r3, [r7, #4]	@ movhi
+ 559:ioLIB/wizchip_conf.c ****   ret = (ret << 8) + ir;
+ 1712              		.loc 1 559 14
+ 1713 0032 BB88     		ldrh	r3, [r7, #4]	@ movhi
+ 1714 0034 1B02     		lsls	r3, r3, #8
+ 1715 0036 9AB2     		uxth	r2, r3
+ 1716              		.loc 1 559 20
+ 1717 0038 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1718 003a 9BB2     		uxth	r3, r3
+ 1719              		.loc 1 559 7
+ 1720 003c 1344     		add	r3, r3, r2
+ 1721 003e BB80     		strh	r3, [r7, #4]	@ movhi
+ 560:ioLIB/wizchip_conf.c ****   return (intr_kind)ret;
+ 1722              		.loc 1 560 10
+ 1723 0040 BB88     		ldrh	r3, [r7, #4]
+ 561:ioLIB/wizchip_conf.c **** }
+ 1724              		.loc 1 561 1
+ 1725 0042 1846     		mov	r0, r3
+ 1726 0044 0837     		adds	r7, r7, #8
+ 1727              	.LCFI108:
+ 1728              		.cfi_def_cfa_offset 8
+ 1729 0046 BD46     		mov	sp, r7
+ 1730              	.LCFI109:
+ 1731              		.cfi_def_cfa_register 13
+ 1732              		@ sp needed
+ 1733 0048 80BD     		pop	{r7, pc}
+ 1734              		.cfi_endproc
+ 1735              	.LFE20:
+ 1737              		.section	.text.wizchip_setinterruptmask,"ax",%progbits
+ 1738              		.align	1
+ 1739              		.global	wizchip_setinterruptmask
+ 1740              		.syntax unified
+ 1741              		.thumb
+ 1742              		.thumb_func
+ 1744              	wizchip_setinterruptmask:
+ 1745              	.LFB21:
+ 562:ioLIB/wizchip_conf.c **** 
+ 563:ioLIB/wizchip_conf.c **** void wizchip_setinterruptmask(intr_kind intr)
+ 564:ioLIB/wizchip_conf.c **** {
+ 1746              		.loc 1 564 1
+ 1747              		.cfi_startproc
+ 1748              		@ args = 0, pretend = 0, frame = 16
+ 1749              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1750 0000 80B5     		push	{r7, lr}
+ 1751              	.LCFI110:
+ 1752              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 41
+
+
+ 1753              		.cfi_offset 7, -8
+ 1754              		.cfi_offset 14, -4
+ 1755 0002 84B0     		sub	sp, sp, #16
+ 1756              	.LCFI111:
+ 1757              		.cfi_def_cfa_offset 24
+ 1758 0004 00AF     		add	r7, sp, #0
+ 1759              	.LCFI112:
+ 1760              		.cfi_def_cfa_register 7
+ 1761 0006 0346     		mov	r3, r0
+ 1762 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 565:ioLIB/wizchip_conf.c ****    uint8_t imr  = (uint8_t)intr;
+ 1763              		.loc 1 565 12
+ 1764 000a FB88     		ldrh	r3, [r7, #6]	@ movhi
+ 1765 000c FB73     		strb	r3, [r7, #15]
+ 566:ioLIB/wizchip_conf.c ****    uint8_t simr = (uint8_t)((uint16_t)intr >> 8);
+ 1766              		.loc 1 566 19
+ 1767 000e FB88     		ldrh	r3, [r7, #6]
+ 1768 0010 1B0A     		lsrs	r3, r3, #8
+ 1769 0012 9BB2     		uxth	r3, r3
+ 1770              		.loc 1 566 12
+ 1771 0014 BB73     		strb	r3, [r7, #14]
+ 567:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5500
+ 568:ioLIB/wizchip_conf.c ****    imr &= ~(1<<4); // IK_WOL
+ 569:ioLIB/wizchip_conf.c **** #endif
+ 570:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ == W5200
+ 571:ioLIB/wizchip_conf.c ****    imr &= ~(1 << 6);
+ 572:ioLIB/wizchip_conf.c **** #endif
+ 573:ioLIB/wizchip_conf.c ****    
+ 574:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5200
+ 575:ioLIB/wizchip_conf.c ****    simr &= 0x0F;
+ 576:ioLIB/wizchip_conf.c ****    imr |= simr;
+ 577:ioLIB/wizchip_conf.c ****    setIMR(imr);
+ 578:ioLIB/wizchip_conf.c **** //A20150601 : For integrating with W5300
+ 579:ioLIB/wizchip_conf.c **** #elif _WIZCHIP_ == W5300
+ 580:ioLIB/wizchip_conf.c ****    setIMR( ((((uint16_t)imr) << 8) | (((uint16_t)simr) & 0x00FF)) );
+ 581:ioLIB/wizchip_conf.c **** #else
+ 582:ioLIB/wizchip_conf.c ****    setIMR(imr);
+ 1772              		.loc 1 582 4
+ 1773 0016 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1774 0018 1946     		mov	r1, r3
+ 1775 001a 4FF4B050 		mov	r0, #5632
+ 1776 001e FFF7FEFF 		bl	WIZCHIP_WRITE
+ 583:ioLIB/wizchip_conf.c ****    setSIMR(simr);
+ 1777              		.loc 1 583 4
+ 1778 0022 BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 1779 0024 1946     		mov	r1, r3
+ 1780 0026 4FF4C050 		mov	r0, #6144
+ 1781 002a FFF7FEFF 		bl	WIZCHIP_WRITE
+ 584:ioLIB/wizchip_conf.c **** #endif   
+ 585:ioLIB/wizchip_conf.c **** }
+ 1782              		.loc 1 585 1
+ 1783 002e 00BF     		nop
+ 1784 0030 1037     		adds	r7, r7, #16
+ 1785              	.LCFI113:
+ 1786              		.cfi_def_cfa_offset 8
+ 1787 0032 BD46     		mov	sp, r7
+ 1788              	.LCFI114:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 42
+
+
+ 1789              		.cfi_def_cfa_register 13
+ 1790              		@ sp needed
+ 1791 0034 80BD     		pop	{r7, pc}
+ 1792              		.cfi_endproc
+ 1793              	.LFE21:
+ 1795              		.section	.text.wizchip_getinterruptmask,"ax",%progbits
+ 1796              		.align	1
+ 1797              		.global	wizchip_getinterruptmask
+ 1798              		.syntax unified
+ 1799              		.thumb
+ 1800              		.thumb_func
+ 1802              	wizchip_getinterruptmask:
+ 1803              	.LFB22:
+ 586:ioLIB/wizchip_conf.c **** 
+ 587:ioLIB/wizchip_conf.c **** intr_kind wizchip_getinterruptmask(void)
+ 588:ioLIB/wizchip_conf.c **** {
+ 1804              		.loc 1 588 1
+ 1805              		.cfi_startproc
+ 1806              		@ args = 0, pretend = 0, frame = 8
+ 1807              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1808 0000 80B5     		push	{r7, lr}
+ 1809              	.LCFI115:
+ 1810              		.cfi_def_cfa_offset 8
+ 1811              		.cfi_offset 7, -8
+ 1812              		.cfi_offset 14, -4
+ 1813 0002 82B0     		sub	sp, sp, #8
+ 1814              	.LCFI116:
+ 1815              		.cfi_def_cfa_offset 16
+ 1816 0004 00AF     		add	r7, sp, #0
+ 1817              	.LCFI117:
+ 1818              		.cfi_def_cfa_register 7
+ 589:ioLIB/wizchip_conf.c ****    uint8_t imr  = 0;
+ 1819              		.loc 1 589 12
+ 1820 0006 0023     		movs	r3, #0
+ 1821 0008 FB71     		strb	r3, [r7, #7]
+ 590:ioLIB/wizchip_conf.c ****    uint8_t simr = 0;
+ 1822              		.loc 1 590 12
+ 1823 000a 0023     		movs	r3, #0
+ 1824 000c BB71     		strb	r3, [r7, #6]
+ 591:ioLIB/wizchip_conf.c ****    uint16_t ret = 0;
+ 1825              		.loc 1 591 13
+ 1826 000e 0023     		movs	r3, #0
+ 1827 0010 BB80     		strh	r3, [r7, #4]	@ movhi
+ 592:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5200
+ 593:ioLIB/wizchip_conf.c ****    imr  = getIMR();
+ 594:ioLIB/wizchip_conf.c ****    simr = imr & 0x0F;
+ 595:ioLIB/wizchip_conf.c **** //A20150601 : For integrating with W5300
+ 596:ioLIB/wizchip_conf.c **** #elif _WIZCHIP_ == W5300
+ 597:ioLIB/wizchip_conf.c ****    ret = getIMR();
+ 598:ioLIB/wizchip_conf.c ****    imr = (uint8_t)(ret >> 8);
+ 599:ioLIB/wizchip_conf.c ****    simr = (uint8_t)ret;
+ 600:ioLIB/wizchip_conf.c **** #else
+ 601:ioLIB/wizchip_conf.c ****    imr  = getIMR();
+ 1828              		.loc 1 601 11
+ 1829 0012 4FF4B050 		mov	r0, #5632
+ 1830 0016 FFF7FEFF 		bl	WIZCHIP_READ
+ 1831 001a 0346     		mov	r3, r0
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 43
+
+
+ 1832 001c FB71     		strb	r3, [r7, #7]
+ 602:ioLIB/wizchip_conf.c ****    simr = getSIMR();
+ 1833              		.loc 1 602 11
+ 1834 001e 4FF4C050 		mov	r0, #6144
+ 1835 0022 FFF7FEFF 		bl	WIZCHIP_READ
+ 1836 0026 0346     		mov	r3, r0
+ 1837 0028 BB71     		strb	r3, [r7, #6]
+ 603:ioLIB/wizchip_conf.c **** #endif         
+ 604:ioLIB/wizchip_conf.c **** 
+ 605:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ < W5500
+ 606:ioLIB/wizchip_conf.c ****    imr &= ~(1<<4); // IK_WOL
+ 607:ioLIB/wizchip_conf.c **** #endif
+ 608:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ == W5200
+ 609:ioLIB/wizchip_conf.c ****    imr &= ~(1 << 6);  // IK_DEST_UNREACH
+ 610:ioLIB/wizchip_conf.c **** #endif
+ 611:ioLIB/wizchip_conf.c ****   ret = simr;
+ 1838              		.loc 1 611 7
+ 1839 002a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1840 002c BB80     		strh	r3, [r7, #4]	@ movhi
+ 612:ioLIB/wizchip_conf.c ****   ret = (ret << 8) + imr;
+ 1841              		.loc 1 612 14
+ 1842 002e BB88     		ldrh	r3, [r7, #4]	@ movhi
+ 1843 0030 1B02     		lsls	r3, r3, #8
+ 1844 0032 9AB2     		uxth	r2, r3
+ 1845              		.loc 1 612 20
+ 1846 0034 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1847 0036 9BB2     		uxth	r3, r3
+ 1848              		.loc 1 612 7
+ 1849 0038 1344     		add	r3, r3, r2
+ 1850 003a BB80     		strh	r3, [r7, #4]	@ movhi
+ 613:ioLIB/wizchip_conf.c ****   return (intr_kind)ret;
+ 1851              		.loc 1 613 10
+ 1852 003c BB88     		ldrh	r3, [r7, #4]
+ 614:ioLIB/wizchip_conf.c **** }
+ 1853              		.loc 1 614 1
+ 1854 003e 1846     		mov	r0, r3
+ 1855 0040 0837     		adds	r7, r7, #8
+ 1856              	.LCFI118:
+ 1857              		.cfi_def_cfa_offset 8
+ 1858 0042 BD46     		mov	sp, r7
+ 1859              	.LCFI119:
+ 1860              		.cfi_def_cfa_register 13
+ 1861              		@ sp needed
+ 1862 0044 80BD     		pop	{r7, pc}
+ 1863              		.cfi_endproc
+ 1864              	.LFE22:
+ 1866              		.section	.text.wizphy_getphylink,"ax",%progbits
+ 1867              		.align	1
+ 1868              		.global	wizphy_getphylink
+ 1869              		.syntax unified
+ 1870              		.thumb
+ 1871              		.thumb_func
+ 1873              	wizphy_getphylink:
+ 1874              	.LFB23:
+ 615:ioLIB/wizchip_conf.c **** 
+ 616:ioLIB/wizchip_conf.c **** int8_t wizphy_getphylink(void)
+ 617:ioLIB/wizchip_conf.c **** {
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 44
+
+
+ 1875              		.loc 1 617 1
+ 1876              		.cfi_startproc
+ 1877              		@ args = 0, pretend = 0, frame = 8
+ 1878              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1879 0000 80B5     		push	{r7, lr}
+ 1880              	.LCFI120:
+ 1881              		.cfi_def_cfa_offset 8
+ 1882              		.cfi_offset 7, -8
+ 1883              		.cfi_offset 14, -4
+ 1884 0002 82B0     		sub	sp, sp, #8
+ 1885              	.LCFI121:
+ 1886              		.cfi_def_cfa_offset 16
+ 1887 0004 00AF     		add	r7, sp, #0
+ 1888              	.LCFI122:
+ 1889              		.cfi_def_cfa_register 7
+ 618:ioLIB/wizchip_conf.c ****    int8_t tmp = PHY_LINK_OFF;
+ 1890              		.loc 1 618 11
+ 1891 0006 0023     		movs	r3, #0
+ 1892 0008 FB71     		strb	r3, [r7, #7]
+ 619:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ == W5100S
+ 620:ioLIB/wizchip_conf.c ****    if(getPHYSR() & PHYSR_LNK)
+ 621:ioLIB/wizchip_conf.c **** 	   tmp = PHY_LINK_ON;
+ 622:ioLIB/wizchip_conf.c **** #elif   _WIZCHIP_ == W5200
+ 623:ioLIB/wizchip_conf.c ****    if(getPHYSTATUS() & PHYSTATUS_LINK)
+ 624:ioLIB/wizchip_conf.c ****       tmp = PHY_LINK_ON;
+ 625:ioLIB/wizchip_conf.c **** #elif _WIZCHIP_ == W5500
+ 626:ioLIB/wizchip_conf.c ****    if(getPHYCFGR() & PHYCFGR_LNK_ON)
+ 1893              		.loc 1 626 7
+ 1894 000a 4FF43850 		mov	r0, #11776
+ 1895 000e FFF7FEFF 		bl	WIZCHIP_READ
+ 1896 0012 0346     		mov	r3, r0
+ 1897              		.loc 1 626 20
+ 1898 0014 03F00103 		and	r3, r3, #1
+ 1899              		.loc 1 626 6
+ 1900 0018 002B     		cmp	r3, #0
+ 1901 001a 01D0     		beq	.L110
+ 627:ioLIB/wizchip_conf.c ****       tmp = PHY_LINK_ON;
+ 1902              		.loc 1 627 11
+ 1903 001c 0123     		movs	r3, #1
+ 1904 001e FB71     		strb	r3, [r7, #7]
+ 1905              	.L110:
+ 628:ioLIB/wizchip_conf.c **** 
+ 629:ioLIB/wizchip_conf.c **** #else
+ 630:ioLIB/wizchip_conf.c ****    tmp = -1;
+ 631:ioLIB/wizchip_conf.c **** #endif
+ 632:ioLIB/wizchip_conf.c ****    return tmp;
+ 1906              		.loc 1 632 11
+ 1907 0020 97F90730 		ldrsb	r3, [r7, #7]
+ 633:ioLIB/wizchip_conf.c **** }
+ 1908              		.loc 1 633 1
+ 1909 0024 1846     		mov	r0, r3
+ 1910 0026 0837     		adds	r7, r7, #8
+ 1911              	.LCFI123:
+ 1912              		.cfi_def_cfa_offset 8
+ 1913 0028 BD46     		mov	sp, r7
+ 1914              	.LCFI124:
+ 1915              		.cfi_def_cfa_register 13
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 45
+
+
+ 1916              		@ sp needed
+ 1917 002a 80BD     		pop	{r7, pc}
+ 1918              		.cfi_endproc
+ 1919              	.LFE23:
+ 1921              		.section	.text.wizphy_getphypmode,"ax",%progbits
+ 1922              		.align	1
+ 1923              		.global	wizphy_getphypmode
+ 1924              		.syntax unified
+ 1925              		.thumb
+ 1926              		.thumb_func
+ 1928              	wizphy_getphypmode:
+ 1929              	.LFB24:
+ 634:ioLIB/wizchip_conf.c **** 
+ 635:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ > W5100
+ 636:ioLIB/wizchip_conf.c **** 
+ 637:ioLIB/wizchip_conf.c **** int8_t wizphy_getphypmode(void)
+ 638:ioLIB/wizchip_conf.c **** {
+ 1930              		.loc 1 638 1
+ 1931              		.cfi_startproc
+ 1932              		@ args = 0, pretend = 0, frame = 8
+ 1933              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1934 0000 80B5     		push	{r7, lr}
+ 1935              	.LCFI125:
+ 1936              		.cfi_def_cfa_offset 8
+ 1937              		.cfi_offset 7, -8
+ 1938              		.cfi_offset 14, -4
+ 1939 0002 82B0     		sub	sp, sp, #8
+ 1940              	.LCFI126:
+ 1941              		.cfi_def_cfa_offset 16
+ 1942 0004 00AF     		add	r7, sp, #0
+ 1943              	.LCFI127:
+ 1944              		.cfi_def_cfa_register 7
+ 639:ioLIB/wizchip_conf.c ****    int8_t tmp = 0;
+ 1945              		.loc 1 639 11
+ 1946 0006 0023     		movs	r3, #0
+ 1947 0008 FB71     		strb	r3, [r7, #7]
+ 640:ioLIB/wizchip_conf.c ****    #if   _WIZCHIP_ == W5200
+ 641:ioLIB/wizchip_conf.c ****       if(getPHYSTATUS() & PHYSTATUS_POWERDOWN)
+ 642:ioLIB/wizchip_conf.c ****          tmp = PHY_POWER_DOWN;
+ 643:ioLIB/wizchip_conf.c ****       else          
+ 644:ioLIB/wizchip_conf.c ****          tmp = PHY_POWER_NORM;
+ 645:ioLIB/wizchip_conf.c ****    #elif _WIZCHIP_ == 5500
+ 646:ioLIB/wizchip_conf.c ****       if((getPHYCFGR() & PHYCFGR_OPMDC_ALLA) == PHYCFGR_OPMDC_PDOWN)
+ 1948              		.loc 1 646 11
+ 1949 000a 4FF43850 		mov	r0, #11776
+ 1950 000e FFF7FEFF 		bl	WIZCHIP_READ
+ 1951 0012 0346     		mov	r3, r0
+ 1952              		.loc 1 646 24
+ 1953 0014 03F03803 		and	r3, r3, #56
+ 1954              		.loc 1 646 9
+ 1955 0018 302B     		cmp	r3, #48
+ 1956 001a 02D1     		bne	.L113
+ 647:ioLIB/wizchip_conf.c ****          tmp = PHY_POWER_DOWN;
+ 1957              		.loc 1 647 14
+ 1958 001c 0123     		movs	r3, #1
+ 1959 001e FB71     		strb	r3, [r7, #7]
+ 1960 0020 01E0     		b	.L114
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 46
+
+
+ 1961              	.L113:
+ 648:ioLIB/wizchip_conf.c ****       else 
+ 649:ioLIB/wizchip_conf.c ****          tmp = PHY_POWER_NORM;
+ 1962              		.loc 1 649 14
+ 1963 0022 0023     		movs	r3, #0
+ 1964 0024 FB71     		strb	r3, [r7, #7]
+ 1965              	.L114:
+ 650:ioLIB/wizchip_conf.c ****    #else
+ 651:ioLIB/wizchip_conf.c ****       tmp = -1;
+ 652:ioLIB/wizchip_conf.c ****    #endif
+ 653:ioLIB/wizchip_conf.c ****    return tmp;
+ 1966              		.loc 1 653 11
+ 1967 0026 97F90730 		ldrsb	r3, [r7, #7]
+ 654:ioLIB/wizchip_conf.c **** }
+ 1968              		.loc 1 654 1
+ 1969 002a 1846     		mov	r0, r3
+ 1970 002c 0837     		adds	r7, r7, #8
+ 1971              	.LCFI128:
+ 1972              		.cfi_def_cfa_offset 8
+ 1973 002e BD46     		mov	sp, r7
+ 1974              	.LCFI129:
+ 1975              		.cfi_def_cfa_register 13
+ 1976              		@ sp needed
+ 1977 0030 80BD     		pop	{r7, pc}
+ 1978              		.cfi_endproc
+ 1979              	.LFE24:
+ 1981              		.section	.text.wizphy_reset,"ax",%progbits
+ 1982              		.align	1
+ 1983              		.global	wizphy_reset
+ 1984              		.syntax unified
+ 1985              		.thumb
+ 1986              		.thumb_func
+ 1988              	wizphy_reset:
+ 1989              	.LFB25:
+ 655:ioLIB/wizchip_conf.c **** #endif
+ 656:ioLIB/wizchip_conf.c **** 
+ 657:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ == W5100S
+ 658:ioLIB/wizchip_conf.c **** void wizphy_reset(void)
+ 659:ioLIB/wizchip_conf.c **** {
+ 660:ioLIB/wizchip_conf.c **** 	uint16_t tmp = wiz_mdio_read(PHYMDIO_BMCR);
+ 661:ioLIB/wizchip_conf.c **** 	tmp |= BMCR_RESET;
+ 662:ioLIB/wizchip_conf.c **** 	wiz_mdio_write(PHYMDIO_BMCR, tmp);
+ 663:ioLIB/wizchip_conf.c **** 	while(wiz_mdio_read(PHYMDIO_BMCR)&BMCR_RESET){}
+ 664:ioLIB/wizchip_conf.c **** }
+ 665:ioLIB/wizchip_conf.c **** 
+ 666:ioLIB/wizchip_conf.c **** void wizphy_setphyconf(wiz_PhyConf* phyconf)
+ 667:ioLIB/wizchip_conf.c **** {
+ 668:ioLIB/wizchip_conf.c ****    uint16_t tmp = wiz_mdio_read(PHYMDIO_BMCR);
+ 669:ioLIB/wizchip_conf.c ****    if(phyconf->mode == PHY_MODE_AUTONEGO)
+ 670:ioLIB/wizchip_conf.c ****       tmp |= BMCR_AUTONEGO;
+ 671:ioLIB/wizchip_conf.c ****    else
+ 672:ioLIB/wizchip_conf.c ****    {
+ 673:ioLIB/wizchip_conf.c **** 	  tmp &= ~BMCR_AUTONEGO;
+ 674:ioLIB/wizchip_conf.c ****       if(phyconf->duplex == PHY_DUPLEX_FULL)
+ 675:ioLIB/wizchip_conf.c ****       {
+ 676:ioLIB/wizchip_conf.c ****     	  tmp |= BMCR_DUP;
+ 677:ioLIB/wizchip_conf.c ****       }
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 47
+
+
+ 678:ioLIB/wizchip_conf.c ****       else
+ 679:ioLIB/wizchip_conf.c ****       {
+ 680:ioLIB/wizchip_conf.c ****     	  tmp &= ~BMCR_DUP;
+ 681:ioLIB/wizchip_conf.c ****       }
+ 682:ioLIB/wizchip_conf.c ****       if(phyconf->speed == PHY_SPEED_100)
+ 683:ioLIB/wizchip_conf.c ****       {
+ 684:ioLIB/wizchip_conf.c ****     	  tmp |= BMCR_SPEED;
+ 685:ioLIB/wizchip_conf.c ****       }
+ 686:ioLIB/wizchip_conf.c ****       else
+ 687:ioLIB/wizchip_conf.c ****       {
+ 688:ioLIB/wizchip_conf.c ****     	  tmp &= ~BMCR_SPEED;
+ 689:ioLIB/wizchip_conf.c ****       }
+ 690:ioLIB/wizchip_conf.c ****    }
+ 691:ioLIB/wizchip_conf.c ****    wiz_mdio_write(PHYMDIO_BMCR, tmp);
+ 692:ioLIB/wizchip_conf.c **** }
+ 693:ioLIB/wizchip_conf.c **** 
+ 694:ioLIB/wizchip_conf.c **** void wizphy_getphyconf(wiz_PhyConf* phyconf)
+ 695:ioLIB/wizchip_conf.c **** {
+ 696:ioLIB/wizchip_conf.c ****    uint16_t tmp = 0;
+ 697:ioLIB/wizchip_conf.c ****    tmp = wiz_mdio_read(PHYMDIO_BMCR);
+ 698:ioLIB/wizchip_conf.c ****    phyconf->by   = PHY_CONFBY_SW;
+ 699:ioLIB/wizchip_conf.c ****    if(tmp & BMCR_AUTONEGO)
+ 700:ioLIB/wizchip_conf.c ****    {
+ 701:ioLIB/wizchip_conf.c **** 	   phyconf->mode = PHY_MODE_AUTONEGO;
+ 702:ioLIB/wizchip_conf.c ****    }
+ 703:ioLIB/wizchip_conf.c ****    else
+ 704:ioLIB/wizchip_conf.c ****    {
+ 705:ioLIB/wizchip_conf.c **** 	   phyconf->mode = PHY_MODE_MANUAL;
+ 706:ioLIB/wizchip_conf.c **** 	   if(tmp&BMCR_DUP) phyconf->duplex = PHY_DUPLEX_FULL;
+ 707:ioLIB/wizchip_conf.c **** 	   else phyconf->duplex = PHY_DUPLEX_HALF;
+ 708:ioLIB/wizchip_conf.c **** 	   if(tmp&BMCR_SPEED) phyconf->speed = PHY_SPEED_100;
+ 709:ioLIB/wizchip_conf.c **** 	   else phyconf->speed = PHY_SPEED_10;
+ 710:ioLIB/wizchip_conf.c ****    }
+ 711:ioLIB/wizchip_conf.c **** }
+ 712:ioLIB/wizchip_conf.c **** 
+ 713:ioLIB/wizchip_conf.c **** int8_t wizphy_setphypmode(uint8_t pmode)
+ 714:ioLIB/wizchip_conf.c **** {
+ 715:ioLIB/wizchip_conf.c ****    uint16_t tmp = 0;
+ 716:ioLIB/wizchip_conf.c ****    tmp = wiz_mdio_read(PHYMDIO_BMCR);
+ 717:ioLIB/wizchip_conf.c ****    if( pmode == PHY_POWER_DOWN)
+ 718:ioLIB/wizchip_conf.c ****    {
+ 719:ioLIB/wizchip_conf.c ****       tmp |= BMCR_PWDN;
+ 720:ioLIB/wizchip_conf.c ****    }
+ 721:ioLIB/wizchip_conf.c ****    else
+ 722:ioLIB/wizchip_conf.c ****    {
+ 723:ioLIB/wizchip_conf.c **** 	   tmp &= ~BMCR_PWDN;
+ 724:ioLIB/wizchip_conf.c ****    }
+ 725:ioLIB/wizchip_conf.c ****    wiz_mdio_write(PHYMDIO_BMCR, tmp);
+ 726:ioLIB/wizchip_conf.c ****    tmp = wiz_mdio_read(PHYMDIO_BMCR);
+ 727:ioLIB/wizchip_conf.c ****    if( pmode == PHY_POWER_DOWN)
+ 728:ioLIB/wizchip_conf.c ****    {
+ 729:ioLIB/wizchip_conf.c ****       if(tmp & BMCR_PWDN) return 0;
+ 730:ioLIB/wizchip_conf.c ****    }
+ 731:ioLIB/wizchip_conf.c ****    else
+ 732:ioLIB/wizchip_conf.c ****    {
+ 733:ioLIB/wizchip_conf.c ****       if((tmp & BMCR_PWDN) != BMCR_PWDN) return 0;
+ 734:ioLIB/wizchip_conf.c ****    }
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 48
+
+
+ 735:ioLIB/wizchip_conf.c ****    return -1;
+ 736:ioLIB/wizchip_conf.c **** }
+ 737:ioLIB/wizchip_conf.c **** 
+ 738:ioLIB/wizchip_conf.c **** #endif
+ 739:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ == W5500
+ 740:ioLIB/wizchip_conf.c **** void wizphy_reset(void)
+ 741:ioLIB/wizchip_conf.c **** {
+ 1990              		.loc 1 741 1
+ 1991              		.cfi_startproc
+ 1992              		@ args = 0, pretend = 0, frame = 8
+ 1993              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1994 0000 80B5     		push	{r7, lr}
+ 1995              	.LCFI130:
+ 1996              		.cfi_def_cfa_offset 8
+ 1997              		.cfi_offset 7, -8
+ 1998              		.cfi_offset 14, -4
+ 1999 0002 82B0     		sub	sp, sp, #8
+ 2000              	.LCFI131:
+ 2001              		.cfi_def_cfa_offset 16
+ 2002 0004 00AF     		add	r7, sp, #0
+ 2003              	.LCFI132:
+ 2004              		.cfi_def_cfa_register 7
+ 742:ioLIB/wizchip_conf.c ****    uint8_t tmp = getPHYCFGR();
+ 2005              		.loc 1 742 18
+ 2006 0006 4FF43850 		mov	r0, #11776
+ 2007 000a FFF7FEFF 		bl	WIZCHIP_READ
+ 2008 000e 0346     		mov	r3, r0
+ 2009 0010 FB71     		strb	r3, [r7, #7]
+ 743:ioLIB/wizchip_conf.c ****    tmp &= PHYCFGR_RST;
+ 2010              		.loc 1 743 8
+ 2011 0012 FB79     		ldrb	r3, [r7, #7]
+ 2012 0014 03F07F03 		and	r3, r3, #127
+ 2013 0018 FB71     		strb	r3, [r7, #7]
+ 744:ioLIB/wizchip_conf.c ****    setPHYCFGR(tmp);
+ 2014              		.loc 1 744 4
+ 2015 001a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2016 001c 1946     		mov	r1, r3
+ 2017 001e 4FF43850 		mov	r0, #11776
+ 2018 0022 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 745:ioLIB/wizchip_conf.c ****    tmp = getPHYCFGR();
+ 2019              		.loc 1 745 10
+ 2020 0026 4FF43850 		mov	r0, #11776
+ 2021 002a FFF7FEFF 		bl	WIZCHIP_READ
+ 2022 002e 0346     		mov	r3, r0
+ 2023 0030 FB71     		strb	r3, [r7, #7]
+ 746:ioLIB/wizchip_conf.c ****    tmp |= ~PHYCFGR_RST;
+ 2024              		.loc 1 746 8
+ 2025 0032 FB79     		ldrb	r3, [r7, #7]
+ 2026 0034 63F07F03 		orn	r3, r3, #127
+ 2027 0038 FB71     		strb	r3, [r7, #7]
+ 747:ioLIB/wizchip_conf.c ****    setPHYCFGR(tmp);
+ 2028              		.loc 1 747 4
+ 2029 003a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2030 003c 1946     		mov	r1, r3
+ 2031 003e 4FF43850 		mov	r0, #11776
+ 2032 0042 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 748:ioLIB/wizchip_conf.c **** }
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 49
+
+
+ 2033              		.loc 1 748 1
+ 2034 0046 00BF     		nop
+ 2035 0048 0837     		adds	r7, r7, #8
+ 2036              	.LCFI133:
+ 2037              		.cfi_def_cfa_offset 8
+ 2038 004a BD46     		mov	sp, r7
+ 2039              	.LCFI134:
+ 2040              		.cfi_def_cfa_register 13
+ 2041              		@ sp needed
+ 2042 004c 80BD     		pop	{r7, pc}
+ 2043              		.cfi_endproc
+ 2044              	.LFE25:
+ 2046              		.section	.text.wizphy_setphyconf,"ax",%progbits
+ 2047              		.align	1
+ 2048              		.global	wizphy_setphyconf
+ 2049              		.syntax unified
+ 2050              		.thumb
+ 2051              		.thumb_func
+ 2053              	wizphy_setphyconf:
+ 2054              	.LFB26:
+ 749:ioLIB/wizchip_conf.c **** 
+ 750:ioLIB/wizchip_conf.c **** void wizphy_setphyconf(wiz_PhyConf* phyconf)
+ 751:ioLIB/wizchip_conf.c **** {
+ 2055              		.loc 1 751 1
+ 2056              		.cfi_startproc
+ 2057              		@ args = 0, pretend = 0, frame = 16
+ 2058              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2059 0000 80B5     		push	{r7, lr}
+ 2060              	.LCFI135:
+ 2061              		.cfi_def_cfa_offset 8
+ 2062              		.cfi_offset 7, -8
+ 2063              		.cfi_offset 14, -4
+ 2064 0002 84B0     		sub	sp, sp, #16
+ 2065              	.LCFI136:
+ 2066              		.cfi_def_cfa_offset 24
+ 2067 0004 00AF     		add	r7, sp, #0
+ 2068              	.LCFI137:
+ 2069              		.cfi_def_cfa_register 7
+ 2070 0006 7860     		str	r0, [r7, #4]
+ 752:ioLIB/wizchip_conf.c ****    uint8_t tmp = 0;
+ 2071              		.loc 1 752 12
+ 2072 0008 0023     		movs	r3, #0
+ 2073 000a FB73     		strb	r3, [r7, #15]
+ 753:ioLIB/wizchip_conf.c ****    if(phyconf->by == PHY_CONFBY_SW)
+ 2074              		.loc 1 753 14
+ 2075 000c 7B68     		ldr	r3, [r7, #4]
+ 2076 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 2077              		.loc 1 753 6
+ 2078 0010 012B     		cmp	r3, #1
+ 2079 0012 04D1     		bne	.L118
+ 754:ioLIB/wizchip_conf.c ****       tmp |= PHYCFGR_OPMD;
+ 2080              		.loc 1 754 11
+ 2081 0014 FB7B     		ldrb	r3, [r7, #15]
+ 2082 0016 43F04003 		orr	r3, r3, #64
+ 2083 001a FB73     		strb	r3, [r7, #15]
+ 2084 001c 03E0     		b	.L119
+ 2085              	.L118:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 50
+
+
+ 755:ioLIB/wizchip_conf.c ****    else
+ 756:ioLIB/wizchip_conf.c ****       tmp &= ~PHYCFGR_OPMD;
+ 2086              		.loc 1 756 11
+ 2087 001e FB7B     		ldrb	r3, [r7, #15]
+ 2088 0020 23F04003 		bic	r3, r3, #64
+ 2089 0024 FB73     		strb	r3, [r7, #15]
+ 2090              	.L119:
+ 757:ioLIB/wizchip_conf.c ****    if(phyconf->mode == PHY_MODE_AUTONEGO)
+ 2091              		.loc 1 757 14
+ 2092 0026 7B68     		ldr	r3, [r7, #4]
+ 2093 0028 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 2094              		.loc 1 757 6
+ 2095 002a 012B     		cmp	r3, #1
+ 2096 002c 04D1     		bne	.L120
+ 758:ioLIB/wizchip_conf.c ****       tmp |= PHYCFGR_OPMDC_ALLA;
+ 2097              		.loc 1 758 11
+ 2098 002e FB7B     		ldrb	r3, [r7, #15]
+ 2099 0030 43F03803 		orr	r3, r3, #56
+ 2100 0034 FB73     		strb	r3, [r7, #15]
+ 2101 0036 19E0     		b	.L121
+ 2102              	.L120:
+ 759:ioLIB/wizchip_conf.c ****    else
+ 760:ioLIB/wizchip_conf.c ****    {
+ 761:ioLIB/wizchip_conf.c ****       if(phyconf->duplex == PHY_DUPLEX_FULL)
+ 2103              		.loc 1 761 17
+ 2104 0038 7B68     		ldr	r3, [r7, #4]
+ 2105 003a DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 2106              		.loc 1 761 9
+ 2107 003c 012B     		cmp	r3, #1
+ 2108 003e 0DD1     		bne	.L122
+ 762:ioLIB/wizchip_conf.c ****       {
+ 763:ioLIB/wizchip_conf.c ****          if(phyconf->speed == PHY_SPEED_100)
+ 2109              		.loc 1 763 20
+ 2110 0040 7B68     		ldr	r3, [r7, #4]
+ 2111 0042 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 2112              		.loc 1 763 12
+ 2113 0044 012B     		cmp	r3, #1
+ 2114 0046 04D1     		bne	.L123
+ 764:ioLIB/wizchip_conf.c ****             tmp |= PHYCFGR_OPMDC_100F;
+ 2115              		.loc 1 764 17
+ 2116 0048 FB7B     		ldrb	r3, [r7, #15]
+ 2117 004a 43F01803 		orr	r3, r3, #24
+ 2118 004e FB73     		strb	r3, [r7, #15]
+ 2119 0050 0CE0     		b	.L121
+ 2120              	.L123:
+ 765:ioLIB/wizchip_conf.c ****          else
+ 766:ioLIB/wizchip_conf.c ****             tmp |= PHYCFGR_OPMDC_10F;
+ 2121              		.loc 1 766 17
+ 2122 0052 FB7B     		ldrb	r3, [r7, #15]
+ 2123 0054 43F00803 		orr	r3, r3, #8
+ 2124 0058 FB73     		strb	r3, [r7, #15]
+ 2125 005a 07E0     		b	.L121
+ 2126              	.L122:
+ 767:ioLIB/wizchip_conf.c ****       }   
+ 768:ioLIB/wizchip_conf.c ****       else
+ 769:ioLIB/wizchip_conf.c ****       {
+ 770:ioLIB/wizchip_conf.c ****          if(phyconf->speed == PHY_SPEED_100)
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 51
+
+
+ 2127              		.loc 1 770 20
+ 2128 005c 7B68     		ldr	r3, [r7, #4]
+ 2129 005e 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 2130              		.loc 1 770 12
+ 2131 0060 012B     		cmp	r3, #1
+ 2132 0062 03D1     		bne	.L121
+ 771:ioLIB/wizchip_conf.c ****             tmp |= PHYCFGR_OPMDC_100H;
+ 2133              		.loc 1 771 17
+ 2134 0064 FB7B     		ldrb	r3, [r7, #15]
+ 2135 0066 43F01003 		orr	r3, r3, #16
+ 2136 006a FB73     		strb	r3, [r7, #15]
+ 2137              	.L121:
+ 772:ioLIB/wizchip_conf.c ****          else
+ 773:ioLIB/wizchip_conf.c ****             tmp |= PHYCFGR_OPMDC_10H;
+ 774:ioLIB/wizchip_conf.c ****       }
+ 775:ioLIB/wizchip_conf.c ****    }
+ 776:ioLIB/wizchip_conf.c ****    setPHYCFGR(tmp);
+ 2138              		.loc 1 776 4
+ 2139 006c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2140 006e 1946     		mov	r1, r3
+ 2141 0070 4FF43850 		mov	r0, #11776
+ 2142 0074 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 777:ioLIB/wizchip_conf.c ****    wizphy_reset();
+ 2143              		.loc 1 777 4
+ 2144 0078 FFF7FEFF 		bl	wizphy_reset
+ 778:ioLIB/wizchip_conf.c **** }
+ 2145              		.loc 1 778 1
+ 2146 007c 00BF     		nop
+ 2147 007e 1037     		adds	r7, r7, #16
+ 2148              	.LCFI138:
+ 2149              		.cfi_def_cfa_offset 8
+ 2150 0080 BD46     		mov	sp, r7
+ 2151              	.LCFI139:
+ 2152              		.cfi_def_cfa_register 13
+ 2153              		@ sp needed
+ 2154 0082 80BD     		pop	{r7, pc}
+ 2155              		.cfi_endproc
+ 2156              	.LFE26:
+ 2158              		.section	.text.wizphy_getphyconf,"ax",%progbits
+ 2159              		.align	1
+ 2160              		.global	wizphy_getphyconf
+ 2161              		.syntax unified
+ 2162              		.thumb
+ 2163              		.thumb_func
+ 2165              	wizphy_getphyconf:
+ 2166              	.LFB27:
+ 779:ioLIB/wizchip_conf.c **** 
+ 780:ioLIB/wizchip_conf.c **** void wizphy_getphyconf(wiz_PhyConf* phyconf)
+ 781:ioLIB/wizchip_conf.c **** {
+ 2167              		.loc 1 781 1
+ 2168              		.cfi_startproc
+ 2169              		@ args = 0, pretend = 0, frame = 16
+ 2170              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2171 0000 80B5     		push	{r7, lr}
+ 2172              	.LCFI140:
+ 2173              		.cfi_def_cfa_offset 8
+ 2174              		.cfi_offset 7, -8
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 52
+
+
+ 2175              		.cfi_offset 14, -4
+ 2176 0002 84B0     		sub	sp, sp, #16
+ 2177              	.LCFI141:
+ 2178              		.cfi_def_cfa_offset 24
+ 2179 0004 00AF     		add	r7, sp, #0
+ 2180              	.LCFI142:
+ 2181              		.cfi_def_cfa_register 7
+ 2182 0006 7860     		str	r0, [r7, #4]
+ 782:ioLIB/wizchip_conf.c ****    uint8_t tmp = 0;
+ 2183              		.loc 1 782 12
+ 2184 0008 0023     		movs	r3, #0
+ 2185 000a FB73     		strb	r3, [r7, #15]
+ 783:ioLIB/wizchip_conf.c ****    tmp = getPHYCFGR();
+ 2186              		.loc 1 783 10
+ 2187 000c 4FF43850 		mov	r0, #11776
+ 2188 0010 FFF7FEFF 		bl	WIZCHIP_READ
+ 2189 0014 0346     		mov	r3, r0
+ 2190 0016 FB73     		strb	r3, [r7, #15]
+ 784:ioLIB/wizchip_conf.c ****    phyconf->by   = (tmp & PHYCFGR_OPMD) ? PHY_CONFBY_SW : PHY_CONFBY_HW;
+ 2191              		.loc 1 784 57
+ 2192 0018 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2193 001a 9B11     		asrs	r3, r3, #6
+ 2194 001c DBB2     		uxtb	r3, r3
+ 2195 001e 03F00103 		and	r3, r3, #1
+ 2196 0022 DAB2     		uxtb	r2, r3
+ 2197              		.loc 1 784 18
+ 2198 0024 7B68     		ldr	r3, [r7, #4]
+ 2199 0026 1A70     		strb	r2, [r3]
+ 785:ioLIB/wizchip_conf.c ****    switch(tmp & PHYCFGR_OPMDC_ALLA)
+ 2200              		.loc 1 785 15
+ 2201 0028 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2202 002a 03F03803 		and	r3, r3, #56
+ 2203              		.loc 1 785 4
+ 2204 002e 202B     		cmp	r3, #32
+ 2205 0030 01D0     		beq	.L126
+ 2206 0032 382B     		cmp	r3, #56
+ 2207 0034 03D1     		bne	.L127
+ 2208              	.L126:
+ 786:ioLIB/wizchip_conf.c ****    {
+ 787:ioLIB/wizchip_conf.c ****       case PHYCFGR_OPMDC_ALLA:
+ 788:ioLIB/wizchip_conf.c ****       case PHYCFGR_OPMDC_100FA: 
+ 789:ioLIB/wizchip_conf.c ****          phyconf->mode = PHY_MODE_AUTONEGO;
+ 2209              		.loc 1 789 24
+ 2210 0036 7B68     		ldr	r3, [r7, #4]
+ 2211 0038 0122     		movs	r2, #1
+ 2212 003a 5A70     		strb	r2, [r3, #1]
+ 790:ioLIB/wizchip_conf.c ****          break;
+ 2213              		.loc 1 790 10
+ 2214 003c 03E0     		b	.L128
+ 2215              	.L127:
+ 791:ioLIB/wizchip_conf.c ****       default:
+ 792:ioLIB/wizchip_conf.c ****          phyconf->mode = PHY_MODE_MANUAL;
+ 2216              		.loc 1 792 24
+ 2217 003e 7B68     		ldr	r3, [r7, #4]
+ 2218 0040 0022     		movs	r2, #0
+ 2219 0042 5A70     		strb	r2, [r3, #1]
+ 793:ioLIB/wizchip_conf.c ****          break;
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 53
+
+
+ 2220              		.loc 1 793 10
+ 2221 0044 00BF     		nop
+ 2222              	.L128:
+ 794:ioLIB/wizchip_conf.c ****    }
+ 795:ioLIB/wizchip_conf.c ****    switch(tmp & PHYCFGR_OPMDC_ALLA)
+ 2223              		.loc 1 795 15
+ 2224 0046 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2225 0048 03F03803 		and	r3, r3, #56
+ 2226 004c 103B     		subs	r3, r3, #16
+ 2227 004e 102B     		cmp	r3, #16
+ 2228 0050 8CBF     		ite	hi
+ 2229 0052 0122     		movhi	r2, #1
+ 2230 0054 0022     		movls	r2, #0
+ 2231 0056 D2B2     		uxtb	r2, r2
+ 2232 0058 002A     		cmp	r2, #0
+ 2233 005a 11D1     		bne	.L129
+ 2234 005c 0122     		movs	r2, #1
+ 2235 005e 02FA03F3 		lsl	r3, r2, r3
+ 2236 0062 03F00133 		and	r3, r3, #16843009
+ 2237 0066 23F08073 		bic	r3, r3, #16777216
+ 2238 006a 002B     		cmp	r3, #0
+ 2239 006c 14BF     		ite	ne
+ 2240 006e 0123     		movne	r3, #1
+ 2241 0070 0023     		moveq	r3, #0
+ 2242 0072 DBB2     		uxtb	r3, r3
+ 2243 0074 002B     		cmp	r3, #0
+ 2244 0076 03D0     		beq	.L129
+ 796:ioLIB/wizchip_conf.c ****    {
+ 797:ioLIB/wizchip_conf.c ****       case PHYCFGR_OPMDC_100FA:
+ 798:ioLIB/wizchip_conf.c ****       case PHYCFGR_OPMDC_100F:
+ 799:ioLIB/wizchip_conf.c ****       case PHYCFGR_OPMDC_100H:
+ 800:ioLIB/wizchip_conf.c ****          phyconf->speed = PHY_SPEED_100;
+ 2245              		.loc 1 800 25
+ 2246 0078 7B68     		ldr	r3, [r7, #4]
+ 2247 007a 0122     		movs	r2, #1
+ 2248 007c 9A70     		strb	r2, [r3, #2]
+ 801:ioLIB/wizchip_conf.c ****          break;
+ 2249              		.loc 1 801 10
+ 2250 007e 03E0     		b	.L130
+ 2251              	.L129:
+ 802:ioLIB/wizchip_conf.c ****       default:
+ 803:ioLIB/wizchip_conf.c ****          phyconf->speed = PHY_SPEED_10;
+ 2252              		.loc 1 803 25
+ 2253 0080 7B68     		ldr	r3, [r7, #4]
+ 2254 0082 0022     		movs	r2, #0
+ 2255 0084 9A70     		strb	r2, [r3, #2]
+ 804:ioLIB/wizchip_conf.c ****          break;
+ 2256              		.loc 1 804 10
+ 2257 0086 00BF     		nop
+ 2258              	.L130:
+ 805:ioLIB/wizchip_conf.c ****    }
+ 806:ioLIB/wizchip_conf.c ****    switch(tmp & PHYCFGR_OPMDC_ALLA)
+ 2259              		.loc 1 806 15
+ 2260 0088 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2261 008a 03F03803 		and	r3, r3, #56
+ 2262 008e 083B     		subs	r3, r3, #8
+ 2263 0090 182B     		cmp	r3, #24
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 54
+
+
+ 2264 0092 8CBF     		ite	hi
+ 2265 0094 0122     		movhi	r2, #1
+ 2266 0096 0022     		movls	r2, #0
+ 2267 0098 D2B2     		uxtb	r2, r2
+ 2268 009a 002A     		cmp	r2, #0
+ 2269 009c 11D1     		bne	.L131
+ 2270 009e 0122     		movs	r2, #1
+ 2271 00a0 02FA03F3 		lsl	r3, r2, r3
+ 2272 00a4 03F00133 		and	r3, r3, #16843009
+ 2273 00a8 23F48073 		bic	r3, r3, #256
+ 2274 00ac 002B     		cmp	r3, #0
+ 2275 00ae 14BF     		ite	ne
+ 2276 00b0 0123     		movne	r3, #1
+ 2277 00b2 0023     		moveq	r3, #0
+ 2278 00b4 DBB2     		uxtb	r3, r3
+ 2279 00b6 002B     		cmp	r3, #0
+ 2280 00b8 03D0     		beq	.L131
+ 807:ioLIB/wizchip_conf.c ****    {
+ 808:ioLIB/wizchip_conf.c ****       case PHYCFGR_OPMDC_100FA:
+ 809:ioLIB/wizchip_conf.c ****       case PHYCFGR_OPMDC_100F:
+ 810:ioLIB/wizchip_conf.c ****       case PHYCFGR_OPMDC_10F:
+ 811:ioLIB/wizchip_conf.c ****          phyconf->duplex = PHY_DUPLEX_FULL;
+ 2281              		.loc 1 811 26
+ 2282 00ba 7B68     		ldr	r3, [r7, #4]
+ 2283 00bc 0122     		movs	r2, #1
+ 2284 00be DA70     		strb	r2, [r3, #3]
+ 812:ioLIB/wizchip_conf.c ****          break;
+ 2285              		.loc 1 812 10
+ 2286 00c0 03E0     		b	.L132
+ 2287              	.L131:
+ 813:ioLIB/wizchip_conf.c ****       default:
+ 814:ioLIB/wizchip_conf.c ****          phyconf->duplex = PHY_DUPLEX_HALF;
+ 2288              		.loc 1 814 26
+ 2289 00c2 7B68     		ldr	r3, [r7, #4]
+ 2290 00c4 0022     		movs	r2, #0
+ 2291 00c6 DA70     		strb	r2, [r3, #3]
+ 815:ioLIB/wizchip_conf.c ****          break;
+ 2292              		.loc 1 815 10
+ 2293 00c8 00BF     		nop
+ 2294              	.L132:
+ 816:ioLIB/wizchip_conf.c ****    }
+ 817:ioLIB/wizchip_conf.c **** }
+ 2295              		.loc 1 817 1
+ 2296 00ca 00BF     		nop
+ 2297 00cc 1037     		adds	r7, r7, #16
+ 2298              	.LCFI143:
+ 2299              		.cfi_def_cfa_offset 8
+ 2300 00ce BD46     		mov	sp, r7
+ 2301              	.LCFI144:
+ 2302              		.cfi_def_cfa_register 13
+ 2303              		@ sp needed
+ 2304 00d0 80BD     		pop	{r7, pc}
+ 2305              		.cfi_endproc
+ 2306              	.LFE27:
+ 2308              		.section	.text.wizphy_getphystat,"ax",%progbits
+ 2309              		.align	1
+ 2310              		.global	wizphy_getphystat
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 55
+
+
+ 2311              		.syntax unified
+ 2312              		.thumb
+ 2313              		.thumb_func
+ 2315              	wizphy_getphystat:
+ 2316              	.LFB28:
+ 818:ioLIB/wizchip_conf.c **** 
+ 819:ioLIB/wizchip_conf.c **** void wizphy_getphystat(wiz_PhyConf* phyconf)
+ 820:ioLIB/wizchip_conf.c **** {
+ 2317              		.loc 1 820 1
+ 2318              		.cfi_startproc
+ 2319              		@ args = 0, pretend = 0, frame = 16
+ 2320              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2321 0000 80B5     		push	{r7, lr}
+ 2322              	.LCFI145:
+ 2323              		.cfi_def_cfa_offset 8
+ 2324              		.cfi_offset 7, -8
+ 2325              		.cfi_offset 14, -4
+ 2326 0002 84B0     		sub	sp, sp, #16
+ 2327              	.LCFI146:
+ 2328              		.cfi_def_cfa_offset 24
+ 2329 0004 00AF     		add	r7, sp, #0
+ 2330              	.LCFI147:
+ 2331              		.cfi_def_cfa_register 7
+ 2332 0006 7860     		str	r0, [r7, #4]
+ 821:ioLIB/wizchip_conf.c ****    uint8_t tmp = getPHYCFGR();
+ 2333              		.loc 1 821 18
+ 2334 0008 4FF43850 		mov	r0, #11776
+ 2335 000c FFF7FEFF 		bl	WIZCHIP_READ
+ 2336 0010 0346     		mov	r3, r0
+ 2337 0012 FB73     		strb	r3, [r7, #15]
+ 822:ioLIB/wizchip_conf.c ****    phyconf->duplex = (tmp & PHYCFGR_DPX_FULL) ? PHY_DUPLEX_FULL : PHY_DUPLEX_HALF;
+ 2338              		.loc 1 822 65
+ 2339 0014 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2340 0016 9B10     		asrs	r3, r3, #2
+ 2341 0018 DBB2     		uxtb	r3, r3
+ 2342 001a 03F00103 		and	r3, r3, #1
+ 2343 001e DAB2     		uxtb	r2, r3
+ 2344              		.loc 1 822 20
+ 2345 0020 7B68     		ldr	r3, [r7, #4]
+ 2346 0022 DA70     		strb	r2, [r3, #3]
+ 823:ioLIB/wizchip_conf.c ****    phyconf->speed  = (tmp & PHYCFGR_SPD_100) ? PHY_SPEED_100 : PHY_SPEED_10;
+ 2347              		.loc 1 823 62
+ 2348 0024 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2349 0026 5B10     		asrs	r3, r3, #1
+ 2350 0028 DBB2     		uxtb	r3, r3
+ 2351 002a 03F00103 		and	r3, r3, #1
+ 2352 002e DAB2     		uxtb	r2, r3
+ 2353              		.loc 1 823 20
+ 2354 0030 7B68     		ldr	r3, [r7, #4]
+ 2355 0032 9A70     		strb	r2, [r3, #2]
+ 824:ioLIB/wizchip_conf.c **** }
+ 2356              		.loc 1 824 1
+ 2357 0034 00BF     		nop
+ 2358 0036 1037     		adds	r7, r7, #16
+ 2359              	.LCFI148:
+ 2360              		.cfi_def_cfa_offset 8
+ 2361 0038 BD46     		mov	sp, r7
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 56
+
+
+ 2362              	.LCFI149:
+ 2363              		.cfi_def_cfa_register 13
+ 2364              		@ sp needed
+ 2365 003a 80BD     		pop	{r7, pc}
+ 2366              		.cfi_endproc
+ 2367              	.LFE28:
+ 2369              		.section	.text.wizphy_setphypmode,"ax",%progbits
+ 2370              		.align	1
+ 2371              		.global	wizphy_setphypmode
+ 2372              		.syntax unified
+ 2373              		.thumb
+ 2374              		.thumb_func
+ 2376              	wizphy_setphypmode:
+ 2377              	.LFB29:
+ 825:ioLIB/wizchip_conf.c **** 
+ 826:ioLIB/wizchip_conf.c **** int8_t wizphy_setphypmode(uint8_t pmode)
+ 827:ioLIB/wizchip_conf.c **** {
+ 2378              		.loc 1 827 1
+ 2379              		.cfi_startproc
+ 2380              		@ args = 0, pretend = 0, frame = 16
+ 2381              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2382 0000 80B5     		push	{r7, lr}
+ 2383              	.LCFI150:
+ 2384              		.cfi_def_cfa_offset 8
+ 2385              		.cfi_offset 7, -8
+ 2386              		.cfi_offset 14, -4
+ 2387 0002 84B0     		sub	sp, sp, #16
+ 2388              	.LCFI151:
+ 2389              		.cfi_def_cfa_offset 24
+ 2390 0004 00AF     		add	r7, sp, #0
+ 2391              	.LCFI152:
+ 2392              		.cfi_def_cfa_register 7
+ 2393 0006 0346     		mov	r3, r0
+ 2394 0008 FB71     		strb	r3, [r7, #7]
+ 828:ioLIB/wizchip_conf.c ****    uint8_t tmp = 0;
+ 2395              		.loc 1 828 12
+ 2396 000a 0023     		movs	r3, #0
+ 2397 000c FB73     		strb	r3, [r7, #15]
+ 829:ioLIB/wizchip_conf.c ****    tmp = getPHYCFGR();
+ 2398              		.loc 1 829 10
+ 2399 000e 4FF43850 		mov	r0, #11776
+ 2400 0012 FFF7FEFF 		bl	WIZCHIP_READ
+ 2401 0016 0346     		mov	r3, r0
+ 2402 0018 FB73     		strb	r3, [r7, #15]
+ 830:ioLIB/wizchip_conf.c ****    if((tmp & PHYCFGR_OPMD)== 0) return -1;
+ 2403              		.loc 1 830 12
+ 2404 001a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2405 001c 03F04003 		and	r3, r3, #64
+ 2406              		.loc 1 830 6
+ 2407 0020 002B     		cmp	r3, #0
+ 2408 0022 02D1     		bne	.L135
+ 2409              		.loc 1 830 40 discriminator 1
+ 2410 0024 4FF0FF33 		mov	r3, #-1
+ 2411 0028 30E0     		b	.L136
+ 2412              	.L135:
+ 831:ioLIB/wizchip_conf.c ****    tmp &= ~PHYCFGR_OPMDC_ALLA;         
+ 2413              		.loc 1 831 8
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 57
+
+
+ 2414 002a FB7B     		ldrb	r3, [r7, #15]
+ 2415 002c 23F03803 		bic	r3, r3, #56
+ 2416 0030 FB73     		strb	r3, [r7, #15]
+ 832:ioLIB/wizchip_conf.c ****    if( pmode == PHY_POWER_DOWN)
+ 2417              		.loc 1 832 6
+ 2418 0032 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2419 0034 012B     		cmp	r3, #1
+ 2420 0036 04D1     		bne	.L137
+ 833:ioLIB/wizchip_conf.c ****       tmp |= PHYCFGR_OPMDC_PDOWN;
+ 2421              		.loc 1 833 11
+ 2422 0038 FB7B     		ldrb	r3, [r7, #15]
+ 2423 003a 43F03003 		orr	r3, r3, #48
+ 2424 003e FB73     		strb	r3, [r7, #15]
+ 2425 0040 03E0     		b	.L138
+ 2426              	.L137:
+ 834:ioLIB/wizchip_conf.c ****    else
+ 835:ioLIB/wizchip_conf.c ****       tmp |= PHYCFGR_OPMDC_ALLA;
+ 2427              		.loc 1 835 11
+ 2428 0042 FB7B     		ldrb	r3, [r7, #15]
+ 2429 0044 43F03803 		orr	r3, r3, #56
+ 2430 0048 FB73     		strb	r3, [r7, #15]
+ 2431              	.L138:
+ 836:ioLIB/wizchip_conf.c ****    setPHYCFGR(tmp);
+ 2432              		.loc 1 836 4
+ 2433 004a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2434 004c 1946     		mov	r1, r3
+ 2435 004e 4FF43850 		mov	r0, #11776
+ 2436 0052 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 837:ioLIB/wizchip_conf.c ****    wizphy_reset();
+ 2437              		.loc 1 837 4
+ 2438 0056 FFF7FEFF 		bl	wizphy_reset
+ 838:ioLIB/wizchip_conf.c ****    tmp = getPHYCFGR();
+ 2439              		.loc 1 838 10
+ 2440 005a 4FF43850 		mov	r0, #11776
+ 2441 005e FFF7FEFF 		bl	WIZCHIP_READ
+ 2442 0062 0346     		mov	r3, r0
+ 2443 0064 FB73     		strb	r3, [r7, #15]
+ 839:ioLIB/wizchip_conf.c ****    if( pmode == PHY_POWER_DOWN)
+ 2444              		.loc 1 839 6
+ 2445 0066 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2446 0068 012B     		cmp	r3, #1
+ 2447 006a 06D1     		bne	.L139
+ 840:ioLIB/wizchip_conf.c ****    {
+ 841:ioLIB/wizchip_conf.c ****       if(tmp & PHYCFGR_OPMDC_PDOWN) return 0;
+ 2448              		.loc 1 841 14
+ 2449 006c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2450 006e 03F03003 		and	r3, r3, #48
+ 2451              		.loc 1 841 9
+ 2452 0072 002B     		cmp	r3, #0
+ 2453 0074 08D0     		beq	.L140
+ 2454              		.loc 1 841 44 discriminator 1
+ 2455 0076 0023     		movs	r3, #0
+ 2456 0078 08E0     		b	.L136
+ 2457              	.L139:
+ 842:ioLIB/wizchip_conf.c ****    }
+ 843:ioLIB/wizchip_conf.c ****    else
+ 844:ioLIB/wizchip_conf.c ****    {
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 58
+
+
+ 845:ioLIB/wizchip_conf.c ****       if(tmp & PHYCFGR_OPMDC_ALLA) return 0;
+ 2458              		.loc 1 845 14
+ 2459 007a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2460 007c 03F03803 		and	r3, r3, #56
+ 2461              		.loc 1 845 9
+ 2462 0080 002B     		cmp	r3, #0
+ 2463 0082 01D0     		beq	.L140
+ 2464              		.loc 1 845 43 discriminator 1
+ 2465 0084 0023     		movs	r3, #0
+ 2466 0086 01E0     		b	.L136
+ 2467              	.L140:
+ 846:ioLIB/wizchip_conf.c ****    }
+ 847:ioLIB/wizchip_conf.c ****    return -1;
+ 2468              		.loc 1 847 11
+ 2469 0088 4FF0FF33 		mov	r3, #-1
+ 2470              	.L136:
+ 848:ioLIB/wizchip_conf.c **** }
+ 2471              		.loc 1 848 1
+ 2472 008c 1846     		mov	r0, r3
+ 2473 008e 1037     		adds	r7, r7, #16
+ 2474              	.LCFI153:
+ 2475              		.cfi_def_cfa_offset 8
+ 2476 0090 BD46     		mov	sp, r7
+ 2477              	.LCFI154:
+ 2478              		.cfi_def_cfa_register 13
+ 2479              		@ sp needed
+ 2480 0092 80BD     		pop	{r7, pc}
+ 2481              		.cfi_endproc
+ 2482              	.LFE29:
+ 2484              		.section	.text.wizchip_setnetinfo,"ax",%progbits
+ 2485              		.align	1
+ 2486              		.global	wizchip_setnetinfo
+ 2487              		.syntax unified
+ 2488              		.thumb
+ 2489              		.thumb_func
+ 2491              	wizchip_setnetinfo:
+ 2492              	.LFB30:
+ 849:ioLIB/wizchip_conf.c **** #endif
+ 850:ioLIB/wizchip_conf.c **** 
+ 851:ioLIB/wizchip_conf.c **** 
+ 852:ioLIB/wizchip_conf.c **** void wizchip_setnetinfo(wiz_NetInfo* pnetinfo)
+ 853:ioLIB/wizchip_conf.c **** {
+ 2493              		.loc 1 853 1
+ 2494              		.cfi_startproc
+ 2495              		@ args = 0, pretend = 0, frame = 8
+ 2496              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2497 0000 80B5     		push	{r7, lr}
+ 2498              	.LCFI155:
+ 2499              		.cfi_def_cfa_offset 8
+ 2500              		.cfi_offset 7, -8
+ 2501              		.cfi_offset 14, -4
+ 2502 0002 82B0     		sub	sp, sp, #8
+ 2503              	.LCFI156:
+ 2504              		.cfi_def_cfa_offset 16
+ 2505 0004 00AF     		add	r7, sp, #0
+ 2506              	.LCFI157:
+ 2507              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 59
+
+
+ 2508 0006 7860     		str	r0, [r7, #4]
+ 854:ioLIB/wizchip_conf.c ****    setSHAR(pnetinfo->mac);
+ 2509              		.loc 1 854 4
+ 2510 0008 7B68     		ldr	r3, [r7, #4]
+ 2511 000a 0622     		movs	r2, #6
+ 2512 000c 1946     		mov	r1, r3
+ 2513 000e 4FF41060 		mov	r0, #2304
+ 2514 0012 FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 855:ioLIB/wizchip_conf.c ****    setGAR(pnetinfo->gw);
+ 2515              		.loc 1 855 4
+ 2516 0016 7B68     		ldr	r3, [r7, #4]
+ 2517 0018 0E33     		adds	r3, r3, #14
+ 2518 001a 0422     		movs	r2, #4
+ 2519 001c 1946     		mov	r1, r3
+ 2520 001e 4FF48070 		mov	r0, #256
+ 2521 0022 FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 856:ioLIB/wizchip_conf.c ****    setSUBR(pnetinfo->sn);
+ 2522              		.loc 1 856 4
+ 2523 0026 7B68     		ldr	r3, [r7, #4]
+ 2524 0028 0A33     		adds	r3, r3, #10
+ 2525 002a 0422     		movs	r2, #4
+ 2526 002c 1946     		mov	r1, r3
+ 2527 002e 4FF4A060 		mov	r0, #1280
+ 2528 0032 FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 857:ioLIB/wizchip_conf.c ****    setSIPR(pnetinfo->ip);
+ 2529              		.loc 1 857 4
+ 2530 0036 7B68     		ldr	r3, [r7, #4]
+ 2531 0038 0633     		adds	r3, r3, #6
+ 2532 003a 0422     		movs	r2, #4
+ 2533 003c 1946     		mov	r1, r3
+ 2534 003e 4FF47060 		mov	r0, #3840
+ 2535 0042 FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 858:ioLIB/wizchip_conf.c ****    _DNS_[0] = pnetinfo->dns[0];
+ 2536              		.loc 1 858 28
+ 2537 0046 7B68     		ldr	r3, [r7, #4]
+ 2538 0048 9A7C     		ldrb	r2, [r3, #18]	@ zero_extendqisi2
+ 2539              		.loc 1 858 13
+ 2540 004a 0B4B     		ldr	r3, .L142
+ 2541 004c 1A70     		strb	r2, [r3]
+ 859:ioLIB/wizchip_conf.c ****    _DNS_[1] = pnetinfo->dns[1];
+ 2542              		.loc 1 859 28
+ 2543 004e 7B68     		ldr	r3, [r7, #4]
+ 2544 0050 DA7C     		ldrb	r2, [r3, #19]	@ zero_extendqisi2
+ 2545              		.loc 1 859 13
+ 2546 0052 094B     		ldr	r3, .L142
+ 2547 0054 5A70     		strb	r2, [r3, #1]
+ 860:ioLIB/wizchip_conf.c ****    _DNS_[2] = pnetinfo->dns[2];
+ 2548              		.loc 1 860 28
+ 2549 0056 7B68     		ldr	r3, [r7, #4]
+ 2550 0058 1A7D     		ldrb	r2, [r3, #20]	@ zero_extendqisi2
+ 2551              		.loc 1 860 13
+ 2552 005a 074B     		ldr	r3, .L142
+ 2553 005c 9A70     		strb	r2, [r3, #2]
+ 861:ioLIB/wizchip_conf.c ****    _DNS_[3] = pnetinfo->dns[3];
+ 2554              		.loc 1 861 28
+ 2555 005e 7B68     		ldr	r3, [r7, #4]
+ 2556 0060 5A7D     		ldrb	r2, [r3, #21]	@ zero_extendqisi2
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 60
+
+
+ 2557              		.loc 1 861 13
+ 2558 0062 054B     		ldr	r3, .L142
+ 2559 0064 DA70     		strb	r2, [r3, #3]
+ 862:ioLIB/wizchip_conf.c ****    _DHCP_   = pnetinfo->dhcp;
+ 2560              		.loc 1 862 23
+ 2561 0066 7B68     		ldr	r3, [r7, #4]
+ 2562 0068 9A7D     		ldrb	r2, [r3, #22]	@ zero_extendqisi2
+ 2563              		.loc 1 862 13
+ 2564 006a 044B     		ldr	r3, .L142+4
+ 2565 006c 1A70     		strb	r2, [r3]
+ 863:ioLIB/wizchip_conf.c **** }
+ 2566              		.loc 1 863 1
+ 2567 006e 00BF     		nop
+ 2568 0070 0837     		adds	r7, r7, #8
+ 2569              	.LCFI158:
+ 2570              		.cfi_def_cfa_offset 8
+ 2571 0072 BD46     		mov	sp, r7
+ 2572              	.LCFI159:
+ 2573              		.cfi_def_cfa_register 13
+ 2574              		@ sp needed
+ 2575 0074 80BD     		pop	{r7, pc}
+ 2576              	.L143:
+ 2577 0076 00BF     		.align	2
+ 2578              	.L142:
+ 2579 0078 00000000 		.word	_DNS_
+ 2580 007c 00000000 		.word	_DHCP_
+ 2581              		.cfi_endproc
+ 2582              	.LFE30:
+ 2584              		.section	.text.wizchip_getnetinfo,"ax",%progbits
+ 2585              		.align	1
+ 2586              		.global	wizchip_getnetinfo
+ 2587              		.syntax unified
+ 2588              		.thumb
+ 2589              		.thumb_func
+ 2591              	wizchip_getnetinfo:
+ 2592              	.LFB31:
+ 864:ioLIB/wizchip_conf.c **** 
+ 865:ioLIB/wizchip_conf.c **** void wizchip_getnetinfo(wiz_NetInfo* pnetinfo)
+ 866:ioLIB/wizchip_conf.c **** {
+ 2593              		.loc 1 866 1
+ 2594              		.cfi_startproc
+ 2595              		@ args = 0, pretend = 0, frame = 8
+ 2596              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2597 0000 80B5     		push	{r7, lr}
+ 2598              	.LCFI160:
+ 2599              		.cfi_def_cfa_offset 8
+ 2600              		.cfi_offset 7, -8
+ 2601              		.cfi_offset 14, -4
+ 2602 0002 82B0     		sub	sp, sp, #8
+ 2603              	.LCFI161:
+ 2604              		.cfi_def_cfa_offset 16
+ 2605 0004 00AF     		add	r7, sp, #0
+ 2606              	.LCFI162:
+ 2607              		.cfi_def_cfa_register 7
+ 2608 0006 7860     		str	r0, [r7, #4]
+ 867:ioLIB/wizchip_conf.c ****    getSHAR(pnetinfo->mac);
+ 2609              		.loc 1 867 4
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 61
+
+
+ 2610 0008 7B68     		ldr	r3, [r7, #4]
+ 2611 000a 0622     		movs	r2, #6
+ 2612 000c 1946     		mov	r1, r3
+ 2613 000e 4FF41060 		mov	r0, #2304
+ 2614 0012 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 868:ioLIB/wizchip_conf.c ****    getGAR(pnetinfo->gw);
+ 2615              		.loc 1 868 4
+ 2616 0016 7B68     		ldr	r3, [r7, #4]
+ 2617 0018 0E33     		adds	r3, r3, #14
+ 2618 001a 0422     		movs	r2, #4
+ 2619 001c 1946     		mov	r1, r3
+ 2620 001e 4FF48070 		mov	r0, #256
+ 2621 0022 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 869:ioLIB/wizchip_conf.c ****    getSUBR(pnetinfo->sn);
+ 2622              		.loc 1 869 4
+ 2623 0026 7B68     		ldr	r3, [r7, #4]
+ 2624 0028 0A33     		adds	r3, r3, #10
+ 2625 002a 0422     		movs	r2, #4
+ 2626 002c 1946     		mov	r1, r3
+ 2627 002e 4FF4A060 		mov	r0, #1280
+ 2628 0032 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 870:ioLIB/wizchip_conf.c ****    getSIPR(pnetinfo->ip);
+ 2629              		.loc 1 870 4
+ 2630 0036 7B68     		ldr	r3, [r7, #4]
+ 2631 0038 0633     		adds	r3, r3, #6
+ 2632 003a 0422     		movs	r2, #4
+ 2633 003c 1946     		mov	r1, r3
+ 2634 003e 4FF47060 		mov	r0, #3840
+ 2635 0042 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 871:ioLIB/wizchip_conf.c ****    pnetinfo->dns[0]= _DNS_[0];
+ 2636              		.loc 1 871 27
+ 2637 0046 0C4B     		ldr	r3, .L145
+ 2638 0048 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 2639              		.loc 1 871 20
+ 2640 004a 7B68     		ldr	r3, [r7, #4]
+ 2641 004c 9A74     		strb	r2, [r3, #18]
+ 872:ioLIB/wizchip_conf.c ****    pnetinfo->dns[1]= _DNS_[1];
+ 2642              		.loc 1 872 27
+ 2643 004e 0A4B     		ldr	r3, .L145
+ 2644 0050 5A78     		ldrb	r2, [r3, #1]	@ zero_extendqisi2
+ 2645              		.loc 1 872 20
+ 2646 0052 7B68     		ldr	r3, [r7, #4]
+ 2647 0054 DA74     		strb	r2, [r3, #19]
+ 873:ioLIB/wizchip_conf.c ****    pnetinfo->dns[2]= _DNS_[2];
+ 2648              		.loc 1 873 27
+ 2649 0056 084B     		ldr	r3, .L145
+ 2650 0058 9A78     		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 2651              		.loc 1 873 20
+ 2652 005a 7B68     		ldr	r3, [r7, #4]
+ 2653 005c 1A75     		strb	r2, [r3, #20]
+ 874:ioLIB/wizchip_conf.c ****    pnetinfo->dns[3]= _DNS_[3];
+ 2654              		.loc 1 874 27
+ 2655 005e 064B     		ldr	r3, .L145
+ 2656 0060 DA78     		ldrb	r2, [r3, #3]	@ zero_extendqisi2
+ 2657              		.loc 1 874 20
+ 2658 0062 7B68     		ldr	r3, [r7, #4]
+ 2659 0064 5A75     		strb	r2, [r3, #21]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 62
+
+
+ 875:ioLIB/wizchip_conf.c ****    pnetinfo->dhcp  = _DHCP_;
+ 2660              		.loc 1 875 20
+ 2661 0066 054B     		ldr	r3, .L145+4
+ 2662 0068 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 2663 006a 7B68     		ldr	r3, [r7, #4]
+ 2664 006c 9A75     		strb	r2, [r3, #22]
+ 876:ioLIB/wizchip_conf.c **** }
+ 2665              		.loc 1 876 1
+ 2666 006e 00BF     		nop
+ 2667 0070 0837     		adds	r7, r7, #8
+ 2668              	.LCFI163:
+ 2669              		.cfi_def_cfa_offset 8
+ 2670 0072 BD46     		mov	sp, r7
+ 2671              	.LCFI164:
+ 2672              		.cfi_def_cfa_register 13
+ 2673              		@ sp needed
+ 2674 0074 80BD     		pop	{r7, pc}
+ 2675              	.L146:
+ 2676 0076 00BF     		.align	2
+ 2677              	.L145:
+ 2678 0078 00000000 		.word	_DNS_
+ 2679 007c 00000000 		.word	_DHCP_
+ 2680              		.cfi_endproc
+ 2681              	.LFE31:
+ 2683              		.section	.text.wizchip_setnetmode,"ax",%progbits
+ 2684              		.align	1
+ 2685              		.global	wizchip_setnetmode
+ 2686              		.syntax unified
+ 2687              		.thumb
+ 2688              		.thumb_func
+ 2690              	wizchip_setnetmode:
+ 2691              	.LFB32:
+ 877:ioLIB/wizchip_conf.c **** 
+ 878:ioLIB/wizchip_conf.c **** int8_t wizchip_setnetmode(netmode_type netmode)
+ 879:ioLIB/wizchip_conf.c **** {
+ 2692              		.loc 1 879 1
+ 2693              		.cfi_startproc
+ 2694              		@ args = 0, pretend = 0, frame = 16
+ 2695              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2696 0000 80B5     		push	{r7, lr}
+ 2697              	.LCFI165:
+ 2698              		.cfi_def_cfa_offset 8
+ 2699              		.cfi_offset 7, -8
+ 2700              		.cfi_offset 14, -4
+ 2701 0002 84B0     		sub	sp, sp, #16
+ 2702              	.LCFI166:
+ 2703              		.cfi_def_cfa_offset 24
+ 2704 0004 00AF     		add	r7, sp, #0
+ 2705              	.LCFI167:
+ 2706              		.cfi_def_cfa_register 7
+ 2707 0006 0346     		mov	r3, r0
+ 2708 0008 FB71     		strb	r3, [r7, #7]
+ 880:ioLIB/wizchip_conf.c ****    uint8_t tmp = 0;
+ 2709              		.loc 1 880 12
+ 2710 000a 0023     		movs	r3, #0
+ 2711 000c FB73     		strb	r3, [r7, #15]
+ 881:ioLIB/wizchip_conf.c **** #if _WIZCHIP_ != W5500
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 63
+
+
+ 882:ioLIB/wizchip_conf.c ****    if(netmode & ~(NM_WAKEONLAN | NM_PPPOE | NM_PINGBLOCK)) return -1;
+ 883:ioLIB/wizchip_conf.c **** #else
+ 884:ioLIB/wizchip_conf.c ****    if(netmode & ~(NM_WAKEONLAN | NM_PPPOE | NM_PINGBLOCK | NM_FORCEARP)) return -1;
+ 2712              		.loc 1 884 15
+ 2713 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2714 0010 23F03A03 		bic	r3, r3, #58
+ 2715              		.loc 1 884 6
+ 2716 0014 002B     		cmp	r3, #0
+ 2717 0016 02D0     		beq	.L148
+ 2718              		.loc 1 884 81 discriminator 1
+ 2719 0018 4FF0FF33 		mov	r3, #-1
+ 2720 001c 0EE0     		b	.L149
+ 2721              	.L148:
+ 885:ioLIB/wizchip_conf.c **** #endif      
+ 886:ioLIB/wizchip_conf.c ****    tmp = getMR();
+ 2722              		.loc 1 886 10
+ 2723 001e 0020     		movs	r0, #0
+ 2724 0020 FFF7FEFF 		bl	WIZCHIP_READ
+ 2725 0024 0346     		mov	r3, r0
+ 2726 0026 FB73     		strb	r3, [r7, #15]
+ 887:ioLIB/wizchip_conf.c ****    tmp |= (uint8_t)netmode;
+ 2727              		.loc 1 887 8
+ 2728 0028 FA7B     		ldrb	r2, [r7, #15]
+ 2729 002a FB79     		ldrb	r3, [r7, #7]
+ 2730 002c 1343     		orrs	r3, r3, r2
+ 2731 002e FB73     		strb	r3, [r7, #15]
+ 888:ioLIB/wizchip_conf.c ****    setMR(tmp);
+ 2732              		.loc 1 888 4
+ 2733 0030 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2734 0032 1946     		mov	r1, r3
+ 2735 0034 0020     		movs	r0, #0
+ 2736 0036 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 889:ioLIB/wizchip_conf.c ****    return 0;
+ 2737              		.loc 1 889 11
+ 2738 003a 0023     		movs	r3, #0
+ 2739              	.L149:
+ 890:ioLIB/wizchip_conf.c **** }
+ 2740              		.loc 1 890 1
+ 2741 003c 1846     		mov	r0, r3
+ 2742 003e 1037     		adds	r7, r7, #16
+ 2743              	.LCFI168:
+ 2744              		.cfi_def_cfa_offset 8
+ 2745 0040 BD46     		mov	sp, r7
+ 2746              	.LCFI169:
+ 2747              		.cfi_def_cfa_register 13
+ 2748              		@ sp needed
+ 2749 0042 80BD     		pop	{r7, pc}
+ 2750              		.cfi_endproc
+ 2751              	.LFE32:
+ 2753              		.section	.text.wizchip_getnetmode,"ax",%progbits
+ 2754              		.align	1
+ 2755              		.global	wizchip_getnetmode
+ 2756              		.syntax unified
+ 2757              		.thumb
+ 2758              		.thumb_func
+ 2760              	wizchip_getnetmode:
+ 2761              	.LFB33:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 64
+
+
+ 891:ioLIB/wizchip_conf.c **** 
+ 892:ioLIB/wizchip_conf.c **** netmode_type wizchip_getnetmode(void)
+ 893:ioLIB/wizchip_conf.c **** {
+ 2762              		.loc 1 893 1
+ 2763              		.cfi_startproc
+ 2764              		@ args = 0, pretend = 0, frame = 0
+ 2765              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2766 0000 80B5     		push	{r7, lr}
+ 2767              	.LCFI170:
+ 2768              		.cfi_def_cfa_offset 8
+ 2769              		.cfi_offset 7, -8
+ 2770              		.cfi_offset 14, -4
+ 2771 0002 00AF     		add	r7, sp, #0
+ 2772              	.LCFI171:
+ 2773              		.cfi_def_cfa_register 7
+ 894:ioLIB/wizchip_conf.c ****    return (netmode_type) getMR();
+ 2774              		.loc 1 894 26
+ 2775 0004 0020     		movs	r0, #0
+ 2776 0006 FFF7FEFF 		bl	WIZCHIP_READ
+ 2777 000a 0346     		mov	r3, r0
+ 895:ioLIB/wizchip_conf.c **** }
+ 2778              		.loc 1 895 1
+ 2779 000c 1846     		mov	r0, r3
+ 2780 000e 80BD     		pop	{r7, pc}
+ 2781              		.cfi_endproc
+ 2782              	.LFE33:
+ 2784              		.section	.text.wizchip_settimeout,"ax",%progbits
+ 2785              		.align	1
+ 2786              		.global	wizchip_settimeout
+ 2787              		.syntax unified
+ 2788              		.thumb
+ 2789              		.thumb_func
+ 2791              	wizchip_settimeout:
+ 2792              	.LFB34:
+ 896:ioLIB/wizchip_conf.c **** 
+ 897:ioLIB/wizchip_conf.c **** void wizchip_settimeout(wiz_NetTimeout* nettime)
+ 898:ioLIB/wizchip_conf.c **** {
+ 2793              		.loc 1 898 1
+ 2794              		.cfi_startproc
+ 2795              		@ args = 0, pretend = 0, frame = 8
+ 2796              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2797 0000 80B5     		push	{r7, lr}
+ 2798              	.LCFI172:
+ 2799              		.cfi_def_cfa_offset 8
+ 2800              		.cfi_offset 7, -8
+ 2801              		.cfi_offset 14, -4
+ 2802 0002 82B0     		sub	sp, sp, #8
+ 2803              	.LCFI173:
+ 2804              		.cfi_def_cfa_offset 16
+ 2805 0004 00AF     		add	r7, sp, #0
+ 2806              	.LCFI174:
+ 2807              		.cfi_def_cfa_register 7
+ 2808 0006 7860     		str	r0, [r7, #4]
+ 899:ioLIB/wizchip_conf.c ****    setRCR(nettime->retry_cnt);
+ 2809              		.loc 1 899 4
+ 2810 0008 7B68     		ldr	r3, [r7, #4]
+ 2811 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 65
+
+
+ 2812 000c 1946     		mov	r1, r3
+ 2813 000e 4FF4D850 		mov	r0, #6912
+ 2814 0012 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 900:ioLIB/wizchip_conf.c ****    setRTR(nettime->time_100us);
+ 2815              		.loc 1 900 4
+ 2816 0016 7B68     		ldr	r3, [r7, #4]
+ 2817 0018 5B88     		ldrh	r3, [r3, #2]
+ 2818 001a 1B0A     		lsrs	r3, r3, #8
+ 2819 001c 9BB2     		uxth	r3, r3
+ 2820 001e DBB2     		uxtb	r3, r3
+ 2821 0020 1946     		mov	r1, r3
+ 2822 0022 4FF4C850 		mov	r0, #6400
+ 2823 0026 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 2824 002a 7B68     		ldr	r3, [r7, #4]
+ 2825 002c 5B88     		ldrh	r3, [r3, #2]
+ 2826 002e DBB2     		uxtb	r3, r3
+ 2827 0030 1946     		mov	r1, r3
+ 2828 0032 4FF4D050 		mov	r0, #6656
+ 2829 0036 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 901:ioLIB/wizchip_conf.c **** }
+ 2830              		.loc 1 901 1
+ 2831 003a 00BF     		nop
+ 2832 003c 0837     		adds	r7, r7, #8
+ 2833              	.LCFI175:
+ 2834              		.cfi_def_cfa_offset 8
+ 2835 003e BD46     		mov	sp, r7
+ 2836              	.LCFI176:
+ 2837              		.cfi_def_cfa_register 13
+ 2838              		@ sp needed
+ 2839 0040 80BD     		pop	{r7, pc}
+ 2840              		.cfi_endproc
+ 2841              	.LFE34:
+ 2843              		.section	.text.wizchip_gettimeout,"ax",%progbits
+ 2844              		.align	1
+ 2845              		.global	wizchip_gettimeout
+ 2846              		.syntax unified
+ 2847              		.thumb
+ 2848              		.thumb_func
+ 2850              	wizchip_gettimeout:
+ 2851              	.LFB35:
+ 902:ioLIB/wizchip_conf.c **** 
+ 903:ioLIB/wizchip_conf.c **** void wizchip_gettimeout(wiz_NetTimeout* nettime)
+ 904:ioLIB/wizchip_conf.c **** {
+ 2852              		.loc 1 904 1
+ 2853              		.cfi_startproc
+ 2854              		@ args = 0, pretend = 0, frame = 8
+ 2855              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2856 0000 90B5     		push	{r4, r7, lr}
+ 2857              	.LCFI177:
+ 2858              		.cfi_def_cfa_offset 12
+ 2859              		.cfi_offset 4, -12
+ 2860              		.cfi_offset 7, -8
+ 2861              		.cfi_offset 14, -4
+ 2862 0002 83B0     		sub	sp, sp, #12
+ 2863              	.LCFI178:
+ 2864              		.cfi_def_cfa_offset 24
+ 2865 0004 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 66
+
+
+ 2866              	.LCFI179:
+ 2867              		.cfi_def_cfa_register 7
+ 2868 0006 7860     		str	r0, [r7, #4]
+ 905:ioLIB/wizchip_conf.c ****    nettime->retry_cnt = getRCR();
+ 2869              		.loc 1 905 25
+ 2870 0008 4FF4D850 		mov	r0, #6912
+ 2871 000c FFF7FEFF 		bl	WIZCHIP_READ
+ 2872 0010 0346     		mov	r3, r0
+ 2873 0012 1A46     		mov	r2, r3
+ 2874              		.loc 1 905 23
+ 2875 0014 7B68     		ldr	r3, [r7, #4]
+ 2876 0016 1A70     		strb	r2, [r3]
+ 906:ioLIB/wizchip_conf.c ****    nettime->time_100us = getRTR();
+ 2877              		.loc 1 906 26
+ 2878 0018 4FF4C850 		mov	r0, #6400
+ 2879 001c FFF7FEFF 		bl	WIZCHIP_READ
+ 2880 0020 0346     		mov	r3, r0
+ 2881 0022 9BB2     		uxth	r3, r3
+ 2882 0024 1B02     		lsls	r3, r3, #8
+ 2883 0026 9CB2     		uxth	r4, r3
+ 2884 0028 4FF4D050 		mov	r0, #6656
+ 2885 002c FFF7FEFF 		bl	WIZCHIP_READ
+ 2886 0030 0346     		mov	r3, r0
+ 2887 0032 9BB2     		uxth	r3, r3
+ 2888 0034 2344     		add	r3, r3, r4
+ 2889 0036 9AB2     		uxth	r2, r3
+ 2890              		.loc 1 906 24
+ 2891 0038 7B68     		ldr	r3, [r7, #4]
+ 2892 003a 5A80     		strh	r2, [r3, #2]	@ movhi
+ 907:ioLIB/wizchip_conf.c **** }
+ 2893              		.loc 1 907 1
+ 2894 003c 00BF     		nop
+ 2895 003e 0C37     		adds	r7, r7, #12
+ 2896              	.LCFI180:
+ 2897              		.cfi_def_cfa_offset 12
+ 2898 0040 BD46     		mov	sp, r7
+ 2899              	.LCFI181:
+ 2900              		.cfi_def_cfa_register 13
+ 2901              		@ sp needed
+ 2902 0042 90BD     		pop	{r4, r7, pc}
+ 2903              		.cfi_endproc
+ 2904              	.LFE35:
+ 2906              		.text
+ 2907              	.Letext0:
+ 2908              		.file 2 "d:\\gcc arm\\10 2021.10\\lib\\gcc\\arm-none-eabi\\10.3.1\\include\\stddef.h"
+ 2909              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 2910              		.file 4 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 2911              		.file 5 "ioLIB/wizchip_conf.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 67
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 wizchip_conf.c
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:20     .text.wizchip_cris_enter:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:26     .text.wizchip_cris_enter:00000000 wizchip_cris_enter
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:56     .text.wizchip_cris_exit:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:62     .text.wizchip_cris_exit:00000000 wizchip_cris_exit
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:91     .text.wizchip_cs_select:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:97     .text.wizchip_cs_select:00000000 wizchip_cs_select
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:126    .text.wizchip_cs_deselect:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:132    .text.wizchip_cs_deselect:00000000 wizchip_cs_deselect
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:161    .text.wizchip_bus_readdata:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:167    .text.wizchip_bus_readdata:00000000 wizchip_bus_readdata
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:208    .text.wizchip_bus_writedata:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:214    .text.wizchip_bus_writedata:00000000 wizchip_bus_writedata
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:257    .text.wizchip_spi_readbyte:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:263    .text.wizchip_spi_readbyte:00000000 wizchip_spi_readbyte
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:294    .text.wizchip_spi_writebyte:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:300    .text.wizchip_spi_writebyte:00000000 wizchip_spi_writebyte
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:337    .text.wizchip_spi_readburst:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:343    .text.wizchip_spi_readburst:00000000 wizchip_spi_readburst
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:381    .text.wizchip_spi_writeburst:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:387    .text.wizchip_spi_writeburst:00000000 wizchip_spi_writeburst
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:429    .data.WIZCHIP:00000000 WIZCHIP
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:426    .data.WIZCHIP:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:442    .bss._DNS_:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:445    .bss._DNS_:00000000 _DNS_
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:450    .bss._DHCP_:00000000 _DHCP_
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:451    .bss._DHCP_:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:453    .text.reg_wizchip_cris_cbfunc:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:459    .text.reg_wizchip_cris_cbfunc:00000000 reg_wizchip_cris_cbfunc
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:524    .text.reg_wizchip_cris_cbfunc:00000040 $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:531    .text.reg_wizchip_cs_cbfunc:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:537    .text.reg_wizchip_cs_cbfunc:00000000 reg_wizchip_cs_cbfunc
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:602    .text.reg_wizchip_cs_cbfunc:00000040 $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:609    .text.reg_wizchip_bus_cbfunc:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:615    .text.reg_wizchip_bus_cbfunc:00000000 reg_wizchip_bus_cbfunc
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:691    .text.reg_wizchip_bus_cbfunc:0000004c $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:698    .text.reg_wizchip_spi_cbfunc:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:704    .text.reg_wizchip_spi_cbfunc:00000000 reg_wizchip_spi_cbfunc
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:780    .text.reg_wizchip_spi_cbfunc:0000004c $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:787    .text.reg_wizchip_spiburst_cbfunc:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:793    .text.reg_wizchip_spiburst_cbfunc:00000000 reg_wizchip_spiburst_cbfunc
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:869    .text.reg_wizchip_spiburst_cbfunc:0000004c $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:876    .text.ctlwizchip:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:882    .text.ctlwizchip:00000000 ctlwizchip
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:919    .text.ctlwizchip:00000028 $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:935    .text.ctlwizchip:00000068 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1297   .text.wizchip_sw_reset:00000000 wizchip_sw_reset
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1389   .text.wizchip_init:00000000 wizchip_init
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1582   .text.wizchip_clrinterrupt:00000000 wizchip_clrinterrupt
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1671   .text.wizchip_getinterrupt:00000000 wizchip_getinterrupt
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1744   .text.wizchip_setinterruptmask:00000000 wizchip_setinterruptmask
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1802   .text.wizchip_getinterruptmask:00000000 wizchip_getinterruptmask
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1988   .text.wizphy_reset:00000000 wizphy_reset
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2053   .text.wizphy_setphyconf:00000000 wizphy_setphyconf
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2165   .text.wizphy_getphyconf:00000000 wizphy_getphyconf
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2376   .text.wizphy_setphypmode:00000000 wizphy_setphypmode
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s 			page 68
+
+
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1928   .text.wizphy_getphypmode:00000000 wizphy_getphypmode
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1873   .text.wizphy_getphylink:00000000 wizphy_getphylink
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1181   .text.ctlwizchip:000001c0 $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1186   .text.ctlnetwork:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1192   .text.ctlnetwork:00000000 ctlnetwork
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1220   .text.ctlnetwork:00000018 $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1226   .text.ctlnetwork:00000030 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2491   .text.wizchip_setnetinfo:00000000 wizchip_setnetinfo
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2591   .text.wizchip_getnetinfo:00000000 wizchip_getnetinfo
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2690   .text.wizchip_setnetmode:00000000 wizchip_setnetmode
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2760   .text.wizchip_getnetmode:00000000 wizchip_getnetmode
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2791   .text.wizchip_settimeout:00000000 wizchip_settimeout
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2850   .text.wizchip_gettimeout:00000000 wizchip_gettimeout
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1291   .text.wizchip_sw_reset:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1383   .text.wizchip_init:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1576   .text.wizchip_clrinterrupt:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1665   .text.wizchip_getinterrupt:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1738   .text.wizchip_setinterruptmask:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1796   .text.wizchip_getinterruptmask:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1867   .text.wizphy_getphylink:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1922   .text.wizphy_getphypmode:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:1982   .text.wizphy_reset:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2047   .text.wizphy_setphyconf:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2159   .text.wizphy_getphyconf:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2309   .text.wizphy_getphystat:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2315   .text.wizphy_getphystat:00000000 wizphy_getphystat
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2370   .text.wizphy_setphypmode:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2485   .text.wizchip_setnetinfo:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2579   .text.wizchip_setnetinfo:00000078 $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2585   .text.wizchip_getnetinfo:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2678   .text.wizchip_getnetinfo:00000078 $d
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2684   .text.wizchip_setnetmode:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2754   .text.wizchip_getnetmode:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2785   .text.wizchip_settimeout:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccyrA4vi.s:2844   .text.wizchip_gettimeout:00000000 $t
+
+UNDEFINED SYMBOLS
+WIZCHIP_WRITE
+WIZCHIP_READ
+WIZCHIP_READ_BUF
+WIZCHIP_WRITE_BUF

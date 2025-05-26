@@ -1,0 +1,2628 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"coap.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.coap_parseHeader,"ax",%progbits
+  20              		.align	1
+  21              		.global	coap_parseHeader
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	coap_parseHeader:
+  27              	.LFB3:
+  28              		.file 1 "coapLIB/coap.c"
+   1:coapLIB/coap.c **** #include <stdio.h>
+   2:coapLIB/coap.c **** #include <stdlib.h>
+   3:coapLIB/coap.c **** #include <stdint.h>
+   4:coapLIB/coap.c **** #include <stdbool.h>
+   5:coapLIB/coap.c **** #include <string.h>
+   6:coapLIB/coap.c **** #include <stddef.h>
+   7:coapLIB/coap.c **** #include "coap.h"
+   8:coapLIB/coap.c **** 
+   9:coapLIB/coap.c **** extern void endpoint_setup(void);
+  10:coapLIB/coap.c **** extern const coap_endpoint_t endpoints[];
+  11:coapLIB/coap.c **** 
+  12:coapLIB/coap.c **** #ifdef DEBUG
+  13:coapLIB/coap.c **** void coap_dumpHeader(coap_header_t *hdr)
+  14:coapLIB/coap.c **** {
+  15:coapLIB/coap.c ****     printf("Header:\n");
+  16:coapLIB/coap.c ****     printf("  ver  0x%02X\n", hdr->ver);
+  17:coapLIB/coap.c ****     printf("  t    0x%02X\n", hdr->t);
+  18:coapLIB/coap.c ****     printf("  tkl  0x%02X\n", hdr->tkl);
+  19:coapLIB/coap.c ****     printf("  code 0x%02X\n", hdr->code);
+  20:coapLIB/coap.c ****     printf("  id   0x%02X%02X\n", hdr->id[0], hdr->id[1]);
+  21:coapLIB/coap.c **** }
+  22:coapLIB/coap.c **** #endif
+  23:coapLIB/coap.c **** 
+  24:coapLIB/coap.c **** #ifdef DEBUG
+  25:coapLIB/coap.c **** void coap_dump(const uint8_t *buf, size_t buflen, bool bare)
+  26:coapLIB/coap.c **** {
+  27:coapLIB/coap.c ****     if (bare)
+  28:coapLIB/coap.c ****     {
+  29:coapLIB/coap.c ****         while(buflen--)
+  30:coapLIB/coap.c ****             printf("%02X%s", *buf++, (buflen > 0) ? " " : "");
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 2
+
+
+  31:coapLIB/coap.c ****     }
+  32:coapLIB/coap.c ****     else
+  33:coapLIB/coap.c ****     {
+  34:coapLIB/coap.c ****         printf("Dump: ");
+  35:coapLIB/coap.c ****         while(buflen--)
+  36:coapLIB/coap.c ****             printf("%02X%s", *buf++, (buflen > 0) ? " " : "");
+  37:coapLIB/coap.c ****         printf("\n");
+  38:coapLIB/coap.c ****     }
+  39:coapLIB/coap.c **** }
+  40:coapLIB/coap.c **** #endif
+  41:coapLIB/coap.c **** 
+  42:coapLIB/coap.c **** int coap_parseHeader(coap_header_t *hdr, const uint8_t *buf, size_t buflen)
+  43:coapLIB/coap.c **** {
+  29              		.loc 1 43 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 16
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 7, -4
+  38 0002 85B0     		sub	sp, sp, #20
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 24
+  41 0004 00AF     		add	r7, sp, #0
+  42              	.LCFI2:
+  43              		.cfi_def_cfa_register 7
+  44 0006 F860     		str	r0, [r7, #12]
+  45 0008 B960     		str	r1, [r7, #8]
+  46 000a 7A60     		str	r2, [r7, #4]
+  44:coapLIB/coap.c ****     if (buflen < 4)
+  47              		.loc 1 44 8
+  48 000c 7B68     		ldr	r3, [r7, #4]
+  49 000e 032B     		cmp	r3, #3
+  50 0010 01D8     		bhi	.L2
+  45:coapLIB/coap.c ****         return COAP_ERR_HEADER_TOO_SHORT;
+  51              		.loc 1 45 16
+  52 0012 0123     		movs	r3, #1
+  53 0014 28E0     		b	.L3
+  54              	.L2:
+  46:coapLIB/coap.c ****     hdr->ver = (buf[0] & 0xC0) >> 6;
+  55              		.loc 1 46 20
+  56 0016 BB68     		ldr	r3, [r7, #8]
+  57 0018 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  58              		.loc 1 46 32
+  59 001a 9B09     		lsrs	r3, r3, #6
+  60 001c DAB2     		uxtb	r2, r3
+  61              		.loc 1 46 14
+  62 001e FB68     		ldr	r3, [r7, #12]
+  63 0020 1A70     		strb	r2, [r3]
+  47:coapLIB/coap.c ****     if (hdr->ver != 1)
+  64              		.loc 1 47 12
+  65 0022 FB68     		ldr	r3, [r7, #12]
+  66 0024 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  67              		.loc 1 47 8
+  68 0026 012B     		cmp	r3, #1
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 3
+
+
+  69 0028 01D0     		beq	.L4
+  48:coapLIB/coap.c ****         return COAP_ERR_VERSION_NOT_1;
+  70              		.loc 1 48 16
+  71 002a 0223     		movs	r3, #2
+  72 002c 1CE0     		b	.L3
+  73              	.L4:
+  49:coapLIB/coap.c ****     hdr->t = (buf[0] & 0x30) >> 4;
+  74              		.loc 1 49 18
+  75 002e BB68     		ldr	r3, [r7, #8]
+  76 0030 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  77              		.loc 1 49 30
+  78 0032 1B11     		asrs	r3, r3, #4
+  79 0034 DBB2     		uxtb	r3, r3
+  80 0036 03F00303 		and	r3, r3, #3
+  81 003a DAB2     		uxtb	r2, r3
+  82              		.loc 1 49 12
+  83 003c FB68     		ldr	r3, [r7, #12]
+  84 003e 5A70     		strb	r2, [r3, #1]
+  50:coapLIB/coap.c ****     hdr->tkl = buf[0] & 0x0F;
+  85              		.loc 1 50 23
+  86 0040 BB68     		ldr	r3, [r7, #8]
+  87 0042 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  88 0044 03F00F03 		and	r3, r3, #15
+  89 0048 DAB2     		uxtb	r2, r3
+  90              		.loc 1 50 14
+  91 004a FB68     		ldr	r3, [r7, #12]
+  92 004c 9A70     		strb	r2, [r3, #2]
+  51:coapLIB/coap.c ****     hdr->code = buf[1];
+  93              		.loc 1 51 15
+  94 004e BB68     		ldr	r3, [r7, #8]
+  95 0050 5A78     		ldrb	r2, [r3, #1]	@ zero_extendqisi2
+  96 0052 FB68     		ldr	r3, [r7, #12]
+  97 0054 DA70     		strb	r2, [r3, #3]
+  52:coapLIB/coap.c ****     hdr->id[0] = buf[2];
+  98              		.loc 1 52 16
+  99 0056 BB68     		ldr	r3, [r7, #8]
+ 100 0058 9A78     		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 101 005a FB68     		ldr	r3, [r7, #12]
+ 102 005c 1A71     		strb	r2, [r3, #4]
+  53:coapLIB/coap.c ****     hdr->id[1] = buf[3];
+ 103              		.loc 1 53 16
+ 104 005e BB68     		ldr	r3, [r7, #8]
+ 105 0060 DA78     		ldrb	r2, [r3, #3]	@ zero_extendqisi2
+ 106 0062 FB68     		ldr	r3, [r7, #12]
+ 107 0064 5A71     		strb	r2, [r3, #5]
+  54:coapLIB/coap.c ****     return 0;
+ 108              		.loc 1 54 12
+ 109 0066 0023     		movs	r3, #0
+ 110              	.L3:
+  55:coapLIB/coap.c **** }
+ 111              		.loc 1 55 1
+ 112 0068 1846     		mov	r0, r3
+ 113 006a 1437     		adds	r7, r7, #20
+ 114              	.LCFI3:
+ 115              		.cfi_def_cfa_offset 4
+ 116 006c BD46     		mov	sp, r7
+ 117              	.LCFI4:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 4
+
+
+ 118              		.cfi_def_cfa_register 13
+ 119              		@ sp needed
+ 120 006e 5DF8047B 		ldr	r7, [sp], #4
+ 121              	.LCFI5:
+ 122              		.cfi_restore 7
+ 123              		.cfi_def_cfa_offset 0
+ 124 0072 7047     		bx	lr
+ 125              		.cfi_endproc
+ 126              	.LFE3:
+ 128              		.section	.text.coap_parseToken,"ax",%progbits
+ 129              		.align	1
+ 130              		.global	coap_parseToken
+ 131              		.syntax unified
+ 132              		.thumb
+ 133              		.thumb_func
+ 135              	coap_parseToken:
+ 136              	.LFB4:
+  56:coapLIB/coap.c **** 
+  57:coapLIB/coap.c **** int coap_parseToken(coap_buffer_t *tokbuf, const coap_header_t *hdr, const uint8_t *buf, size_t buf
+  58:coapLIB/coap.c **** {
+ 137              		.loc 1 58 1
+ 138              		.cfi_startproc
+ 139              		@ args = 0, pretend = 0, frame = 16
+ 140              		@ frame_needed = 1, uses_anonymous_args = 0
+ 141              		@ link register save eliminated.
+ 142 0000 80B4     		push	{r7}
+ 143              	.LCFI6:
+ 144              		.cfi_def_cfa_offset 4
+ 145              		.cfi_offset 7, -4
+ 146 0002 85B0     		sub	sp, sp, #20
+ 147              	.LCFI7:
+ 148              		.cfi_def_cfa_offset 24
+ 149 0004 00AF     		add	r7, sp, #0
+ 150              	.LCFI8:
+ 151              		.cfi_def_cfa_register 7
+ 152 0006 F860     		str	r0, [r7, #12]
+ 153 0008 B960     		str	r1, [r7, #8]
+ 154 000a 7A60     		str	r2, [r7, #4]
+ 155 000c 3B60     		str	r3, [r7]
+  59:coapLIB/coap.c ****     if (hdr->tkl == 0)
+ 156              		.loc 1 59 12
+ 157 000e BB68     		ldr	r3, [r7, #8]
+ 158 0010 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 159              		.loc 1 59 8
+ 160 0012 002B     		cmp	r3, #0
+ 161 0014 07D1     		bne	.L6
+  60:coapLIB/coap.c ****     {
+  61:coapLIB/coap.c ****         tokbuf->p = NULL;
+ 162              		.loc 1 61 19
+ 163 0016 FB68     		ldr	r3, [r7, #12]
+ 164 0018 0022     		movs	r2, #0
+ 165 001a 1A60     		str	r2, [r3]
+  62:coapLIB/coap.c ****         tokbuf->len = 0;
+ 166              		.loc 1 62 21
+ 167 001c FB68     		ldr	r3, [r7, #12]
+ 168 001e 0022     		movs	r2, #0
+ 169 0020 5A60     		str	r2, [r3, #4]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 5
+
+
+  63:coapLIB/coap.c ****         return 0;
+ 170              		.loc 1 63 16
+ 171 0022 0023     		movs	r3, #0
+ 172 0024 17E0     		b	.L7
+ 173              	.L6:
+  64:coapLIB/coap.c ****     }
+  65:coapLIB/coap.c ****     else
+  66:coapLIB/coap.c ****     if (hdr->tkl <= 8)
+ 174              		.loc 1 66 12
+ 175 0026 BB68     		ldr	r3, [r7, #8]
+ 176 0028 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 177              		.loc 1 66 8
+ 178 002a 082B     		cmp	r3, #8
+ 179 002c 12D8     		bhi	.L8
+  67:coapLIB/coap.c ****     {
+  68:coapLIB/coap.c ****         if (4U + hdr->tkl > buflen)
+ 180              		.loc 1 68 21
+ 181 002e BB68     		ldr	r3, [r7, #8]
+ 182 0030 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 183              		.loc 1 68 16
+ 184 0032 0433     		adds	r3, r3, #4
+ 185              		.loc 1 68 12
+ 186 0034 3A68     		ldr	r2, [r7]
+ 187 0036 9A42     		cmp	r2, r3
+ 188 0038 01D2     		bcs	.L9
+  69:coapLIB/coap.c ****             return COAP_ERR_TOKEN_TOO_SHORT;   // tok bigger than packet
+ 189              		.loc 1 69 20
+ 190 003a 0323     		movs	r3, #3
+ 191 003c 0BE0     		b	.L7
+ 192              	.L9:
+  70:coapLIB/coap.c ****         tokbuf->p = buf+4;  // past header
+ 193              		.loc 1 70 24
+ 194 003e 7B68     		ldr	r3, [r7, #4]
+ 195 0040 1A1D     		adds	r2, r3, #4
+ 196              		.loc 1 70 19
+ 197 0042 FB68     		ldr	r3, [r7, #12]
+ 198 0044 1A60     		str	r2, [r3]
+  71:coapLIB/coap.c ****         tokbuf->len = hdr->tkl;
+ 199              		.loc 1 71 26
+ 200 0046 BB68     		ldr	r3, [r7, #8]
+ 201 0048 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 202 004a 1A46     		mov	r2, r3
+ 203              		.loc 1 71 21
+ 204 004c FB68     		ldr	r3, [r7, #12]
+ 205 004e 5A60     		str	r2, [r3, #4]
+  72:coapLIB/coap.c ****         return 0;
+ 206              		.loc 1 72 16
+ 207 0050 0023     		movs	r3, #0
+ 208 0052 00E0     		b	.L7
+ 209              	.L8:
+  73:coapLIB/coap.c ****     }
+  74:coapLIB/coap.c ****     else
+  75:coapLIB/coap.c ****     {
+  76:coapLIB/coap.c ****         // invalid size
+  77:coapLIB/coap.c ****         return COAP_ERR_TOKEN_TOO_SHORT;
+ 210              		.loc 1 77 16
+ 211 0054 0323     		movs	r3, #3
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 6
+
+
+ 212              	.L7:
+  78:coapLIB/coap.c ****     }
+  79:coapLIB/coap.c **** }
+ 213              		.loc 1 79 1
+ 214 0056 1846     		mov	r0, r3
+ 215 0058 1437     		adds	r7, r7, #20
+ 216              	.LCFI9:
+ 217              		.cfi_def_cfa_offset 4
+ 218 005a BD46     		mov	sp, r7
+ 219              	.LCFI10:
+ 220              		.cfi_def_cfa_register 13
+ 221              		@ sp needed
+ 222 005c 5DF8047B 		ldr	r7, [sp], #4
+ 223              	.LCFI11:
+ 224              		.cfi_restore 7
+ 225              		.cfi_def_cfa_offset 0
+ 226 0060 7047     		bx	lr
+ 227              		.cfi_endproc
+ 228              	.LFE4:
+ 230              		.section	.text.coap_parseOption,"ax",%progbits
+ 231              		.align	1
+ 232              		.global	coap_parseOption
+ 233              		.syntax unified
+ 234              		.thumb
+ 235              		.thumb_func
+ 237              	coap_parseOption:
+ 238              	.LFB5:
+  80:coapLIB/coap.c **** 
+  81:coapLIB/coap.c **** // advances p
+  82:coapLIB/coap.c **** int coap_parseOption(coap_option_t *option, uint16_t *running_delta, const uint8_t **buf, size_t bu
+  83:coapLIB/coap.c **** {
+ 239              		.loc 1 83 1
+ 240              		.cfi_startproc
+ 241              		@ args = 0, pretend = 0, frame = 32
+ 242              		@ frame_needed = 1, uses_anonymous_args = 0
+ 243              		@ link register save eliminated.
+ 244 0000 80B4     		push	{r7}
+ 245              	.LCFI12:
+ 246              		.cfi_def_cfa_offset 4
+ 247              		.cfi_offset 7, -4
+ 248 0002 89B0     		sub	sp, sp, #36
+ 249              	.LCFI13:
+ 250              		.cfi_def_cfa_offset 40
+ 251 0004 00AF     		add	r7, sp, #0
+ 252              	.LCFI14:
+ 253              		.cfi_def_cfa_register 7
+ 254 0006 F860     		str	r0, [r7, #12]
+ 255 0008 B960     		str	r1, [r7, #8]
+ 256 000a 7A60     		str	r2, [r7, #4]
+ 257 000c 3B60     		str	r3, [r7]
+  84:coapLIB/coap.c ****     const uint8_t *p = *buf;
+ 258              		.loc 1 84 20
+ 259 000e 7B68     		ldr	r3, [r7, #4]
+ 260 0010 1B68     		ldr	r3, [r3]
+ 261 0012 FB61     		str	r3, [r7, #28]
+  85:coapLIB/coap.c ****     uint8_t headlen = 1;
+ 262              		.loc 1 85 13
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 7
+
+
+ 263 0014 0123     		movs	r3, #1
+ 264 0016 FB76     		strb	r3, [r7, #27]
+  86:coapLIB/coap.c ****     uint16_t len, delta;
+  87:coapLIB/coap.c **** 
+  88:coapLIB/coap.c ****     if (buflen < headlen) // too small
+ 265              		.loc 1 88 16
+ 266 0018 FB7E     		ldrb	r3, [r7, #27]	@ zero_extendqisi2
+ 267              		.loc 1 88 8
+ 268 001a 3A68     		ldr	r2, [r7]
+ 269 001c 9A42     		cmp	r2, r3
+ 270 001e 01D2     		bcs	.L11
+  89:coapLIB/coap.c ****         return COAP_ERR_OPTION_TOO_SHORT_FOR_HEADER;
+ 271              		.loc 1 89 16
+ 272 0020 0423     		movs	r3, #4
+ 273 0022 A8E0     		b	.L12
+ 274              	.L11:
+  90:coapLIB/coap.c **** 
+  91:coapLIB/coap.c ****     delta = (p[0] & 0xF0) >> 4;
+ 275              		.loc 1 91 15
+ 276 0024 FB69     		ldr	r3, [r7, #28]
+ 277 0026 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 278              		.loc 1 91 27
+ 279 0028 1B09     		lsrs	r3, r3, #4
+ 280 002a DBB2     		uxtb	r3, r3
+ 281              		.loc 1 91 11
+ 282 002c FB82     		strh	r3, [r7, #22]	@ movhi
+  92:coapLIB/coap.c ****     len = p[0] & 0x0F;
+ 283              		.loc 1 92 12
+ 284 002e FB69     		ldr	r3, [r7, #28]
+ 285 0030 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 286              		.loc 1 92 16
+ 287 0032 9BB2     		uxth	r3, r3
+ 288              		.loc 1 92 9
+ 289 0034 03F00F03 		and	r3, r3, #15
+ 290 0038 3B83     		strh	r3, [r7, #24]	@ movhi
+  93:coapLIB/coap.c **** 
+  94:coapLIB/coap.c ****     // These are untested and may be buggy
+  95:coapLIB/coap.c ****     if (delta == 13)
+ 291              		.loc 1 95 8
+ 292 003a FB8A     		ldrh	r3, [r7, #22]
+ 293 003c 0D2B     		cmp	r3, #13
+ 294 003e 12D1     		bne	.L13
+  96:coapLIB/coap.c ****     {
+  97:coapLIB/coap.c ****         headlen++;
+ 295              		.loc 1 97 16
+ 296 0040 FB7E     		ldrb	r3, [r7, #27]	@ zero_extendqisi2
+ 297 0042 0133     		adds	r3, r3, #1
+ 298 0044 FB76     		strb	r3, [r7, #27]
+  98:coapLIB/coap.c ****         if (buflen < headlen)
+ 299              		.loc 1 98 20
+ 300 0046 FB7E     		ldrb	r3, [r7, #27]	@ zero_extendqisi2
+ 301              		.loc 1 98 12
+ 302 0048 3A68     		ldr	r2, [r7]
+ 303 004a 9A42     		cmp	r2, r3
+ 304 004c 01D2     		bcs	.L14
+  99:coapLIB/coap.c ****             return COAP_ERR_OPTION_TOO_SHORT_FOR_HEADER;
+ 305              		.loc 1 99 20
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 8
+
+
+ 306 004e 0423     		movs	r3, #4
+ 307 0050 91E0     		b	.L12
+ 308              	.L14:
+ 100:coapLIB/coap.c ****         delta = p[1] + 13;
+ 309              		.loc 1 100 18
+ 310 0052 FB69     		ldr	r3, [r7, #28]
+ 311 0054 0133     		adds	r3, r3, #1
+ 312 0056 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 313 0058 9BB2     		uxth	r3, r3
+ 314              		.loc 1 100 15
+ 315 005a 0D33     		adds	r3, r3, #13
+ 316 005c FB82     		strh	r3, [r7, #22]	@ movhi
+ 101:coapLIB/coap.c ****         p++;
+ 317              		.loc 1 101 10
+ 318 005e FB69     		ldr	r3, [r7, #28]
+ 319 0060 0133     		adds	r3, r3, #1
+ 320 0062 FB61     		str	r3, [r7, #28]
+ 321 0064 23E0     		b	.L15
+ 322              	.L13:
+ 102:coapLIB/coap.c ****     }
+ 103:coapLIB/coap.c ****     else
+ 104:coapLIB/coap.c ****     if (delta == 14)
+ 323              		.loc 1 104 8
+ 324 0066 FB8A     		ldrh	r3, [r7, #22]
+ 325 0068 0E2B     		cmp	r3, #14
+ 326 006a 1BD1     		bne	.L16
+ 105:coapLIB/coap.c ****     {
+ 106:coapLIB/coap.c ****         headlen += 2;
+ 327              		.loc 1 106 17
+ 328 006c FB7E     		ldrb	r3, [r7, #27]
+ 329 006e 0233     		adds	r3, r3, #2
+ 330 0070 FB76     		strb	r3, [r7, #27]
+ 107:coapLIB/coap.c ****         if (buflen < headlen)
+ 331              		.loc 1 107 20
+ 332 0072 FB7E     		ldrb	r3, [r7, #27]	@ zero_extendqisi2
+ 333              		.loc 1 107 12
+ 334 0074 3A68     		ldr	r2, [r7]
+ 335 0076 9A42     		cmp	r2, r3
+ 336 0078 01D2     		bcs	.L17
+ 108:coapLIB/coap.c ****             return COAP_ERR_OPTION_TOO_SHORT_FOR_HEADER;
+ 337              		.loc 1 108 20
+ 338 007a 0423     		movs	r3, #4
+ 339 007c 7BE0     		b	.L12
+ 340              	.L17:
+ 109:coapLIB/coap.c ****         delta = ((p[1] << 8) | p[2]) + 269;
+ 341              		.loc 1 109 20
+ 342 007e FB69     		ldr	r3, [r7, #28]
+ 343 0080 0133     		adds	r3, r3, #1
+ 344 0082 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 345              		.loc 1 109 24
+ 346 0084 1B02     		lsls	r3, r3, #8
+ 347              		.loc 1 109 30
+ 348 0086 1AB2     		sxth	r2, r3
+ 349              		.loc 1 109 33
+ 350 0088 FB69     		ldr	r3, [r7, #28]
+ 351 008a 0233     		adds	r3, r3, #2
+ 352 008c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 9
+
+
+ 353 008e 1BB2     		sxth	r3, r3
+ 354              		.loc 1 109 30
+ 355 0090 1343     		orrs	r3, r3, r2
+ 356 0092 1BB2     		sxth	r3, r3
+ 357 0094 9BB2     		uxth	r3, r3
+ 358              		.loc 1 109 15
+ 359 0096 03F20D13 		addw	r3, r3, #269
+ 360 009a FB82     		strh	r3, [r7, #22]	@ movhi
+ 110:coapLIB/coap.c ****         p+=2;
+ 361              		.loc 1 110 10
+ 362 009c FB69     		ldr	r3, [r7, #28]
+ 363 009e 0233     		adds	r3, r3, #2
+ 364 00a0 FB61     		str	r3, [r7, #28]
+ 365 00a2 04E0     		b	.L15
+ 366              	.L16:
+ 111:coapLIB/coap.c ****     }
+ 112:coapLIB/coap.c ****     else
+ 113:coapLIB/coap.c ****     if (delta == 15)
+ 367              		.loc 1 113 8
+ 368 00a4 FB8A     		ldrh	r3, [r7, #22]
+ 369 00a6 0F2B     		cmp	r3, #15
+ 370 00a8 01D1     		bne	.L15
+ 114:coapLIB/coap.c ****         return COAP_ERR_OPTION_DELTA_INVALID;
+ 371              		.loc 1 114 16
+ 372 00aa 0B23     		movs	r3, #11
+ 373 00ac 63E0     		b	.L12
+ 374              	.L15:
+ 115:coapLIB/coap.c **** 
+ 116:coapLIB/coap.c ****     if (len == 13)
+ 375              		.loc 1 116 8
+ 376 00ae 3B8B     		ldrh	r3, [r7, #24]
+ 377 00b0 0D2B     		cmp	r3, #13
+ 378 00b2 12D1     		bne	.L18
+ 117:coapLIB/coap.c ****     {
+ 118:coapLIB/coap.c ****         headlen++;
+ 379              		.loc 1 118 16
+ 380 00b4 FB7E     		ldrb	r3, [r7, #27]	@ zero_extendqisi2
+ 381 00b6 0133     		adds	r3, r3, #1
+ 382 00b8 FB76     		strb	r3, [r7, #27]
+ 119:coapLIB/coap.c ****         if (buflen < headlen)
+ 383              		.loc 1 119 20
+ 384 00ba FB7E     		ldrb	r3, [r7, #27]	@ zero_extendqisi2
+ 385              		.loc 1 119 12
+ 386 00bc 3A68     		ldr	r2, [r7]
+ 387 00be 9A42     		cmp	r2, r3
+ 388 00c0 01D2     		bcs	.L19
+ 120:coapLIB/coap.c ****             return COAP_ERR_OPTION_TOO_SHORT_FOR_HEADER;
+ 389              		.loc 1 120 20
+ 390 00c2 0423     		movs	r3, #4
+ 391 00c4 57E0     		b	.L12
+ 392              	.L19:
+ 121:coapLIB/coap.c ****         len = p[1] + 13;
+ 393              		.loc 1 121 16
+ 394 00c6 FB69     		ldr	r3, [r7, #28]
+ 395 00c8 0133     		adds	r3, r3, #1
+ 396 00ca 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 397 00cc 9BB2     		uxth	r3, r3
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 10
+
+
+ 398              		.loc 1 121 13
+ 399 00ce 0D33     		adds	r3, r3, #13
+ 400 00d0 3B83     		strh	r3, [r7, #24]	@ movhi
+ 122:coapLIB/coap.c ****         p++;
+ 401              		.loc 1 122 10
+ 402 00d2 FB69     		ldr	r3, [r7, #28]
+ 403 00d4 0133     		adds	r3, r3, #1
+ 404 00d6 FB61     		str	r3, [r7, #28]
+ 405 00d8 23E0     		b	.L20
+ 406              	.L18:
+ 123:coapLIB/coap.c ****     }
+ 124:coapLIB/coap.c ****     else
+ 125:coapLIB/coap.c ****     if (len == 14)
+ 407              		.loc 1 125 8
+ 408 00da 3B8B     		ldrh	r3, [r7, #24]
+ 409 00dc 0E2B     		cmp	r3, #14
+ 410 00de 1BD1     		bne	.L21
+ 126:coapLIB/coap.c ****     {
+ 127:coapLIB/coap.c ****         headlen += 2;
+ 411              		.loc 1 127 17
+ 412 00e0 FB7E     		ldrb	r3, [r7, #27]
+ 413 00e2 0233     		adds	r3, r3, #2
+ 414 00e4 FB76     		strb	r3, [r7, #27]
+ 128:coapLIB/coap.c ****         if (buflen < headlen)
+ 415              		.loc 1 128 20
+ 416 00e6 FB7E     		ldrb	r3, [r7, #27]	@ zero_extendqisi2
+ 417              		.loc 1 128 12
+ 418 00e8 3A68     		ldr	r2, [r7]
+ 419 00ea 9A42     		cmp	r2, r3
+ 420 00ec 01D2     		bcs	.L22
+ 129:coapLIB/coap.c ****             return COAP_ERR_OPTION_TOO_SHORT_FOR_HEADER;
+ 421              		.loc 1 129 20
+ 422 00ee 0423     		movs	r3, #4
+ 423 00f0 41E0     		b	.L12
+ 424              	.L22:
+ 130:coapLIB/coap.c ****         len = ((p[1] << 8) | p[2]) + 269;
+ 425              		.loc 1 130 18
+ 426 00f2 FB69     		ldr	r3, [r7, #28]
+ 427 00f4 0133     		adds	r3, r3, #1
+ 428 00f6 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 429              		.loc 1 130 22
+ 430 00f8 1B02     		lsls	r3, r3, #8
+ 431              		.loc 1 130 28
+ 432 00fa 1AB2     		sxth	r2, r3
+ 433              		.loc 1 130 31
+ 434 00fc FB69     		ldr	r3, [r7, #28]
+ 435 00fe 0233     		adds	r3, r3, #2
+ 436 0100 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 437 0102 1BB2     		sxth	r3, r3
+ 438              		.loc 1 130 28
+ 439 0104 1343     		orrs	r3, r3, r2
+ 440 0106 1BB2     		sxth	r3, r3
+ 441 0108 9BB2     		uxth	r3, r3
+ 442              		.loc 1 130 13
+ 443 010a 03F20D13 		addw	r3, r3, #269
+ 444 010e 3B83     		strh	r3, [r7, #24]	@ movhi
+ 131:coapLIB/coap.c ****         p+=2;
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 11
+
+
+ 445              		.loc 1 131 10
+ 446 0110 FB69     		ldr	r3, [r7, #28]
+ 447 0112 0233     		adds	r3, r3, #2
+ 448 0114 FB61     		str	r3, [r7, #28]
+ 449 0116 04E0     		b	.L20
+ 450              	.L21:
+ 132:coapLIB/coap.c ****     }
+ 133:coapLIB/coap.c ****     else
+ 134:coapLIB/coap.c ****     if (len == 15)
+ 451              		.loc 1 134 8
+ 452 0118 3B8B     		ldrh	r3, [r7, #24]
+ 453 011a 0F2B     		cmp	r3, #15
+ 454 011c 01D1     		bne	.L20
+ 135:coapLIB/coap.c ****         return COAP_ERR_OPTION_LEN_INVALID;
+ 455              		.loc 1 135 16
+ 456 011e 0823     		movs	r3, #8
+ 457 0120 29E0     		b	.L12
+ 458              	.L20:
+ 136:coapLIB/coap.c **** 
+ 137:coapLIB/coap.c ****     if ((p + 1 + len) > (*buf + buflen))
+ 459              		.loc 1 137 16
+ 460 0122 3B8B     		ldrh	r3, [r7, #24]
+ 461 0124 0133     		adds	r3, r3, #1
+ 462 0126 FA69     		ldr	r2, [r7, #28]
+ 463 0128 1A44     		add	r2, r2, r3
+ 464              		.loc 1 137 26
+ 465 012a 7B68     		ldr	r3, [r7, #4]
+ 466 012c 1968     		ldr	r1, [r3]
+ 467              		.loc 1 137 31
+ 468 012e 3B68     		ldr	r3, [r7]
+ 469 0130 0B44     		add	r3, r3, r1
+ 470              		.loc 1 137 8
+ 471 0132 9A42     		cmp	r2, r3
+ 472 0134 01D9     		bls	.L23
+ 138:coapLIB/coap.c ****         return COAP_ERR_OPTION_TOO_BIG;
+ 473              		.loc 1 138 16
+ 474 0136 0723     		movs	r3, #7
+ 475 0138 1DE0     		b	.L12
+ 476              	.L23:
+ 139:coapLIB/coap.c **** 
+ 140:coapLIB/coap.c ****     //printf("option num=%d\n", delta + *running_delta);
+ 141:coapLIB/coap.c ****     option->num = delta + *running_delta;
+ 477              		.loc 1 141 25
+ 478 013a FB8A     		ldrh	r3, [r7, #22]	@ movhi
+ 479 013c DAB2     		uxtb	r2, r3
+ 480              		.loc 1 141 27
+ 481 013e BB68     		ldr	r3, [r7, #8]
+ 482 0140 1B88     		ldrh	r3, [r3]
+ 483              		.loc 1 141 25
+ 484 0142 DBB2     		uxtb	r3, r3
+ 485 0144 1344     		add	r3, r3, r2
+ 486 0146 DAB2     		uxtb	r2, r3
+ 487              		.loc 1 141 17
+ 488 0148 FB68     		ldr	r3, [r7, #12]
+ 489 014a 1A70     		strb	r2, [r3]
+ 142:coapLIB/coap.c ****     option->buf.p = p+1;
+ 490              		.loc 1 142 22
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 12
+
+
+ 491 014c FB69     		ldr	r3, [r7, #28]
+ 492 014e 5A1C     		adds	r2, r3, #1
+ 493              		.loc 1 142 19
+ 494 0150 FB68     		ldr	r3, [r7, #12]
+ 495 0152 5A60     		str	r2, [r3, #4]
+ 143:coapLIB/coap.c ****     option->buf.len = len;
+ 496              		.loc 1 143 21
+ 497 0154 3A8B     		ldrh	r2, [r7, #24]
+ 498 0156 FB68     		ldr	r3, [r7, #12]
+ 499 0158 9A60     		str	r2, [r3, #8]
+ 144:coapLIB/coap.c ****     //coap_dump(p+1, len, false);
+ 145:coapLIB/coap.c **** 
+ 146:coapLIB/coap.c ****     // advance buf
+ 147:coapLIB/coap.c ****     *buf = p + 1 + len;
+ 500              		.loc 1 147 18
+ 501 015a 3B8B     		ldrh	r3, [r7, #24]
+ 502 015c 0133     		adds	r3, r3, #1
+ 503 015e FA69     		ldr	r2, [r7, #28]
+ 504 0160 1A44     		add	r2, r2, r3
+ 505              		.loc 1 147 10
+ 506 0162 7B68     		ldr	r3, [r7, #4]
+ 507 0164 1A60     		str	r2, [r3]
+ 148:coapLIB/coap.c ****     *running_delta += delta;
+ 508              		.loc 1 148 20
+ 509 0166 BB68     		ldr	r3, [r7, #8]
+ 510 0168 1A88     		ldrh	r2, [r3]
+ 511 016a FB8A     		ldrh	r3, [r7, #22]	@ movhi
+ 512 016c 1344     		add	r3, r3, r2
+ 513 016e 9AB2     		uxth	r2, r3
+ 514 0170 BB68     		ldr	r3, [r7, #8]
+ 515 0172 1A80     		strh	r2, [r3]	@ movhi
+ 149:coapLIB/coap.c **** 
+ 150:coapLIB/coap.c ****     return 0;
+ 516              		.loc 1 150 12
+ 517 0174 0023     		movs	r3, #0
+ 518              	.L12:
+ 151:coapLIB/coap.c **** }
+ 519              		.loc 1 151 1
+ 520 0176 1846     		mov	r0, r3
+ 521 0178 2437     		adds	r7, r7, #36
+ 522              	.LCFI15:
+ 523              		.cfi_def_cfa_offset 4
+ 524 017a BD46     		mov	sp, r7
+ 525              	.LCFI16:
+ 526              		.cfi_def_cfa_register 13
+ 527              		@ sp needed
+ 528 017c 5DF8047B 		ldr	r7, [sp], #4
+ 529              	.LCFI17:
+ 530              		.cfi_restore 7
+ 531              		.cfi_def_cfa_offset 0
+ 532 0180 7047     		bx	lr
+ 533              		.cfi_endproc
+ 534              	.LFE5:
+ 536              		.section	.text.coap_parseOptionsAndPayload,"ax",%progbits
+ 537              		.align	1
+ 538              		.global	coap_parseOptionsAndPayload
+ 539              		.syntax unified
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 13
+
+
+ 540              		.thumb
+ 541              		.thumb_func
+ 543              	coap_parseOptionsAndPayload:
+ 544              	.LFB6:
+ 152:coapLIB/coap.c **** 
+ 153:coapLIB/coap.c **** // http://tools.ietf.org/html/rfc7252#section-3.1
+ 154:coapLIB/coap.c **** int coap_parseOptionsAndPayload(coap_option_t *options, uint8_t *numOptions, coap_buffer_t *payload
+ 155:coapLIB/coap.c **** {
+ 545              		.loc 1 155 1
+ 546              		.cfi_startproc
+ 547              		@ args = 8, pretend = 0, frame = 40
+ 548              		@ frame_needed = 1, uses_anonymous_args = 0
+ 549 0000 80B5     		push	{r7, lr}
+ 550              	.LCFI18:
+ 551              		.cfi_def_cfa_offset 8
+ 552              		.cfi_offset 7, -8
+ 553              		.cfi_offset 14, -4
+ 554 0002 8AB0     		sub	sp, sp, #40
+ 555              	.LCFI19:
+ 556              		.cfi_def_cfa_offset 48
+ 557 0004 00AF     		add	r7, sp, #0
+ 558              	.LCFI20:
+ 559              		.cfi_def_cfa_register 7
+ 560 0006 F860     		str	r0, [r7, #12]
+ 561 0008 B960     		str	r1, [r7, #8]
+ 562 000a 7A60     		str	r2, [r7, #4]
+ 563 000c 3B60     		str	r3, [r7]
+ 156:coapLIB/coap.c ****     size_t optionIndex = 0;
+ 564              		.loc 1 156 12
+ 565 000e 0023     		movs	r3, #0
+ 566 0010 7B62     		str	r3, [r7, #36]
+ 157:coapLIB/coap.c ****     uint16_t delta = 0;
+ 567              		.loc 1 157 14
+ 568 0012 0023     		movs	r3, #0
+ 569 0014 7B83     		strh	r3, [r7, #26]	@ movhi
+ 158:coapLIB/coap.c ****     const uint8_t *p = buf + 4 + hdr->tkl;
+ 570              		.loc 1 158 37
+ 571 0016 3B68     		ldr	r3, [r7]
+ 572 0018 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 573              		.loc 1 158 32
+ 574 001a 0433     		adds	r3, r3, #4
+ 575 001c 3A6B     		ldr	r2, [r7, #48]
+ 576 001e 1344     		add	r3, r3, r2
+ 577              		.loc 1 158 20
+ 578 0020 7B61     		str	r3, [r7, #20]
+ 159:coapLIB/coap.c ****     const uint8_t *end = buf + buflen;
+ 579              		.loc 1 159 20
+ 580 0022 3A6B     		ldr	r2, [r7, #48]
+ 581 0024 7B6B     		ldr	r3, [r7, #52]
+ 582 0026 1344     		add	r3, r3, r2
+ 583 0028 3B62     		str	r3, [r7, #32]
+ 160:coapLIB/coap.c ****     int rc;
+ 161:coapLIB/coap.c ****     if (p > end)
+ 584              		.loc 1 161 11
+ 585 002a 7B69     		ldr	r3, [r7, #20]
+ 586              		.loc 1 161 8
+ 587 002c 3A6A     		ldr	r2, [r7, #32]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 14
+
+
+ 588 002e 9A42     		cmp	r2, r3
+ 589 0030 1BD2     		bcs	.L27
+ 162:coapLIB/coap.c ****         return COAP_ERR_OPTION_OVERRUNS_PACKET;   // out of bounds
+ 590              		.loc 1 162 16
+ 591 0032 0623     		movs	r3, #6
+ 592 0034 47E0     		b	.L33
+ 593              	.L30:
+ 163:coapLIB/coap.c **** 
+ 164:coapLIB/coap.c ****     //coap_dump(p, end - p);
+ 165:coapLIB/coap.c **** 
+ 166:coapLIB/coap.c ****     // 0xFF is payload marker
+ 167:coapLIB/coap.c ****     while((optionIndex < *numOptions) && (p < end) && (*p != 0xFF))
+ 168:coapLIB/coap.c ****     {
+ 169:coapLIB/coap.c ****         if (0 != (rc = coap_parseOption(&options[optionIndex], &delta, &p, end-p)))
+ 594              		.loc 1 169 49
+ 595 0036 7A6A     		ldr	r2, [r7, #36]
+ 596 0038 1346     		mov	r3, r2
+ 597 003a 5B00     		lsls	r3, r3, #1
+ 598 003c 1344     		add	r3, r3, r2
+ 599 003e 9B00     		lsls	r3, r3, #2
+ 600 0040 1A46     		mov	r2, r3
+ 601              		.loc 1 169 24
+ 602 0042 FB68     		ldr	r3, [r7, #12]
+ 603 0044 9818     		adds	r0, r3, r2
+ 604              		.loc 1 169 79
+ 605 0046 7B69     		ldr	r3, [r7, #20]
+ 606 0048 3A6A     		ldr	r2, [r7, #32]
+ 607 004a D31A     		subs	r3, r2, r3
+ 608              		.loc 1 169 24
+ 609 004c 07F11402 		add	r2, r7, #20
+ 610 0050 07F11A01 		add	r1, r7, #26
+ 611 0054 FFF7FEFF 		bl	coap_parseOption
+ 612 0058 F861     		str	r0, [r7, #28]
+ 613              		.loc 1 169 12
+ 614 005a FB69     		ldr	r3, [r7, #28]
+ 615 005c 002B     		cmp	r3, #0
+ 616 005e 01D0     		beq	.L28
+ 170:coapLIB/coap.c ****             return rc;
+ 617              		.loc 1 170 20
+ 618 0060 FB69     		ldr	r3, [r7, #28]
+ 619 0062 30E0     		b	.L33
+ 620              	.L28:
+ 171:coapLIB/coap.c ****         optionIndex++;
+ 621              		.loc 1 171 20
+ 622 0064 7B6A     		ldr	r3, [r7, #36]
+ 623 0066 0133     		adds	r3, r3, #1
+ 624 0068 7B62     		str	r3, [r7, #36]
+ 625              	.L27:
+ 167:coapLIB/coap.c ****     {
+ 626              		.loc 1 167 26
+ 627 006a BB68     		ldr	r3, [r7, #8]
+ 628 006c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 629 006e 1A46     		mov	r2, r3
+ 167:coapLIB/coap.c ****     {
+ 630              		.loc 1 167 10
+ 631 0070 7B6A     		ldr	r3, [r7, #36]
+ 632 0072 9342     		cmp	r3, r2
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 15
+
+
+ 633 0074 07D2     		bcs	.L29
+ 167:coapLIB/coap.c ****     {
+ 634              		.loc 1 167 45 discriminator 1
+ 635 0076 7B69     		ldr	r3, [r7, #20]
+ 167:coapLIB/coap.c ****     {
+ 636              		.loc 1 167 39 discriminator 1
+ 637 0078 3A6A     		ldr	r2, [r7, #32]
+ 638 007a 9A42     		cmp	r2, r3
+ 639 007c 03D9     		bls	.L29
+ 167:coapLIB/coap.c ****     {
+ 640              		.loc 1 167 56 discriminator 2
+ 641 007e 7B69     		ldr	r3, [r7, #20]
+ 642 0080 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 167:coapLIB/coap.c ****     {
+ 643              		.loc 1 167 52 discriminator 2
+ 644 0082 FF2B     		cmp	r3, #255
+ 645 0084 D7D1     		bne	.L30
+ 646              	.L29:
+ 172:coapLIB/coap.c ****     }
+ 173:coapLIB/coap.c ****     *numOptions = optionIndex;
+ 647              		.loc 1 173 17
+ 648 0086 7B6A     		ldr	r3, [r7, #36]
+ 649 0088 DAB2     		uxtb	r2, r3
+ 650 008a BB68     		ldr	r3, [r7, #8]
+ 651 008c 1A70     		strb	r2, [r3]
+ 174:coapLIB/coap.c **** 
+ 175:coapLIB/coap.c ****     if (p+1 < end && *p == 0xFF)  // payload marker
+ 652              		.loc 1 175 10
+ 653 008e 7B69     		ldr	r3, [r7, #20]
+ 654 0090 0133     		adds	r3, r3, #1
+ 655              		.loc 1 175 8
+ 656 0092 3A6A     		ldr	r2, [r7, #32]
+ 657 0094 9A42     		cmp	r2, r3
+ 658 0096 0FD9     		bls	.L31
+ 659              		.loc 1 175 22 discriminator 1
+ 660 0098 7B69     		ldr	r3, [r7, #20]
+ 661 009a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 662              		.loc 1 175 19 discriminator 1
+ 663 009c FF2B     		cmp	r3, #255
+ 664 009e 0BD1     		bne	.L31
+ 176:coapLIB/coap.c ****     {
+ 177:coapLIB/coap.c ****         payload->p = p+1;
+ 665              		.loc 1 177 23
+ 666 00a0 7B69     		ldr	r3, [r7, #20]
+ 667 00a2 5A1C     		adds	r2, r3, #1
+ 668              		.loc 1 177 20
+ 669 00a4 7B68     		ldr	r3, [r7, #4]
+ 670 00a6 1A60     		str	r2, [r3]
+ 178:coapLIB/coap.c ****         payload->len = end-(p+1);
+ 671              		.loc 1 178 30
+ 672 00a8 7B69     		ldr	r3, [r7, #20]
+ 673 00aa 0133     		adds	r3, r3, #1
+ 674              		.loc 1 178 27
+ 675 00ac 3A6A     		ldr	r2, [r7, #32]
+ 676 00ae D31A     		subs	r3, r2, r3
+ 677 00b0 1A46     		mov	r2, r3
+ 678              		.loc 1 178 22
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 16
+
+
+ 679 00b2 7B68     		ldr	r3, [r7, #4]
+ 680 00b4 5A60     		str	r2, [r3, #4]
+ 681 00b6 05E0     		b	.L32
+ 682              	.L31:
+ 179:coapLIB/coap.c ****     }
+ 180:coapLIB/coap.c ****     else
+ 181:coapLIB/coap.c ****     {
+ 182:coapLIB/coap.c ****         payload->p = NULL;
+ 683              		.loc 1 182 20
+ 684 00b8 7B68     		ldr	r3, [r7, #4]
+ 685 00ba 0022     		movs	r2, #0
+ 686 00bc 1A60     		str	r2, [r3]
+ 183:coapLIB/coap.c ****         payload->len = 0;
+ 687              		.loc 1 183 22
+ 688 00be 7B68     		ldr	r3, [r7, #4]
+ 689 00c0 0022     		movs	r2, #0
+ 690 00c2 5A60     		str	r2, [r3, #4]
+ 691              	.L32:
+ 184:coapLIB/coap.c ****     }
+ 185:coapLIB/coap.c **** 
+ 186:coapLIB/coap.c ****     return 0;
+ 692              		.loc 1 186 12
+ 693 00c4 0023     		movs	r3, #0
+ 694              	.L33:
+ 187:coapLIB/coap.c **** }
+ 695              		.loc 1 187 1 discriminator 1
+ 696 00c6 1846     		mov	r0, r3
+ 697 00c8 2837     		adds	r7, r7, #40
+ 698              	.LCFI21:
+ 699              		.cfi_def_cfa_offset 8
+ 700 00ca BD46     		mov	sp, r7
+ 701              	.LCFI22:
+ 702              		.cfi_def_cfa_register 13
+ 703              		@ sp needed
+ 704 00cc 80BD     		pop	{r7, pc}
+ 705              		.cfi_endproc
+ 706              	.LFE6:
+ 708              		.section	.text.coap_parse,"ax",%progbits
+ 709              		.align	1
+ 710              		.global	coap_parse
+ 711              		.syntax unified
+ 712              		.thumb
+ 713              		.thumb_func
+ 715              	coap_parse:
+ 716              	.LFB7:
+ 188:coapLIB/coap.c **** 
+ 189:coapLIB/coap.c **** #ifdef DEBUG
+ 190:coapLIB/coap.c **** void coap_dumpOptions(coap_option_t *opts, size_t numopt)
+ 191:coapLIB/coap.c **** {
+ 192:coapLIB/coap.c ****     size_t i;
+ 193:coapLIB/coap.c ****     printf(" Options:\n");
+ 194:coapLIB/coap.c ****     for (i=0;i<numopt;i++)
+ 195:coapLIB/coap.c ****     {
+ 196:coapLIB/coap.c ****         printf("  0x%02X [ ", opts[i].num);
+ 197:coapLIB/coap.c ****         coap_dump(opts[i].buf.p, opts[i].buf.len, true);
+ 198:coapLIB/coap.c ****         printf(" ]\n");
+ 199:coapLIB/coap.c ****     }
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 17
+
+
+ 200:coapLIB/coap.c **** }
+ 201:coapLIB/coap.c **** #endif
+ 202:coapLIB/coap.c **** 
+ 203:coapLIB/coap.c **** #ifdef DEBUG
+ 204:coapLIB/coap.c **** void coap_dumpPacket(coap_packet_t *pkt)
+ 205:coapLIB/coap.c **** {
+ 206:coapLIB/coap.c ****     coap_dumpHeader(&pkt->hdr);
+ 207:coapLIB/coap.c ****     coap_dumpOptions(pkt->opts, pkt->numopts);
+ 208:coapLIB/coap.c ****     printf("Payload: ");
+ 209:coapLIB/coap.c ****     coap_dump(pkt->payload.p, pkt->payload.len, true);
+ 210:coapLIB/coap.c ****     printf("\n");
+ 211:coapLIB/coap.c **** }
+ 212:coapLIB/coap.c **** #endif
+ 213:coapLIB/coap.c **** 
+ 214:coapLIB/coap.c **** int coap_parse(coap_packet_t *pkt, const uint8_t *buf, size_t buflen)
+ 215:coapLIB/coap.c **** {
+ 717              		.loc 1 215 1
+ 718              		.cfi_startproc
+ 719              		@ args = 0, pretend = 0, frame = 24
+ 720              		@ frame_needed = 1, uses_anonymous_args = 0
+ 721 0000 90B5     		push	{r4, r7, lr}
+ 722              	.LCFI23:
+ 723              		.cfi_def_cfa_offset 12
+ 724              		.cfi_offset 4, -12
+ 725              		.cfi_offset 7, -8
+ 726              		.cfi_offset 14, -4
+ 727 0002 89B0     		sub	sp, sp, #36
+ 728              	.LCFI24:
+ 729              		.cfi_def_cfa_offset 48
+ 730 0004 02AF     		add	r7, sp, #8
+ 731              	.LCFI25:
+ 732              		.cfi_def_cfa 7, 40
+ 733 0006 F860     		str	r0, [r7, #12]
+ 734 0008 B960     		str	r1, [r7, #8]
+ 735 000a 7A60     		str	r2, [r7, #4]
+ 216:coapLIB/coap.c ****     int rc;
+ 217:coapLIB/coap.c **** 
+ 218:coapLIB/coap.c ****     // coap_dump(buf, buflen, false);
+ 219:coapLIB/coap.c **** 
+ 220:coapLIB/coap.c ****     if (0 != (rc = coap_parseHeader(&pkt->hdr, buf, buflen)))
+ 736              		.loc 1 220 20
+ 737 000c FB68     		ldr	r3, [r7, #12]
+ 738 000e 7A68     		ldr	r2, [r7, #4]
+ 739 0010 B968     		ldr	r1, [r7, #8]
+ 740 0012 1846     		mov	r0, r3
+ 741 0014 FFF7FEFF 		bl	coap_parseHeader
+ 742 0018 7861     		str	r0, [r7, #20]
+ 743              		.loc 1 220 8
+ 744 001a 7B69     		ldr	r3, [r7, #20]
+ 745 001c 002B     		cmp	r3, #0
+ 746 001e 01D0     		beq	.L35
+ 221:coapLIB/coap.c ****         return rc;
+ 747              		.loc 1 221 16
+ 748 0020 7B69     		ldr	r3, [r7, #20]
+ 749 0022 28E0     		b	.L36
+ 750              	.L35:
+ 222:coapLIB/coap.c **** //    coap_dumpHeader(&hdr);
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 18
+
+
+ 223:coapLIB/coap.c ****     if (0 != (rc = coap_parseToken(&pkt->tok, &pkt->hdr, buf, buflen)))
+ 751              		.loc 1 223 20
+ 752 0024 FB68     		ldr	r3, [r7, #12]
+ 753 0026 03F10800 		add	r0, r3, #8
+ 754              		.loc 1 223 47
+ 755 002a F968     		ldr	r1, [r7, #12]
+ 756              		.loc 1 223 20
+ 757 002c 7B68     		ldr	r3, [r7, #4]
+ 758 002e BA68     		ldr	r2, [r7, #8]
+ 759 0030 FFF7FEFF 		bl	coap_parseToken
+ 760 0034 7861     		str	r0, [r7, #20]
+ 761              		.loc 1 223 8
+ 762 0036 7B69     		ldr	r3, [r7, #20]
+ 763 0038 002B     		cmp	r3, #0
+ 764 003a 01D0     		beq	.L37
+ 224:coapLIB/coap.c ****         return rc;
+ 765              		.loc 1 224 16
+ 766 003c 7B69     		ldr	r3, [r7, #20]
+ 767 003e 1AE0     		b	.L36
+ 768              	.L37:
+ 225:coapLIB/coap.c ****     pkt->numopts = MAXOPT;
+ 769              		.loc 1 225 18
+ 770 0040 FB68     		ldr	r3, [r7, #12]
+ 771 0042 1022     		movs	r2, #16
+ 772 0044 1A74     		strb	r2, [r3, #16]
+ 226:coapLIB/coap.c ****     if (0 != (rc = coap_parseOptionsAndPayload(pkt->opts, &(pkt->numopts), &(pkt->payload), &pkt->h
+ 773              		.loc 1 226 51
+ 774 0046 FB68     		ldr	r3, [r7, #12]
+ 775 0048 03F11400 		add	r0, r3, #20
+ 776              		.loc 1 226 20
+ 777 004c FB68     		ldr	r3, [r7, #12]
+ 778 004e 03F11001 		add	r1, r3, #16
+ 779 0052 FB68     		ldr	r3, [r7, #12]
+ 780 0054 03F1D402 		add	r2, r3, #212
+ 781              		.loc 1 226 93
+ 782 0058 FC68     		ldr	r4, [r7, #12]
+ 783              		.loc 1 226 20
+ 784 005a 7B68     		ldr	r3, [r7, #4]
+ 785 005c 0193     		str	r3, [sp, #4]
+ 786 005e BB68     		ldr	r3, [r7, #8]
+ 787 0060 0093     		str	r3, [sp]
+ 788 0062 2346     		mov	r3, r4
+ 789 0064 FFF7FEFF 		bl	coap_parseOptionsAndPayload
+ 790 0068 7861     		str	r0, [r7, #20]
+ 791              		.loc 1 226 8
+ 792 006a 7B69     		ldr	r3, [r7, #20]
+ 793 006c 002B     		cmp	r3, #0
+ 794 006e 01D0     		beq	.L38
+ 227:coapLIB/coap.c ****         return rc;
+ 795              		.loc 1 227 16
+ 796 0070 7B69     		ldr	r3, [r7, #20]
+ 797 0072 00E0     		b	.L36
+ 798              	.L38:
+ 228:coapLIB/coap.c **** //    coap_dumpOptions(opts, numopt);
+ 229:coapLIB/coap.c ****     return 0;
+ 799              		.loc 1 229 12
+ 800 0074 0023     		movs	r3, #0
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 19
+
+
+ 801              	.L36:
+ 230:coapLIB/coap.c **** }
+ 802              		.loc 1 230 1
+ 803 0076 1846     		mov	r0, r3
+ 804 0078 1C37     		adds	r7, r7, #28
+ 805              	.LCFI26:
+ 806              		.cfi_def_cfa_offset 12
+ 807 007a BD46     		mov	sp, r7
+ 808              	.LCFI27:
+ 809              		.cfi_def_cfa_register 13
+ 810              		@ sp needed
+ 811 007c 90BD     		pop	{r4, r7, pc}
+ 812              		.cfi_endproc
+ 813              	.LFE7:
+ 815              		.section	.text.coap_findOptions,"ax",%progbits
+ 816              		.align	1
+ 817              		.global	coap_findOptions
+ 818              		.syntax unified
+ 819              		.thumb
+ 820              		.thumb_func
+ 822              	coap_findOptions:
+ 823              	.LFB8:
+ 231:coapLIB/coap.c **** 
+ 232:coapLIB/coap.c **** // options are always stored consecutively, so can return a block with same option num
+ 233:coapLIB/coap.c **** const coap_option_t *coap_findOptions(const coap_packet_t *pkt, uint8_t num, uint8_t *count)
+ 234:coapLIB/coap.c **** {
+ 824              		.loc 1 234 1
+ 825              		.cfi_startproc
+ 826              		@ args = 0, pretend = 0, frame = 24
+ 827              		@ frame_needed = 1, uses_anonymous_args = 0
+ 828              		@ link register save eliminated.
+ 829 0000 80B4     		push	{r7}
+ 830              	.LCFI28:
+ 831              		.cfi_def_cfa_offset 4
+ 832              		.cfi_offset 7, -4
+ 833 0002 87B0     		sub	sp, sp, #28
+ 834              	.LCFI29:
+ 835              		.cfi_def_cfa_offset 32
+ 836 0004 00AF     		add	r7, sp, #0
+ 837              	.LCFI30:
+ 838              		.cfi_def_cfa_register 7
+ 839 0006 F860     		str	r0, [r7, #12]
+ 840 0008 0B46     		mov	r3, r1
+ 841 000a 7A60     		str	r2, [r7, #4]
+ 842 000c FB72     		strb	r3, [r7, #11]
+ 235:coapLIB/coap.c ****     // FIXME, options is always sorted, can find faster than this
+ 236:coapLIB/coap.c ****     size_t i;
+ 237:coapLIB/coap.c ****     const coap_option_t *first = NULL;
+ 843              		.loc 1 237 26
+ 844 000e 0023     		movs	r3, #0
+ 845 0010 3B61     		str	r3, [r7, #16]
+ 238:coapLIB/coap.c ****     *count = 0;
+ 846              		.loc 1 238 12
+ 847 0012 7B68     		ldr	r3, [r7, #4]
+ 848 0014 0022     		movs	r2, #0
+ 849 0016 1A70     		strb	r2, [r3]
+ 239:coapLIB/coap.c ****     for (i=0;i<pkt->numopts;i++)
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 20
+
+
+ 850              		.loc 1 239 11
+ 851 0018 0023     		movs	r3, #0
+ 852 001a 7B61     		str	r3, [r7, #20]
+ 853              		.loc 1 239 5
+ 854 001c 25E0     		b	.L40
+ 855              	.L45:
+ 240:coapLIB/coap.c ****     {
+ 241:coapLIB/coap.c ****         if (pkt->opts[i].num == num)
+ 856              		.loc 1 241 25
+ 857 001e F968     		ldr	r1, [r7, #12]
+ 858 0020 7A69     		ldr	r2, [r7, #20]
+ 859 0022 1346     		mov	r3, r2
+ 860 0024 5B00     		lsls	r3, r3, #1
+ 861 0026 1344     		add	r3, r3, r2
+ 862 0028 9B00     		lsls	r3, r3, #2
+ 863 002a 0B44     		add	r3, r3, r1
+ 864 002c 1433     		adds	r3, r3, #20
+ 865 002e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 866              		.loc 1 241 12
+ 867 0030 FA7A     		ldrb	r2, [r7, #11]	@ zero_extendqisi2
+ 868 0032 9A42     		cmp	r2, r3
+ 869 0034 13D1     		bne	.L41
+ 242:coapLIB/coap.c ****         {
+ 243:coapLIB/coap.c ****             if (NULL == first)
+ 870              		.loc 1 243 16
+ 871 0036 3B69     		ldr	r3, [r7, #16]
+ 872 0038 002B     		cmp	r3, #0
+ 873 003a 09D1     		bne	.L42
+ 244:coapLIB/coap.c ****                 first = &pkt->opts[i];
+ 874              		.loc 1 244 23
+ 875 003c 7A69     		ldr	r2, [r7, #20]
+ 876 003e 1346     		mov	r3, r2
+ 877 0040 5B00     		lsls	r3, r3, #1
+ 878 0042 1344     		add	r3, r3, r2
+ 879 0044 9B00     		lsls	r3, r3, #2
+ 880 0046 1033     		adds	r3, r3, #16
+ 881 0048 FA68     		ldr	r2, [r7, #12]
+ 882 004a 1344     		add	r3, r3, r2
+ 883 004c 0433     		adds	r3, r3, #4
+ 884 004e 3B61     		str	r3, [r7, #16]
+ 885              	.L42:
+ 245:coapLIB/coap.c ****             (*count)++;
+ 886              		.loc 1 245 14
+ 887 0050 7B68     		ldr	r3, [r7, #4]
+ 888 0052 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 889              		.loc 1 245 21
+ 890 0054 0133     		adds	r3, r3, #1
+ 891 0056 DAB2     		uxtb	r2, r3
+ 892 0058 7B68     		ldr	r3, [r7, #4]
+ 893 005a 1A70     		strb	r2, [r3]
+ 894 005c 02E0     		b	.L43
+ 895              	.L41:
+ 246:coapLIB/coap.c ****         }
+ 247:coapLIB/coap.c ****         else
+ 248:coapLIB/coap.c ****         {
+ 249:coapLIB/coap.c ****             if (NULL != first)
+ 896              		.loc 1 249 16
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 21
+
+
+ 897 005e 3B69     		ldr	r3, [r7, #16]
+ 898 0060 002B     		cmp	r3, #0
+ 899 0062 09D1     		bne	.L47
+ 900              	.L43:
+ 239:coapLIB/coap.c ****     {
+ 901              		.loc 1 239 30 discriminator 2
+ 902 0064 7B69     		ldr	r3, [r7, #20]
+ 903 0066 0133     		adds	r3, r3, #1
+ 904 0068 7B61     		str	r3, [r7, #20]
+ 905              	.L40:
+ 239:coapLIB/coap.c ****     {
+ 906              		.loc 1 239 19 discriminator 1
+ 907 006a FB68     		ldr	r3, [r7, #12]
+ 908 006c 1B7C     		ldrb	r3, [r3, #16]	@ zero_extendqisi2
+ 909 006e 1A46     		mov	r2, r3
+ 239:coapLIB/coap.c ****     {
+ 910              		.loc 1 239 5 discriminator 1
+ 911 0070 7B69     		ldr	r3, [r7, #20]
+ 912 0072 9342     		cmp	r3, r2
+ 913 0074 D3D3     		bcc	.L45
+ 914 0076 00E0     		b	.L44
+ 915              	.L47:
+ 250:coapLIB/coap.c ****                 break;
+ 916              		.loc 1 250 17
+ 917 0078 00BF     		nop
+ 918              	.L44:
+ 251:coapLIB/coap.c ****         }
+ 252:coapLIB/coap.c ****     }
+ 253:coapLIB/coap.c ****     return first;
+ 919              		.loc 1 253 12
+ 920 007a 3B69     		ldr	r3, [r7, #16]
+ 254:coapLIB/coap.c **** }
+ 921              		.loc 1 254 1
+ 922 007c 1846     		mov	r0, r3
+ 923 007e 1C37     		adds	r7, r7, #28
+ 924              	.LCFI31:
+ 925              		.cfi_def_cfa_offset 4
+ 926 0080 BD46     		mov	sp, r7
+ 927              	.LCFI32:
+ 928              		.cfi_def_cfa_register 13
+ 929              		@ sp needed
+ 930 0082 5DF8047B 		ldr	r7, [sp], #4
+ 931              	.LCFI33:
+ 932              		.cfi_restore 7
+ 933              		.cfi_def_cfa_offset 0
+ 934 0086 7047     		bx	lr
+ 935              		.cfi_endproc
+ 936              	.LFE8:
+ 938              		.section	.text.coap_buffer_to_string,"ax",%progbits
+ 939              		.align	1
+ 940              		.global	coap_buffer_to_string
+ 941              		.syntax unified
+ 942              		.thumb
+ 943              		.thumb_func
+ 945              	coap_buffer_to_string:
+ 946              	.LFB9:
+ 255:coapLIB/coap.c **** 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 22
+
+
+ 256:coapLIB/coap.c **** int coap_buffer_to_string(char *strbuf, size_t strbuflen, const coap_buffer_t *buf)
+ 257:coapLIB/coap.c **** {
+ 947              		.loc 1 257 1
+ 948              		.cfi_startproc
+ 949              		@ args = 0, pretend = 0, frame = 16
+ 950              		@ frame_needed = 1, uses_anonymous_args = 0
+ 951 0000 80B5     		push	{r7, lr}
+ 952              	.LCFI34:
+ 953              		.cfi_def_cfa_offset 8
+ 954              		.cfi_offset 7, -8
+ 955              		.cfi_offset 14, -4
+ 956 0002 84B0     		sub	sp, sp, #16
+ 957              	.LCFI35:
+ 958              		.cfi_def_cfa_offset 24
+ 959 0004 00AF     		add	r7, sp, #0
+ 960              	.LCFI36:
+ 961              		.cfi_def_cfa_register 7
+ 962 0006 F860     		str	r0, [r7, #12]
+ 963 0008 B960     		str	r1, [r7, #8]
+ 964 000a 7A60     		str	r2, [r7, #4]
+ 258:coapLIB/coap.c ****     if (buf->len+1 > strbuflen)
+ 965              		.loc 1 258 12
+ 966 000c 7B68     		ldr	r3, [r7, #4]
+ 967 000e 5B68     		ldr	r3, [r3, #4]
+ 968              		.loc 1 258 17
+ 969 0010 0133     		adds	r3, r3, #1
+ 970              		.loc 1 258 8
+ 971 0012 BA68     		ldr	r2, [r7, #8]
+ 972 0014 9A42     		cmp	r2, r3
+ 973 0016 01D2     		bcs	.L49
+ 259:coapLIB/coap.c ****         return COAP_ERR_BUFFER_TOO_SMALL;
+ 974              		.loc 1 259 16
+ 975 0018 0923     		movs	r3, #9
+ 976 001a 0EE0     		b	.L50
+ 977              	.L49:
+ 260:coapLIB/coap.c ****     memcpy(strbuf, buf->p, buf->len);
+ 978              		.loc 1 260 23
+ 979 001c 7B68     		ldr	r3, [r7, #4]
+ 980 001e 1968     		ldr	r1, [r3]
+ 981              		.loc 1 260 5
+ 982 0020 7B68     		ldr	r3, [r7, #4]
+ 983 0022 5B68     		ldr	r3, [r3, #4]
+ 984 0024 1A46     		mov	r2, r3
+ 985 0026 F868     		ldr	r0, [r7, #12]
+ 986 0028 FFF7FEFF 		bl	memcpy
+ 261:coapLIB/coap.c ****     strbuf[buf->len] = 0;
+ 987              		.loc 1 261 15
+ 988 002c 7B68     		ldr	r3, [r7, #4]
+ 989 002e 5B68     		ldr	r3, [r3, #4]
+ 990              		.loc 1 261 11
+ 991 0030 FA68     		ldr	r2, [r7, #12]
+ 992 0032 1344     		add	r3, r3, r2
+ 993              		.loc 1 261 22
+ 994 0034 0022     		movs	r2, #0
+ 995 0036 1A70     		strb	r2, [r3]
+ 262:coapLIB/coap.c ****     return 0;
+ 996              		.loc 1 262 12
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 23
+
+
+ 997 0038 0023     		movs	r3, #0
+ 998              	.L50:
+ 263:coapLIB/coap.c **** }
+ 999              		.loc 1 263 1
+ 1000 003a 1846     		mov	r0, r3
+ 1001 003c 1037     		adds	r7, r7, #16
+ 1002              	.LCFI37:
+ 1003              		.cfi_def_cfa_offset 8
+ 1004 003e BD46     		mov	sp, r7
+ 1005              	.LCFI38:
+ 1006              		.cfi_def_cfa_register 13
+ 1007              		@ sp needed
+ 1008 0040 80BD     		pop	{r7, pc}
+ 1009              		.cfi_endproc
+ 1010              	.LFE9:
+ 1012              		.section	.text.coap_build,"ax",%progbits
+ 1013              		.align	1
+ 1014              		.global	coap_build
+ 1015              		.syntax unified
+ 1016              		.thumb
+ 1017              		.thumb_func
+ 1019              	coap_build:
+ 1020              	.LFB10:
+ 264:coapLIB/coap.c **** 
+ 265:coapLIB/coap.c **** int coap_build(uint8_t *buf, size_t *buflen, const coap_packet_t *pkt)
+ 266:coapLIB/coap.c **** {
+ 1021              		.loc 1 266 1
+ 1022              		.cfi_startproc
+ 1023              		@ args = 0, pretend = 0, frame = 40
+ 1024              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1025 0000 80B5     		push	{r7, lr}
+ 1026              	.LCFI39:
+ 1027              		.cfi_def_cfa_offset 8
+ 1028              		.cfi_offset 7, -8
+ 1029              		.cfi_offset 14, -4
+ 1030 0002 8AB0     		sub	sp, sp, #40
+ 1031              	.LCFI40:
+ 1032              		.cfi_def_cfa_offset 48
+ 1033 0004 00AF     		add	r7, sp, #0
+ 1034              	.LCFI41:
+ 1035              		.cfi_def_cfa_register 7
+ 1036 0006 F860     		str	r0, [r7, #12]
+ 1037 0008 B960     		str	r1, [r7, #8]
+ 1038 000a 7A60     		str	r2, [r7, #4]
+ 267:coapLIB/coap.c ****     size_t opts_len = 0;
+ 1039              		.loc 1 267 12
+ 1040 000c 0023     		movs	r3, #0
+ 1041 000e BB61     		str	r3, [r7, #24]
+ 268:coapLIB/coap.c ****     size_t i;
+ 269:coapLIB/coap.c ****     uint8_t *p;
+ 270:coapLIB/coap.c ****     uint16_t running_delta = 0;
+ 1042              		.loc 1 270 14
+ 1043 0010 0023     		movs	r3, #0
+ 1044 0012 FB83     		strh	r3, [r7, #30]	@ movhi
+ 271:coapLIB/coap.c **** 
+ 272:coapLIB/coap.c ****     // build header
+ 273:coapLIB/coap.c ****     if (*buflen < (4U + pkt->hdr.tkl))
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 24
+
+
+ 1045              		.loc 1 273 9
+ 1046 0014 BB68     		ldr	r3, [r7, #8]
+ 1047 0016 1A68     		ldr	r2, [r3]
+ 1048              		.loc 1 273 33
+ 1049 0018 7B68     		ldr	r3, [r7, #4]
+ 1050 001a 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1051              		.loc 1 273 23
+ 1052 001c 0433     		adds	r3, r3, #4
+ 1053              		.loc 1 273 8
+ 1054 001e 9A42     		cmp	r2, r3
+ 1055 0020 01D2     		bcs	.L52
+ 274:coapLIB/coap.c ****         return COAP_ERR_BUFFER_TOO_SMALL;
+ 1056              		.loc 1 274 16
+ 1057 0022 0923     		movs	r3, #9
+ 1058 0024 54E1     		b	.L53
+ 1059              	.L52:
+ 275:coapLIB/coap.c **** 
+ 276:coapLIB/coap.c ****     buf[0] = (pkt->hdr.ver & 0x03) << 6;
+ 1060              		.loc 1 276 23
+ 1061 0026 7B68     		ldr	r3, [r7, #4]
+ 1062 0028 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1063              		.loc 1 276 36
+ 1064 002a 9B01     		lsls	r3, r3, #6
+ 1065              		.loc 1 276 12
+ 1066 002c DAB2     		uxtb	r2, r3
+ 1067 002e FB68     		ldr	r3, [r7, #12]
+ 1068 0030 1A70     		strb	r2, [r3]
+ 277:coapLIB/coap.c ****     buf[0] |= (pkt->hdr.t & 0x03) << 4;
+ 1069              		.loc 1 277 12
+ 1070 0032 FB68     		ldr	r3, [r7, #12]
+ 1071 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1072 0036 5AB2     		sxtb	r2, r3
+ 1073              		.loc 1 277 24
+ 1074 0038 7B68     		ldr	r3, [r7, #4]
+ 1075 003a 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 1076              		.loc 1 277 35
+ 1077 003c 1B01     		lsls	r3, r3, #4
+ 1078 003e 5BB2     		sxtb	r3, r3
+ 1079 0040 03F03003 		and	r3, r3, #48
+ 1080 0044 5BB2     		sxtb	r3, r3
+ 1081              		.loc 1 277 12
+ 1082 0046 1343     		orrs	r3, r3, r2
+ 1083 0048 5BB2     		sxtb	r3, r3
+ 1084 004a DAB2     		uxtb	r2, r3
+ 1085 004c FB68     		ldr	r3, [r7, #12]
+ 1086 004e 1A70     		strb	r2, [r3]
+ 278:coapLIB/coap.c ****     buf[0] |= (pkt->hdr.tkl & 0x0F);
+ 1087              		.loc 1 278 12
+ 1088 0050 FB68     		ldr	r3, [r7, #12]
+ 1089 0052 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1090 0054 5AB2     		sxtb	r2, r3
+ 1091              		.loc 1 278 24
+ 1092 0056 7B68     		ldr	r3, [r7, #4]
+ 1093 0058 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1094 005a 5BB2     		sxtb	r3, r3
+ 1095              		.loc 1 278 29
+ 1096 005c 03F00F03 		and	r3, r3, #15
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 25
+
+
+ 1097 0060 5BB2     		sxtb	r3, r3
+ 1098              		.loc 1 278 12
+ 1099 0062 1343     		orrs	r3, r3, r2
+ 1100 0064 5BB2     		sxtb	r3, r3
+ 1101 0066 DAB2     		uxtb	r2, r3
+ 1102 0068 FB68     		ldr	r3, [r7, #12]
+ 1103 006a 1A70     		strb	r2, [r3]
+ 279:coapLIB/coap.c ****     buf[1] = pkt->hdr.code;
+ 1104              		.loc 1 279 8
+ 1105 006c FB68     		ldr	r3, [r7, #12]
+ 1106 006e 0133     		adds	r3, r3, #1
+ 1107              		.loc 1 279 22
+ 1108 0070 7A68     		ldr	r2, [r7, #4]
+ 1109 0072 D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 1110              		.loc 1 279 12
+ 1111 0074 1A70     		strb	r2, [r3]
+ 280:coapLIB/coap.c ****     buf[2] = pkt->hdr.id[0];
+ 1112              		.loc 1 280 8
+ 1113 0076 FB68     		ldr	r3, [r7, #12]
+ 1114 0078 0233     		adds	r3, r3, #2
+ 1115              		.loc 1 280 25
+ 1116 007a 7A68     		ldr	r2, [r7, #4]
+ 1117 007c 1279     		ldrb	r2, [r2, #4]	@ zero_extendqisi2
+ 1118              		.loc 1 280 12
+ 1119 007e 1A70     		strb	r2, [r3]
+ 281:coapLIB/coap.c ****     buf[3] = pkt->hdr.id[1];
+ 1120              		.loc 1 281 8
+ 1121 0080 FB68     		ldr	r3, [r7, #12]
+ 1122 0082 0333     		adds	r3, r3, #3
+ 1123              		.loc 1 281 25
+ 1124 0084 7A68     		ldr	r2, [r7, #4]
+ 1125 0086 5279     		ldrb	r2, [r2, #5]	@ zero_extendqisi2
+ 1126              		.loc 1 281 12
+ 1127 0088 1A70     		strb	r2, [r3]
+ 282:coapLIB/coap.c **** 
+ 283:coapLIB/coap.c ****     // inject token
+ 284:coapLIB/coap.c ****     p = buf + 4;
+ 1128              		.loc 1 284 7
+ 1129 008a FB68     		ldr	r3, [r7, #12]
+ 1130 008c 0433     		adds	r3, r3, #4
+ 1131 008e 3B62     		str	r3, [r7, #32]
+ 285:coapLIB/coap.c ****     if ((pkt->hdr.tkl > 0) && (pkt->hdr.tkl != pkt->tok.len))
+ 1132              		.loc 1 285 18
+ 1133 0090 7B68     		ldr	r3, [r7, #4]
+ 1134 0092 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1135              		.loc 1 285 8
+ 1136 0094 002B     		cmp	r3, #0
+ 1137 0096 08D0     		beq	.L54
+ 1138              		.loc 1 285 40 discriminator 1
+ 1139 0098 7B68     		ldr	r3, [r7, #4]
+ 1140 009a 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1141 009c 1A46     		mov	r2, r3
+ 1142              		.loc 1 285 56 discriminator 1
+ 1143 009e 7B68     		ldr	r3, [r7, #4]
+ 1144 00a0 DB68     		ldr	r3, [r3, #12]
+ 1145              		.loc 1 285 28 discriminator 1
+ 1146 00a2 9A42     		cmp	r2, r3
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 26
+
+
+ 1147 00a4 01D0     		beq	.L54
+ 286:coapLIB/coap.c ****         return COAP_ERR_UNSUPPORTED;
+ 1148              		.loc 1 286 16
+ 1149 00a6 0A23     		movs	r3, #10
+ 1150 00a8 12E1     		b	.L53
+ 1151              	.L54:
+ 287:coapLIB/coap.c ****     
+ 288:coapLIB/coap.c ****     if (pkt->hdr.tkl > 0)
+ 1152              		.loc 1 288 17
+ 1153 00aa 7B68     		ldr	r3, [r7, #4]
+ 1154 00ac 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1155              		.loc 1 288 8
+ 1156 00ae 002B     		cmp	r3, #0
+ 1157 00b0 07D0     		beq	.L55
+ 289:coapLIB/coap.c ****         memcpy(p, pkt->tok.p, pkt->hdr.tkl);
+ 1158              		.loc 1 289 27
+ 1159 00b2 7B68     		ldr	r3, [r7, #4]
+ 1160 00b4 9968     		ldr	r1, [r3, #8]
+ 1161              		.loc 1 289 39
+ 1162 00b6 7B68     		ldr	r3, [r7, #4]
+ 1163 00b8 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1164              		.loc 1 289 9
+ 1165 00ba 1A46     		mov	r2, r3
+ 1166 00bc 386A     		ldr	r0, [r7, #32]
+ 1167 00be FFF7FEFF 		bl	memcpy
+ 1168              	.L55:
+ 290:coapLIB/coap.c **** 
+ 291:coapLIB/coap.c ****     // // http://tools.ietf.org/html/rfc7252#section-3.1
+ 292:coapLIB/coap.c ****     // inject options
+ 293:coapLIB/coap.c ****     p += pkt->hdr.tkl;
+ 1169              		.loc 1 293 18
+ 1170 00c2 7B68     		ldr	r3, [r7, #4]
+ 1171 00c4 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1172 00c6 1A46     		mov	r2, r3
+ 1173              		.loc 1 293 7
+ 1174 00c8 3B6A     		ldr	r3, [r7, #32]
+ 1175 00ca 1344     		add	r3, r3, r2
+ 1176 00cc 3B62     		str	r3, [r7, #32]
+ 294:coapLIB/coap.c **** 
+ 295:coapLIB/coap.c ****     for (i=0;i<pkt->numopts;i++)
+ 1177              		.loc 1 295 11
+ 1178 00ce 0023     		movs	r3, #0
+ 1179 00d0 7B62     		str	r3, [r7, #36]
+ 1180              		.loc 1 295 5
+ 1181 00d2 BFE0     		b	.L56
+ 1182              	.L62:
+ 1183              	.LBB2:
+ 296:coapLIB/coap.c ****     {
+ 297:coapLIB/coap.c ****         uint32_t optDelta;
+ 298:coapLIB/coap.c ****         uint8_t len, delta = 0;
+ 1184              		.loc 1 298 22
+ 1185 00d4 0023     		movs	r3, #0
+ 1186 00d6 BB74     		strb	r3, [r7, #18]
+ 299:coapLIB/coap.c **** 
+ 300:coapLIB/coap.c ****         if (((size_t)(p-buf)) > *buflen)
+ 1187              		.loc 1 300 24
+ 1188 00d8 3A6A     		ldr	r2, [r7, #32]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 27
+
+
+ 1189 00da FB68     		ldr	r3, [r7, #12]
+ 1190 00dc D31A     		subs	r3, r2, r3
+ 1191              		.loc 1 300 14
+ 1192 00de 1A46     		mov	r2, r3
+ 1193              		.loc 1 300 33
+ 1194 00e0 BB68     		ldr	r3, [r7, #8]
+ 1195 00e2 1B68     		ldr	r3, [r3]
+ 1196              		.loc 1 300 12
+ 1197 00e4 9A42     		cmp	r2, r3
+ 1198 00e6 01D9     		bls	.L57
+ 301:coapLIB/coap.c ****              return COAP_ERR_BUFFER_TOO_SMALL;
+ 1199              		.loc 1 301 21
+ 1200 00e8 0923     		movs	r3, #9
+ 1201 00ea F1E0     		b	.L53
+ 1202              	.L57:
+ 302:coapLIB/coap.c ****         optDelta = pkt->opts[i].num - running_delta;
+ 1203              		.loc 1 302 32
+ 1204 00ec 7968     		ldr	r1, [r7, #4]
+ 1205 00ee 7A6A     		ldr	r2, [r7, #36]
+ 1206 00f0 1346     		mov	r3, r2
+ 1207 00f2 5B00     		lsls	r3, r3, #1
+ 1208 00f4 1344     		add	r3, r3, r2
+ 1209 00f6 9B00     		lsls	r3, r3, #2
+ 1210 00f8 0B44     		add	r3, r3, r1
+ 1211 00fa 1433     		adds	r3, r3, #20
+ 1212 00fc 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1213 00fe 1A46     		mov	r2, r3
+ 1214              		.loc 1 302 37
+ 1215 0100 FB8B     		ldrh	r3, [r7, #30]
+ 1216 0102 D31A     		subs	r3, r2, r3
+ 1217              		.loc 1 302 18
+ 1218 0104 7B61     		str	r3, [r7, #20]
+ 303:coapLIB/coap.c ****         coap_option_nibble(optDelta, &delta);
+ 1219              		.loc 1 303 9
+ 1220 0106 07F11203 		add	r3, r7, #18
+ 1221 010a 1946     		mov	r1, r3
+ 1222 010c 7869     		ldr	r0, [r7, #20]
+ 1223 010e FFF7FEFF 		bl	coap_option_nibble
+ 304:coapLIB/coap.c ****         coap_option_nibble((uint32_t)pkt->opts[i].buf.len, &len);
+ 1224              		.loc 1 304 54
+ 1225 0112 7968     		ldr	r1, [r7, #4]
+ 1226 0114 7A6A     		ldr	r2, [r7, #36]
+ 1227 0116 1346     		mov	r3, r2
+ 1228 0118 5B00     		lsls	r3, r3, #1
+ 1229 011a 1344     		add	r3, r3, r2
+ 1230 011c 9B00     		lsls	r3, r3, #2
+ 1231 011e 0B44     		add	r3, r3, r1
+ 1232 0120 1C33     		adds	r3, r3, #28
+ 1233 0122 1B68     		ldr	r3, [r3]
+ 1234              		.loc 1 304 9
+ 1235 0124 07F11302 		add	r2, r7, #19
+ 1236 0128 1146     		mov	r1, r2
+ 1237 012a 1846     		mov	r0, r3
+ 1238 012c FFF7FEFF 		bl	coap_option_nibble
+ 305:coapLIB/coap.c **** 
+ 306:coapLIB/coap.c ****         *p++ = (0xFF & (delta << 4 | len));
+ 1239              		.loc 1 306 31
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 28
+
+
+ 1240 0130 BB7C     		ldrb	r3, [r7, #18]	@ zero_extendqisi2
+ 1241 0132 1B01     		lsls	r3, r3, #4
+ 1242              		.loc 1 306 36
+ 1243 0134 5AB2     		sxtb	r2, r3
+ 1244 0136 FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
+ 1245 0138 5BB2     		sxtb	r3, r3
+ 1246 013a 1343     		orrs	r3, r3, r2
+ 1247 013c 59B2     		sxtb	r1, r3
+ 1248              		.loc 1 306 11
+ 1249 013e 3B6A     		ldr	r3, [r7, #32]
+ 1250 0140 5A1C     		adds	r2, r3, #1
+ 1251 0142 3A62     		str	r2, [r7, #32]
+ 1252              		.loc 1 306 36
+ 1253 0144 CAB2     		uxtb	r2, r1
+ 1254              		.loc 1 306 14
+ 1255 0146 1A70     		strb	r2, [r3]
+ 307:coapLIB/coap.c ****         if (delta == 13)
+ 1256              		.loc 1 307 19
+ 1257 0148 BB7C     		ldrb	r3, [r7, #18]	@ zero_extendqisi2
+ 1258              		.loc 1 307 12
+ 1259 014a 0D2B     		cmp	r3, #13
+ 1260 014c 08D1     		bne	.L58
+ 308:coapLIB/coap.c ****         {
+ 309:coapLIB/coap.c ****             *p++ = (optDelta - 13);
+ 1261              		.loc 1 309 30
+ 1262 014e 7B69     		ldr	r3, [r7, #20]
+ 1263 0150 DAB2     		uxtb	r2, r3
+ 1264              		.loc 1 309 15
+ 1265 0152 3B6A     		ldr	r3, [r7, #32]
+ 1266 0154 591C     		adds	r1, r3, #1
+ 1267 0156 3962     		str	r1, [r7, #32]
+ 1268              		.loc 1 309 30
+ 1269 0158 0D3A     		subs	r2, r2, #13
+ 1270 015a D2B2     		uxtb	r2, r2
+ 1271              		.loc 1 309 18
+ 1272 015c 1A70     		strb	r2, [r3]
+ 1273 015e 13E0     		b	.L59
+ 1274              	.L58:
+ 310:coapLIB/coap.c ****         }
+ 311:coapLIB/coap.c ****         else
+ 312:coapLIB/coap.c ****         if (delta == 14)
+ 1275              		.loc 1 312 19
+ 1276 0160 BB7C     		ldrb	r3, [r7, #18]	@ zero_extendqisi2
+ 1277              		.loc 1 312 12
+ 1278 0162 0E2B     		cmp	r3, #14
+ 1279 0164 10D1     		bne	.L59
+ 313:coapLIB/coap.c ****         {
+ 314:coapLIB/coap.c ****             *p++ = ((optDelta-269) >> 8);
+ 1280              		.loc 1 314 30
+ 1281 0166 7B69     		ldr	r3, [r7, #20]
+ 1282 0168 A3F20D13 		subw	r3, r3, #269
+ 1283              		.loc 1 314 36
+ 1284 016c 190A     		lsrs	r1, r3, #8
+ 1285              		.loc 1 314 15
+ 1286 016e 3B6A     		ldr	r3, [r7, #32]
+ 1287 0170 5A1C     		adds	r2, r3, #1
+ 1288 0172 3A62     		str	r2, [r7, #32]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 29
+
+
+ 1289              		.loc 1 314 18
+ 1290 0174 CAB2     		uxtb	r2, r1
+ 1291 0176 1A70     		strb	r2, [r3]
+ 315:coapLIB/coap.c ****             *p++ = (0xFF & (optDelta-269));
+ 1292              		.loc 1 315 37
+ 1293 0178 7B69     		ldr	r3, [r7, #20]
+ 1294 017a DAB2     		uxtb	r2, r3
+ 1295              		.loc 1 315 15
+ 1296 017c 3B6A     		ldr	r3, [r7, #32]
+ 1297 017e 591C     		adds	r1, r3, #1
+ 1298 0180 3962     		str	r1, [r7, #32]
+ 1299              		.loc 1 315 37
+ 1300 0182 0D3A     		subs	r2, r2, #13
+ 1301 0184 D2B2     		uxtb	r2, r2
+ 1302              		.loc 1 315 18
+ 1303 0186 1A70     		strb	r2, [r3]
+ 1304              	.L59:
+ 316:coapLIB/coap.c ****         }
+ 317:coapLIB/coap.c ****         if (len == 13)
+ 1305              		.loc 1 317 17
+ 1306 0188 FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
+ 1307              		.loc 1 317 12
+ 1308 018a 0D2B     		cmp	r3, #13
+ 1309 018c 10D1     		bne	.L60
+ 318:coapLIB/coap.c ****         {
+ 319:coapLIB/coap.c ****             *p++ = (pkt->opts[i].buf.len - 13);
+ 1310              		.loc 1 319 37
+ 1311 018e 7968     		ldr	r1, [r7, #4]
+ 1312 0190 7A6A     		ldr	r2, [r7, #36]
+ 1313 0192 1346     		mov	r3, r2
+ 1314 0194 5B00     		lsls	r3, r3, #1
+ 1315 0196 1344     		add	r3, r3, r2
+ 1316 0198 9B00     		lsls	r3, r3, #2
+ 1317 019a 0B44     		add	r3, r3, r1
+ 1318 019c 1C33     		adds	r3, r3, #28
+ 1319 019e 1B68     		ldr	r3, [r3]
+ 1320              		.loc 1 319 42
+ 1321 01a0 DAB2     		uxtb	r2, r3
+ 1322              		.loc 1 319 15
+ 1323 01a2 3B6A     		ldr	r3, [r7, #32]
+ 1324 01a4 591C     		adds	r1, r3, #1
+ 1325 01a6 3962     		str	r1, [r7, #32]
+ 1326              		.loc 1 319 42
+ 1327 01a8 0D3A     		subs	r2, r2, #13
+ 1328 01aa D2B2     		uxtb	r2, r2
+ 1329              		.loc 1 319 18
+ 1330 01ac 1A70     		strb	r2, [r3]
+ 1331 01ae 21E0     		b	.L61
+ 1332              	.L60:
+ 320:coapLIB/coap.c ****         }
+ 321:coapLIB/coap.c ****         else
+ 322:coapLIB/coap.c ****         if (len == 14)
+ 1333              		.loc 1 322 17
+ 1334 01b0 FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
+ 1335              		.loc 1 322 12
+ 1336 01b2 0E2B     		cmp	r3, #14
+ 1337 01b4 1ED1     		bne	.L61
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 30
+
+
+ 323:coapLIB/coap.c ****   	    {
+ 324:coapLIB/coap.c ****             *p++ = (pkt->opts[i].buf.len >> 8);
+ 1338              		.loc 1 324 37
+ 1339 01b6 7968     		ldr	r1, [r7, #4]
+ 1340 01b8 7A6A     		ldr	r2, [r7, #36]
+ 1341 01ba 1346     		mov	r3, r2
+ 1342 01bc 5B00     		lsls	r3, r3, #1
+ 1343 01be 1344     		add	r3, r3, r2
+ 1344 01c0 9B00     		lsls	r3, r3, #2
+ 1345 01c2 0B44     		add	r3, r3, r1
+ 1346 01c4 1C33     		adds	r3, r3, #28
+ 1347 01c6 1B68     		ldr	r3, [r3]
+ 1348              		.loc 1 324 42
+ 1349 01c8 190A     		lsrs	r1, r3, #8
+ 1350              		.loc 1 324 15
+ 1351 01ca 3B6A     		ldr	r3, [r7, #32]
+ 1352 01cc 5A1C     		adds	r2, r3, #1
+ 1353 01ce 3A62     		str	r2, [r7, #32]
+ 1354              		.loc 1 324 18
+ 1355 01d0 CAB2     		uxtb	r2, r1
+ 1356 01d2 1A70     		strb	r2, [r3]
+ 325:coapLIB/coap.c ****             *p++ = (0xFF & (pkt->opts[i].buf.len-269));
+ 1357              		.loc 1 325 45
+ 1358 01d4 7968     		ldr	r1, [r7, #4]
+ 1359 01d6 7A6A     		ldr	r2, [r7, #36]
+ 1360 01d8 1346     		mov	r3, r2
+ 1361 01da 5B00     		lsls	r3, r3, #1
+ 1362 01dc 1344     		add	r3, r3, r2
+ 1363 01de 9B00     		lsls	r3, r3, #2
+ 1364 01e0 0B44     		add	r3, r3, r1
+ 1365 01e2 1C33     		adds	r3, r3, #28
+ 1366 01e4 1B68     		ldr	r3, [r3]
+ 1367              		.loc 1 325 49
+ 1368 01e6 DAB2     		uxtb	r2, r3
+ 1369              		.loc 1 325 15
+ 1370 01e8 3B6A     		ldr	r3, [r7, #32]
+ 1371 01ea 591C     		adds	r1, r3, #1
+ 1372 01ec 3962     		str	r1, [r7, #32]
+ 1373              		.loc 1 325 49
+ 1374 01ee 0D3A     		subs	r2, r2, #13
+ 1375 01f0 D2B2     		uxtb	r2, r2
+ 1376              		.loc 1 325 18
+ 1377 01f2 1A70     		strb	r2, [r3]
+ 1378              	.L61:
+ 326:coapLIB/coap.c ****         }
+ 327:coapLIB/coap.c **** 
+ 328:coapLIB/coap.c ****         memcpy(p, pkt->opts[i].buf.p, pkt->opts[i].buf.len);
+ 1379              		.loc 1 328 35
+ 1380 01f4 7968     		ldr	r1, [r7, #4]
+ 1381 01f6 7A6A     		ldr	r2, [r7, #36]
+ 1382 01f8 1346     		mov	r3, r2
+ 1383 01fa 5B00     		lsls	r3, r3, #1
+ 1384 01fc 1344     		add	r3, r3, r2
+ 1385 01fe 9B00     		lsls	r3, r3, #2
+ 1386 0200 0B44     		add	r3, r3, r1
+ 1387 0202 1833     		adds	r3, r3, #24
+ 1388 0204 1868     		ldr	r0, [r3]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 31
+
+
+ 1389              		.loc 1 328 9
+ 1390 0206 7968     		ldr	r1, [r7, #4]
+ 1391 0208 7A6A     		ldr	r2, [r7, #36]
+ 1392 020a 1346     		mov	r3, r2
+ 1393 020c 5B00     		lsls	r3, r3, #1
+ 1394 020e 1344     		add	r3, r3, r2
+ 1395 0210 9B00     		lsls	r3, r3, #2
+ 1396 0212 0B44     		add	r3, r3, r1
+ 1397 0214 1C33     		adds	r3, r3, #28
+ 1398 0216 1B68     		ldr	r3, [r3]
+ 1399 0218 1A46     		mov	r2, r3
+ 1400 021a 0146     		mov	r1, r0
+ 1401 021c 386A     		ldr	r0, [r7, #32]
+ 1402 021e FFF7FEFF 		bl	memcpy
+ 329:coapLIB/coap.c ****         p += pkt->opts[i].buf.len;
+ 1403              		.loc 1 329 30
+ 1404 0222 7968     		ldr	r1, [r7, #4]
+ 1405 0224 7A6A     		ldr	r2, [r7, #36]
+ 1406 0226 1346     		mov	r3, r2
+ 1407 0228 5B00     		lsls	r3, r3, #1
+ 1408 022a 1344     		add	r3, r3, r2
+ 1409 022c 9B00     		lsls	r3, r3, #2
+ 1410 022e 0B44     		add	r3, r3, r1
+ 1411 0230 1C33     		adds	r3, r3, #28
+ 1412 0232 1B68     		ldr	r3, [r3]
+ 1413              		.loc 1 329 11
+ 1414 0234 3A6A     		ldr	r2, [r7, #32]
+ 1415 0236 1344     		add	r3, r3, r2
+ 1416 0238 3B62     		str	r3, [r7, #32]
+ 330:coapLIB/coap.c ****         running_delta = pkt->opts[i].num;
+ 1417              		.loc 1 330 37
+ 1418 023a 7968     		ldr	r1, [r7, #4]
+ 1419 023c 7A6A     		ldr	r2, [r7, #36]
+ 1420 023e 1346     		mov	r3, r2
+ 1421 0240 5B00     		lsls	r3, r3, #1
+ 1422 0242 1344     		add	r3, r3, r2
+ 1423 0244 9B00     		lsls	r3, r3, #2
+ 1424 0246 0B44     		add	r3, r3, r1
+ 1425 0248 1433     		adds	r3, r3, #20
+ 1426 024a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1427              		.loc 1 330 23
+ 1428 024c FB83     		strh	r3, [r7, #30]	@ movhi
+ 1429              	.LBE2:
+ 295:coapLIB/coap.c ****     {
+ 1430              		.loc 1 295 30
+ 1431 024e 7B6A     		ldr	r3, [r7, #36]
+ 1432 0250 0133     		adds	r3, r3, #1
+ 1433 0252 7B62     		str	r3, [r7, #36]
+ 1434              	.L56:
+ 295:coapLIB/coap.c ****     {
+ 1435              		.loc 1 295 19 discriminator 1
+ 1436 0254 7B68     		ldr	r3, [r7, #4]
+ 1437 0256 1B7C     		ldrb	r3, [r3, #16]	@ zero_extendqisi2
+ 1438 0258 1A46     		mov	r2, r3
+ 295:coapLIB/coap.c ****     {
+ 1439              		.loc 1 295 5 discriminator 1
+ 1440 025a 7B6A     		ldr	r3, [r7, #36]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 32
+
+
+ 1441 025c 9342     		cmp	r3, r2
+ 1442 025e FFF439AF 		bcc	.L62
+ 331:coapLIB/coap.c ****     }
+ 332:coapLIB/coap.c **** 
+ 333:coapLIB/coap.c ****     opts_len = (p - buf) - 4;   // number of bytes used by options
+ 1443              		.loc 1 333 19
+ 1444 0262 3A6A     		ldr	r2, [r7, #32]
+ 1445 0264 FB68     		ldr	r3, [r7, #12]
+ 1446 0266 D31A     		subs	r3, r2, r3
+ 1447              		.loc 1 333 26
+ 1448 0268 043B     		subs	r3, r3, #4
+ 1449              		.loc 1 333 14
+ 1450 026a BB61     		str	r3, [r7, #24]
+ 334:coapLIB/coap.c **** 
+ 335:coapLIB/coap.c ****     if (pkt->payload.len > 0)
+ 1451              		.loc 1 335 21
+ 1452 026c 7B68     		ldr	r3, [r7, #4]
+ 1453 026e D3F8D830 		ldr	r3, [r3, #216]
+ 1454              		.loc 1 335 8
+ 1455 0272 002B     		cmp	r3, #0
+ 1456 0274 27D0     		beq	.L63
+ 336:coapLIB/coap.c ****     {
+ 337:coapLIB/coap.c ****         if (*buflen < 4 + 1 + pkt->payload.len + opts_len)
+ 1457              		.loc 1 337 13
+ 1458 0276 BB68     		ldr	r3, [r7, #8]
+ 1459 0278 1A68     		ldr	r2, [r3]
+ 1460              		.loc 1 337 43
+ 1461 027a 7B68     		ldr	r3, [r7, #4]
+ 1462 027c D3F8D810 		ldr	r1, [r3, #216]
+ 1463              		.loc 1 337 48
+ 1464 0280 BB69     		ldr	r3, [r7, #24]
+ 1465 0282 0B44     		add	r3, r3, r1
+ 1466 0284 0533     		adds	r3, r3, #5
+ 1467              		.loc 1 337 12
+ 1468 0286 9A42     		cmp	r2, r3
+ 1469 0288 01D2     		bcs	.L64
+ 338:coapLIB/coap.c ****             return COAP_ERR_BUFFER_TOO_SMALL;
+ 1470              		.loc 1 338 20
+ 1471 028a 0923     		movs	r3, #9
+ 1472 028c 20E0     		b	.L53
+ 1473              	.L64:
+ 339:coapLIB/coap.c ****         buf[4 + opts_len] = 0xFF;  // payload marker
+ 1474              		.loc 1 339 15
+ 1475 028e BB69     		ldr	r3, [r7, #24]
+ 1476 0290 0433     		adds	r3, r3, #4
+ 1477              		.loc 1 339 12
+ 1478 0292 FA68     		ldr	r2, [r7, #12]
+ 1479 0294 1344     		add	r3, r3, r2
+ 1480              		.loc 1 339 27
+ 1481 0296 FF22     		movs	r2, #255
+ 1482 0298 1A70     		strb	r2, [r3]
+ 340:coapLIB/coap.c ****         memcpy(buf+5 + opts_len, pkt->payload.p, pkt->payload.len);
+ 1483              		.loc 1 340 22
+ 1484 029a BB69     		ldr	r3, [r7, #24]
+ 1485 029c 0533     		adds	r3, r3, #5
+ 1486 029e FA68     		ldr	r2, [r7, #12]
+ 1487 02a0 D018     		adds	r0, r2, r3
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 33
+
+
+ 1488              		.loc 1 340 46
+ 1489 02a2 7B68     		ldr	r3, [r7, #4]
+ 1490 02a4 D3F8D410 		ldr	r1, [r3, #212]
+ 1491              		.loc 1 340 9
+ 1492 02a8 7B68     		ldr	r3, [r7, #4]
+ 1493 02aa D3F8D830 		ldr	r3, [r3, #216]
+ 1494 02ae 1A46     		mov	r2, r3
+ 1495 02b0 FFF7FEFF 		bl	memcpy
+ 341:coapLIB/coap.c ****         *buflen = opts_len + 5 + pkt->payload.len;
+ 1496              		.loc 1 341 46
+ 1497 02b4 7B68     		ldr	r3, [r7, #4]
+ 1498 02b6 D3F8D820 		ldr	r2, [r3, #216]
+ 1499              		.loc 1 341 32
+ 1500 02ba BB69     		ldr	r3, [r7, #24]
+ 1501 02bc 1344     		add	r3, r3, r2
+ 1502 02be 5A1D     		adds	r2, r3, #5
+ 1503              		.loc 1 341 17
+ 1504 02c0 BB68     		ldr	r3, [r7, #8]
+ 1505 02c2 1A60     		str	r2, [r3]
+ 1506 02c4 03E0     		b	.L65
+ 1507              	.L63:
+ 342:coapLIB/coap.c ****     }
+ 343:coapLIB/coap.c ****     else
+ 344:coapLIB/coap.c ****         *buflen = opts_len + 4;
+ 1508              		.loc 1 344 28
+ 1509 02c6 BB69     		ldr	r3, [r7, #24]
+ 1510 02c8 1A1D     		adds	r2, r3, #4
+ 1511              		.loc 1 344 17
+ 1512 02ca BB68     		ldr	r3, [r7, #8]
+ 1513 02cc 1A60     		str	r2, [r3]
+ 1514              	.L65:
+ 345:coapLIB/coap.c ****     return 0;
+ 1515              		.loc 1 345 12
+ 1516 02ce 0023     		movs	r3, #0
+ 1517              	.L53:
+ 346:coapLIB/coap.c **** }
+ 1518              		.loc 1 346 1
+ 1519 02d0 1846     		mov	r0, r3
+ 1520 02d2 2837     		adds	r7, r7, #40
+ 1521              	.LCFI42:
+ 1522              		.cfi_def_cfa_offset 8
+ 1523 02d4 BD46     		mov	sp, r7
+ 1524              	.LCFI43:
+ 1525              		.cfi_def_cfa_register 13
+ 1526              		@ sp needed
+ 1527 02d6 80BD     		pop	{r7, pc}
+ 1528              		.cfi_endproc
+ 1529              	.LFE10:
+ 1531              		.section	.text.coap_option_nibble,"ax",%progbits
+ 1532              		.align	1
+ 1533              		.global	coap_option_nibble
+ 1534              		.syntax unified
+ 1535              		.thumb
+ 1536              		.thumb_func
+ 1538              	coap_option_nibble:
+ 1539              	.LFB11:
+ 347:coapLIB/coap.c **** 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 34
+
+
+ 348:coapLIB/coap.c **** void coap_option_nibble(uint32_t value, uint8_t *nibble)
+ 349:coapLIB/coap.c **** {
+ 1540              		.loc 1 349 1
+ 1541              		.cfi_startproc
+ 1542              		@ args = 0, pretend = 0, frame = 8
+ 1543              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1544              		@ link register save eliminated.
+ 1545 0000 80B4     		push	{r7}
+ 1546              	.LCFI44:
+ 1547              		.cfi_def_cfa_offset 4
+ 1548              		.cfi_offset 7, -4
+ 1549 0002 83B0     		sub	sp, sp, #12
+ 1550              	.LCFI45:
+ 1551              		.cfi_def_cfa_offset 16
+ 1552 0004 00AF     		add	r7, sp, #0
+ 1553              	.LCFI46:
+ 1554              		.cfi_def_cfa_register 7
+ 1555 0006 7860     		str	r0, [r7, #4]
+ 1556 0008 3960     		str	r1, [r7]
+ 350:coapLIB/coap.c ****     if (value<13)
+ 1557              		.loc 1 350 8
+ 1558 000a 7B68     		ldr	r3, [r7, #4]
+ 1559 000c 0C2B     		cmp	r3, #12
+ 1560 000e 04D8     		bhi	.L67
+ 351:coapLIB/coap.c ****     {
+ 352:coapLIB/coap.c ****         *nibble = (0xFF & value);
+ 1561              		.loc 1 352 17
+ 1562 0010 7B68     		ldr	r3, [r7, #4]
+ 1563 0012 DAB2     		uxtb	r2, r3
+ 1564 0014 3B68     		ldr	r3, [r7]
+ 1565 0016 1A70     		strb	r2, [r3]
+ 353:coapLIB/coap.c ****     }
+ 354:coapLIB/coap.c ****     else
+ 355:coapLIB/coap.c ****     if (value<=0xFF+13)
+ 356:coapLIB/coap.c ****     {
+ 357:coapLIB/coap.c ****         *nibble = 13;
+ 358:coapLIB/coap.c ****     } else if (value<=0xFFFF+269)
+ 359:coapLIB/coap.c ****     {
+ 360:coapLIB/coap.c ****         *nibble = 14;
+ 361:coapLIB/coap.c ****     }
+ 362:coapLIB/coap.c **** }
+ 1566              		.loc 1 362 1
+ 1567 0018 0EE0     		b	.L70
+ 1568              	.L67:
+ 355:coapLIB/coap.c ****     {
+ 1569              		.loc 1 355 8
+ 1570 001a 7B68     		ldr	r3, [r7, #4]
+ 1571 001c B3F5867F 		cmp	r3, #268
+ 1572 0020 03D8     		bhi	.L69
+ 357:coapLIB/coap.c ****     } else if (value<=0xFFFF+269)
+ 1573              		.loc 1 357 17
+ 1574 0022 3B68     		ldr	r3, [r7]
+ 1575 0024 0D22     		movs	r2, #13
+ 1576 0026 1A70     		strb	r2, [r3]
+ 1577              		.loc 1 362 1
+ 1578 0028 06E0     		b	.L70
+ 1579              	.L69:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 35
+
+
+ 358:coapLIB/coap.c ****     {
+ 1580              		.loc 1 358 15
+ 1581 002a 7B68     		ldr	r3, [r7, #4]
+ 1582 002c 054A     		ldr	r2, .L71
+ 1583 002e 9342     		cmp	r3, r2
+ 1584 0030 02D8     		bhi	.L70
+ 360:coapLIB/coap.c ****     }
+ 1585              		.loc 1 360 17
+ 1586 0032 3B68     		ldr	r3, [r7]
+ 1587 0034 0E22     		movs	r2, #14
+ 1588 0036 1A70     		strb	r2, [r3]
+ 1589              	.L70:
+ 1590              		.loc 1 362 1
+ 1591 0038 00BF     		nop
+ 1592 003a 0C37     		adds	r7, r7, #12
+ 1593              	.LCFI47:
+ 1594              		.cfi_def_cfa_offset 4
+ 1595 003c BD46     		mov	sp, r7
+ 1596              	.LCFI48:
+ 1597              		.cfi_def_cfa_register 13
+ 1598              		@ sp needed
+ 1599 003e 5DF8047B 		ldr	r7, [sp], #4
+ 1600              	.LCFI49:
+ 1601              		.cfi_restore 7
+ 1602              		.cfi_def_cfa_offset 0
+ 1603 0042 7047     		bx	lr
+ 1604              	.L72:
+ 1605              		.align	2
+ 1606              	.L71:
+ 1607 0044 0C010100 		.word	65804
+ 1608              		.cfi_endproc
+ 1609              	.LFE11:
+ 1611              		.section	.text.coap_make_response,"ax",%progbits
+ 1612              		.align	1
+ 1613              		.global	coap_make_response
+ 1614              		.syntax unified
+ 1615              		.thumb
+ 1616              		.thumb_func
+ 1618              	coap_make_response:
+ 1619              	.LFB12:
+ 363:coapLIB/coap.c **** 
+ 364:coapLIB/coap.c **** int coap_make_response(coap_rw_buffer_t *scratch, coap_packet_t *pkt, const uint8_t *content, size_
+ 365:coapLIB/coap.c **** {
+ 1620              		.loc 1 365 1
+ 1621              		.cfi_startproc
+ 1622              		@ args = 20, pretend = 0, frame = 16
+ 1623              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1624              		@ link register save eliminated.
+ 1625 0000 80B4     		push	{r7}
+ 1626              	.LCFI50:
+ 1627              		.cfi_def_cfa_offset 4
+ 1628              		.cfi_offset 7, -4
+ 1629 0002 85B0     		sub	sp, sp, #20
+ 1630              	.LCFI51:
+ 1631              		.cfi_def_cfa_offset 24
+ 1632 0004 00AF     		add	r7, sp, #0
+ 1633              	.LCFI52:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 36
+
+
+ 1634              		.cfi_def_cfa_register 7
+ 1635 0006 F860     		str	r0, [r7, #12]
+ 1636 0008 B960     		str	r1, [r7, #8]
+ 1637 000a 7A60     		str	r2, [r7, #4]
+ 1638 000c 3B60     		str	r3, [r7]
+ 366:coapLIB/coap.c ****     pkt->hdr.ver = 0x01;
+ 1639              		.loc 1 366 18
+ 1640 000e BB68     		ldr	r3, [r7, #8]
+ 1641 0010 0122     		movs	r2, #1
+ 1642 0012 1A70     		strb	r2, [r3]
+ 367:coapLIB/coap.c ****     pkt->hdr.t = COAP_TYPE_ACK;
+ 1643              		.loc 1 367 16
+ 1644 0014 BB68     		ldr	r3, [r7, #8]
+ 1645 0016 0222     		movs	r2, #2
+ 1646 0018 5A70     		strb	r2, [r3, #1]
+ 368:coapLIB/coap.c ****     pkt->hdr.tkl = 0;
+ 1647              		.loc 1 368 18
+ 1648 001a BB68     		ldr	r3, [r7, #8]
+ 1649 001c 0022     		movs	r2, #0
+ 1650 001e 9A70     		strb	r2, [r3, #2]
+ 369:coapLIB/coap.c ****     pkt->hdr.code = rspcode;
+ 1651              		.loc 1 369 19
+ 1652 0020 BB68     		ldr	r3, [r7, #8]
+ 1653 0022 97F82420 		ldrb	r2, [r7, #36]
+ 1654 0026 DA70     		strb	r2, [r3, #3]
+ 370:coapLIB/coap.c ****     pkt->hdr.id[0] = msgid_hi;
+ 1655              		.loc 1 370 20
+ 1656 0028 BB68     		ldr	r3, [r7, #8]
+ 1657 002a 3A7E     		ldrb	r2, [r7, #24]
+ 1658 002c 1A71     		strb	r2, [r3, #4]
+ 371:coapLIB/coap.c ****     pkt->hdr.id[1] = msgid_lo;
+ 1659              		.loc 1 371 20
+ 1660 002e BB68     		ldr	r3, [r7, #8]
+ 1661 0030 3A7F     		ldrb	r2, [r7, #28]
+ 1662 0032 5A71     		strb	r2, [r3, #5]
+ 372:coapLIB/coap.c ****     pkt->numopts = 1;
+ 1663              		.loc 1 372 18
+ 1664 0034 BB68     		ldr	r3, [r7, #8]
+ 1665 0036 0122     		movs	r2, #1
+ 1666 0038 1A74     		strb	r2, [r3, #16]
+ 373:coapLIB/coap.c **** 
+ 374:coapLIB/coap.c ****     // need token in response
+ 375:coapLIB/coap.c ****     if (tok) {
+ 1667              		.loc 1 375 8
+ 1668 003a 3B6A     		ldr	r3, [r7, #32]
+ 1669 003c 002B     		cmp	r3, #0
+ 1670 003e 0BD0     		beq	.L74
+ 376:coapLIB/coap.c ****         pkt->hdr.tkl = tok->len;
+ 1671              		.loc 1 376 27
+ 1672 0040 3B6A     		ldr	r3, [r7, #32]
+ 1673 0042 5B68     		ldr	r3, [r3, #4]
+ 1674              		.loc 1 376 22
+ 1675 0044 DAB2     		uxtb	r2, r3
+ 1676 0046 BB68     		ldr	r3, [r7, #8]
+ 1677 0048 9A70     		strb	r2, [r3, #2]
+ 377:coapLIB/coap.c ****         pkt->tok = *tok;
+ 1678              		.loc 1 377 18
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 37
+
+
+ 1679 004a BB68     		ldr	r3, [r7, #8]
+ 1680 004c 3A6A     		ldr	r2, [r7, #32]
+ 1681 004e 0833     		adds	r3, r3, #8
+ 1682 0050 92E80300 		ldm	r2, {r0, r1}
+ 1683 0054 83E80300 		stm	r3, {r0, r1}
+ 1684              	.L74:
+ 378:coapLIB/coap.c ****     }
+ 379:coapLIB/coap.c **** 
+ 380:coapLIB/coap.c ****     // safe because 1 < MAXOPT
+ 381:coapLIB/coap.c ****     pkt->opts[0].num = COAP_OPTION_CONTENT_FORMAT;
+ 1685              		.loc 1 381 22
+ 1686 0058 BB68     		ldr	r3, [r7, #8]
+ 1687 005a 0C22     		movs	r2, #12
+ 1688 005c 1A75     		strb	r2, [r3, #20]
+ 382:coapLIB/coap.c ****     pkt->opts[0].buf.p = scratch->p;
+ 1689              		.loc 1 382 33
+ 1690 005e FB68     		ldr	r3, [r7, #12]
+ 1691 0060 1A68     		ldr	r2, [r3]
+ 1692              		.loc 1 382 24
+ 1693 0062 BB68     		ldr	r3, [r7, #8]
+ 1694 0064 9A61     		str	r2, [r3, #24]
+ 383:coapLIB/coap.c ****     if (scratch->len < 2)
+ 1695              		.loc 1 383 16
+ 1696 0066 FB68     		ldr	r3, [r7, #12]
+ 1697 0068 5B68     		ldr	r3, [r3, #4]
+ 1698              		.loc 1 383 8
+ 1699 006a 012B     		cmp	r3, #1
+ 1700 006c 01D8     		bhi	.L75
+ 384:coapLIB/coap.c ****         return COAP_ERR_BUFFER_TOO_SMALL;
+ 1701              		.loc 1 384 16
+ 1702 006e 0923     		movs	r3, #9
+ 1703 0070 1AE0     		b	.L76
+ 1704              	.L75:
+ 385:coapLIB/coap.c ****     scratch->p[0] = ((uint16_t)content_type & 0xFF00) >> 8;
+ 1705              		.loc 1 385 55
+ 1706 0072 97F92830 		ldrsb	r3, [r7, #40]
+ 1707 0076 9BB2     		uxth	r3, r3
+ 1708 0078 1B0A     		lsrs	r3, r3, #8
+ 1709 007a 9AB2     		uxth	r2, r3
+ 1710              		.loc 1 385 12
+ 1711 007c FB68     		ldr	r3, [r7, #12]
+ 1712 007e 1B68     		ldr	r3, [r3]
+ 1713              		.loc 1 385 19
+ 1714 0080 D2B2     		uxtb	r2, r2
+ 1715 0082 1A70     		strb	r2, [r3]
+ 386:coapLIB/coap.c ****     scratch->p[1] = ((uint16_t)content_type & 0x00FF);
+ 1716              		.loc 1 386 12
+ 1717 0084 FB68     		ldr	r3, [r7, #12]
+ 1718 0086 1B68     		ldr	r3, [r3]
+ 1719              		.loc 1 386 15
+ 1720 0088 0133     		adds	r3, r3, #1
+ 1721              		.loc 1 386 19
+ 1722 008a 97F82820 		ldrb	r2, [r7, #40]	@ zero_extendqisi2
+ 1723 008e 1A70     		strb	r2, [r3]
+ 387:coapLIB/coap.c ****     pkt->opts[0].buf.len = 2;
+ 1724              		.loc 1 387 26
+ 1725 0090 BB68     		ldr	r3, [r7, #8]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 38
+
+
+ 1726 0092 0222     		movs	r2, #2
+ 1727 0094 DA61     		str	r2, [r3, #28]
+ 388:coapLIB/coap.c ****     pkt->payload.p = content;
+ 1728              		.loc 1 388 20
+ 1729 0096 BB68     		ldr	r3, [r7, #8]
+ 1730 0098 7A68     		ldr	r2, [r7, #4]
+ 1731 009a C3F8D420 		str	r2, [r3, #212]
+ 389:coapLIB/coap.c ****     pkt->payload.len = content_len;
+ 1732              		.loc 1 389 22
+ 1733 009e BB68     		ldr	r3, [r7, #8]
+ 1734 00a0 3A68     		ldr	r2, [r7]
+ 1735 00a2 C3F8D820 		str	r2, [r3, #216]
+ 390:coapLIB/coap.c ****     return 0;
+ 1736              		.loc 1 390 12
+ 1737 00a6 0023     		movs	r3, #0
+ 1738              	.L76:
+ 391:coapLIB/coap.c **** }
+ 1739              		.loc 1 391 1
+ 1740 00a8 1846     		mov	r0, r3
+ 1741 00aa 1437     		adds	r7, r7, #20
+ 1742              	.LCFI53:
+ 1743              		.cfi_def_cfa_offset 4
+ 1744 00ac BD46     		mov	sp, r7
+ 1745              	.LCFI54:
+ 1746              		.cfi_def_cfa_register 13
+ 1747              		@ sp needed
+ 1748 00ae 5DF8047B 		ldr	r7, [sp], #4
+ 1749              	.LCFI55:
+ 1750              		.cfi_restore 7
+ 1751              		.cfi_def_cfa_offset 0
+ 1752 00b2 7047     		bx	lr
+ 1753              		.cfi_endproc
+ 1754              	.LFE12:
+ 1756              		.section	.text.coap_handle_req,"ax",%progbits
+ 1757              		.align	1
+ 1758              		.global	coap_handle_req
+ 1759              		.syntax unified
+ 1760              		.thumb
+ 1761              		.thumb_func
+ 1763              	coap_handle_req:
+ 1764              	.LFB13:
+ 392:coapLIB/coap.c **** 
+ 393:coapLIB/coap.c **** // FIXME, if this looked in the table at the path before the method then
+ 394:coapLIB/coap.c **** // it could more easily return 405 errors
+ 395:coapLIB/coap.c **** int coap_handle_req(coap_rw_buffer_t *scratch, const coap_packet_t *inpkt, coap_packet_t *outpkt)
+ 396:coapLIB/coap.c **** {
+ 1765              		.loc 1 396 1
+ 1766              		.cfi_startproc
+ 1767              		@ args = 0, pretend = 0, frame = 32
+ 1768              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1769 0000 90B5     		push	{r4, r7, lr}
+ 1770              	.LCFI56:
+ 1771              		.cfi_def_cfa_offset 12
+ 1772              		.cfi_offset 4, -12
+ 1773              		.cfi_offset 7, -8
+ 1774              		.cfi_offset 14, -4
+ 1775 0002 8FB0     		sub	sp, sp, #60
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 39
+
+
+ 1776              	.LCFI57:
+ 1777              		.cfi_def_cfa_offset 72
+ 1778 0004 06AF     		add	r7, sp, #24
+ 1779              	.LCFI58:
+ 1780              		.cfi_def_cfa 7, 48
+ 1781 0006 F860     		str	r0, [r7, #12]
+ 1782 0008 B960     		str	r1, [r7, #8]
+ 1783 000a 7A60     		str	r2, [r7, #4]
+ 397:coapLIB/coap.c ****     const coap_option_t *opt;
+ 398:coapLIB/coap.c ****     uint8_t count;
+ 399:coapLIB/coap.c ****     int i;
+ 400:coapLIB/coap.c ****     const coap_endpoint_t *ep = endpoints;
+ 1784              		.loc 1 400 28
+ 1785 000c 474B     		ldr	r3, .L94
+ 1786 000e BB61     		str	r3, [r7, #24]
+ 401:coapLIB/coap.c **** 
+ 402:coapLIB/coap.c ****     while(NULL != ep->handler)
+ 1787              		.loc 1 402 10
+ 1788 0010 6FE0     		b	.L78
+ 1789              	.L87:
+ 403:coapLIB/coap.c ****     {
+ 404:coapLIB/coap.c ****         if (ep->method != inpkt->hdr.code)
+ 1790              		.loc 1 404 15
+ 1791 0012 BB69     		ldr	r3, [r7, #24]
+ 1792 0014 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1793              		.loc 1 404 37
+ 1794 0016 BB68     		ldr	r3, [r7, #8]
+ 1795 0018 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 1796              		.loc 1 404 12
+ 1797 001a 9A42     		cmp	r2, r3
+ 1798 001c 5DD1     		bne	.L89
+ 405:coapLIB/coap.c ****             goto next;
+ 406:coapLIB/coap.c ****         if (NULL != (opt = coap_findOptions(inpkt, COAP_OPTION_URI_PATH, &count)))
+ 1799              		.loc 1 406 28
+ 1800 001e 07F11303 		add	r3, r7, #19
+ 1801 0022 1A46     		mov	r2, r3
+ 1802 0024 0B21     		movs	r1, #11
+ 1803 0026 B868     		ldr	r0, [r7, #8]
+ 1804 0028 FFF7FEFF 		bl	coap_findOptions
+ 1805 002c 7861     		str	r0, [r7, #20]
+ 1806              		.loc 1 406 12
+ 1807 002e 7B69     		ldr	r3, [r7, #20]
+ 1808 0030 002B     		cmp	r3, #0
+ 1809 0032 54D0     		beq	.L90
+ 407:coapLIB/coap.c ****         {
+ 408:coapLIB/coap.c ****             if (count != ep->path->count)
+ 1810              		.loc 1 408 23
+ 1811 0034 FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
+ 1812 0036 1A46     		mov	r2, r3
+ 1813              		.loc 1 408 28
+ 1814 0038 BB69     		ldr	r3, [r7, #24]
+ 1815 003a 9B68     		ldr	r3, [r3, #8]
+ 1816              		.loc 1 408 34
+ 1817 003c 1B68     		ldr	r3, [r3]
+ 1818              		.loc 1 408 16
+ 1819 003e 9A42     		cmp	r2, r3
+ 1820 0040 4FD1     		bne	.L91
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 40
+
+
+ 409:coapLIB/coap.c ****                 goto next;
+ 410:coapLIB/coap.c ****             for (i=0;i<count;i++)
+ 1821              		.loc 1 410 19
+ 1822 0042 0023     		movs	r3, #0
+ 1823 0044 FB61     		str	r3, [r7, #28]
+ 1824              		.loc 1 410 13
+ 1825 0046 35E0     		b	.L82
+ 1826              	.L85:
+ 411:coapLIB/coap.c ****             {
+ 412:coapLIB/coap.c ****                 if (opt[i].buf.len != strlen(ep->path->elems[i]))
+ 1827              		.loc 1 412 24
+ 1828 0048 FA69     		ldr	r2, [r7, #28]
+ 1829 004a 1346     		mov	r3, r2
+ 1830 004c 5B00     		lsls	r3, r3, #1
+ 1831 004e 1344     		add	r3, r3, r2
+ 1832 0050 9B00     		lsls	r3, r3, #2
+ 1833 0052 1A46     		mov	r2, r3
+ 1834 0054 7B69     		ldr	r3, [r7, #20]
+ 1835 0056 1344     		add	r3, r3, r2
+ 1836              		.loc 1 412 31
+ 1837 0058 9C68     		ldr	r4, [r3, #8]
+ 1838              		.loc 1 412 48
+ 1839 005a BB69     		ldr	r3, [r7, #24]
+ 1840 005c 9A68     		ldr	r2, [r3, #8]
+ 1841              		.loc 1 412 39
+ 1842 005e FB69     		ldr	r3, [r7, #28]
+ 1843 0060 9B00     		lsls	r3, r3, #2
+ 1844 0062 1344     		add	r3, r3, r2
+ 1845 0064 5B68     		ldr	r3, [r3, #4]
+ 1846 0066 1846     		mov	r0, r3
+ 1847 0068 FFF7FEFF 		bl	strlen
+ 1848 006c 0346     		mov	r3, r0
+ 1849              		.loc 1 412 20
+ 1850 006e 9C42     		cmp	r4, r3
+ 1851 0070 39D1     		bne	.L92
+ 413:coapLIB/coap.c ****                     goto next;
+ 414:coapLIB/coap.c ****                 if (0 != memcmp(ep->path->elems[i], opt[i].buf.p, opt[i].buf.len))
+ 1852              		.loc 1 414 35
+ 1853 0072 BB69     		ldr	r3, [r7, #24]
+ 1854 0074 9A68     		ldr	r2, [r3, #8]
+ 1855              		.loc 1 414 48
+ 1856 0076 FB69     		ldr	r3, [r7, #28]
+ 1857 0078 9B00     		lsls	r3, r3, #2
+ 1858 007a 1344     		add	r3, r3, r2
+ 1859 007c 5868     		ldr	r0, [r3, #4]
+ 1860              		.loc 1 414 56
+ 1861 007e FA69     		ldr	r2, [r7, #28]
+ 1862 0080 1346     		mov	r3, r2
+ 1863 0082 5B00     		lsls	r3, r3, #1
+ 1864 0084 1344     		add	r3, r3, r2
+ 1865 0086 9B00     		lsls	r3, r3, #2
+ 1866 0088 1A46     		mov	r2, r3
+ 1867 008a 7B69     		ldr	r3, [r7, #20]
+ 1868 008c 1344     		add	r3, r3, r2
+ 1869              		.loc 1 414 63
+ 1870 008e 5968     		ldr	r1, [r3, #4]
+ 1871              		.loc 1 414 70
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 41
+
+
+ 1872 0090 FA69     		ldr	r2, [r7, #28]
+ 1873 0092 1346     		mov	r3, r2
+ 1874 0094 5B00     		lsls	r3, r3, #1
+ 1875 0096 1344     		add	r3, r3, r2
+ 1876 0098 9B00     		lsls	r3, r3, #2
+ 1877 009a 1A46     		mov	r2, r3
+ 1878 009c 7B69     		ldr	r3, [r7, #20]
+ 1879 009e 1344     		add	r3, r3, r2
+ 1880              		.loc 1 414 26
+ 1881 00a0 9B68     		ldr	r3, [r3, #8]
+ 1882 00a2 1A46     		mov	r2, r3
+ 1883 00a4 FFF7FEFF 		bl	memcmp
+ 1884 00a8 0346     		mov	r3, r0
+ 1885              		.loc 1 414 20
+ 1886 00aa 002B     		cmp	r3, #0
+ 1887 00ac 1DD1     		bne	.L93
+ 410:coapLIB/coap.c ****             {
+ 1888              		.loc 1 410 31 discriminator 2
+ 1889 00ae FB69     		ldr	r3, [r7, #28]
+ 1890 00b0 0133     		adds	r3, r3, #1
+ 1891 00b2 FB61     		str	r3, [r7, #28]
+ 1892              	.L82:
+ 410:coapLIB/coap.c ****             {
+ 1893              		.loc 1 410 23 discriminator 1
+ 1894 00b4 FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
+ 1895 00b6 1A46     		mov	r2, r3
+ 410:coapLIB/coap.c ****             {
+ 1896              		.loc 1 410 13 discriminator 1
+ 1897 00b8 FB69     		ldr	r3, [r7, #28]
+ 1898 00ba 9342     		cmp	r3, r2
+ 1899 00bc C4DB     		blt	.L85
+ 415:coapLIB/coap.c ****                     goto next;
+ 416:coapLIB/coap.c ****             }
+ 417:coapLIB/coap.c ****             // match!
+ 418:coapLIB/coap.c ****             return ep->handler(scratch, inpkt, outpkt, inpkt->hdr.id[0], inpkt->hdr.id[1]);
+ 1900              		.loc 1 418 22
+ 1901 00be BB69     		ldr	r3, [r7, #24]
+ 1902 00c0 5C68     		ldr	r4, [r3, #4]
+ 1903              		.loc 1 418 20
+ 1904 00c2 BB68     		ldr	r3, [r7, #8]
+ 1905 00c4 1A79     		ldrb	r2, [r3, #4]	@ zero_extendqisi2
+ 1906 00c6 BB68     		ldr	r3, [r7, #8]
+ 1907 00c8 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+ 1908 00ca 0093     		str	r3, [sp]
+ 1909 00cc 1346     		mov	r3, r2
+ 1910 00ce 7A68     		ldr	r2, [r7, #4]
+ 1911 00d0 B968     		ldr	r1, [r7, #8]
+ 1912 00d2 F868     		ldr	r0, [r7, #12]
+ 1913 00d4 A047     		blx	r4
+ 1914              	.LVL0:
+ 1915 00d6 0346     		mov	r3, r0
+ 1916 00d8 24E0     		b	.L88
+ 1917              	.L89:
+ 405:coapLIB/coap.c ****         if (NULL != (opt = coap_findOptions(inpkt, COAP_OPTION_URI_PATH, &count)))
+ 1918              		.loc 1 405 13
+ 1919 00da 00BF     		nop
+ 1920 00dc 06E0     		b	.L80
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 42
+
+
+ 1921              	.L90:
+ 419:coapLIB/coap.c ****         }
+ 420:coapLIB/coap.c **** next:
+ 1922              		.loc 1 420 1
+ 1923 00de 00BF     		nop
+ 1924 00e0 04E0     		b	.L80
+ 1925              	.L91:
+ 409:coapLIB/coap.c ****             for (i=0;i<count;i++)
+ 1926              		.loc 1 409 17
+ 1927 00e2 00BF     		nop
+ 1928 00e4 02E0     		b	.L80
+ 1929              	.L92:
+ 413:coapLIB/coap.c ****                 if (0 != memcmp(ep->path->elems[i], opt[i].buf.p, opt[i].buf.len))
+ 1930              		.loc 1 413 21
+ 1931 00e6 00BF     		nop
+ 1932 00e8 00E0     		b	.L80
+ 1933              	.L93:
+ 415:coapLIB/coap.c ****             }
+ 1934              		.loc 1 415 21
+ 1935 00ea 00BF     		nop
+ 1936              	.L80:
+ 421:coapLIB/coap.c ****         ep++;
+ 1937              		.loc 1 421 11
+ 1938 00ec BB69     		ldr	r3, [r7, #24]
+ 1939 00ee 1033     		adds	r3, r3, #16
+ 1940 00f0 BB61     		str	r3, [r7, #24]
+ 1941              	.L78:
+ 402:coapLIB/coap.c ****     {
+ 1942              		.loc 1 402 21
+ 1943 00f2 BB69     		ldr	r3, [r7, #24]
+ 1944 00f4 5B68     		ldr	r3, [r3, #4]
+ 402:coapLIB/coap.c ****     {
+ 1945              		.loc 1 402 10
+ 1946 00f6 002B     		cmp	r3, #0
+ 1947 00f8 8BD1     		bne	.L87
+ 422:coapLIB/coap.c ****     }
+ 423:coapLIB/coap.c **** 
+ 424:coapLIB/coap.c ****     coap_make_response(scratch, outpkt, NULL, 0, inpkt->hdr.id[0], inpkt->hdr.id[1], &inpkt->tok, C
+ 1948              		.loc 1 424 5
+ 1949 00fa BB68     		ldr	r3, [r7, #8]
+ 1950 00fc 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 1951 00fe BA68     		ldr	r2, [r7, #8]
+ 1952 0100 5279     		ldrb	r2, [r2, #5]	@ zero_extendqisi2
+ 1953 0102 B968     		ldr	r1, [r7, #8]
+ 1954 0104 0831     		adds	r1, r1, #8
+ 1955 0106 4FF0FF30 		mov	r0, #-1
+ 1956 010a 0490     		str	r0, [sp, #16]
+ 1957 010c 8420     		movs	r0, #132
+ 1958 010e 0390     		str	r0, [sp, #12]
+ 1959 0110 0291     		str	r1, [sp, #8]
+ 1960 0112 0192     		str	r2, [sp, #4]
+ 1961 0114 0093     		str	r3, [sp]
+ 1962 0116 0023     		movs	r3, #0
+ 1963 0118 0022     		movs	r2, #0
+ 1964 011a 7968     		ldr	r1, [r7, #4]
+ 1965 011c F868     		ldr	r0, [r7, #12]
+ 1966 011e FFF7FEFF 		bl	coap_make_response
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 43
+
+
+ 425:coapLIB/coap.c **** 
+ 426:coapLIB/coap.c ****     return 0;
+ 1967              		.loc 1 426 12
+ 1968 0122 0023     		movs	r3, #0
+ 1969              	.L88:
+ 427:coapLIB/coap.c **** }
+ 1970              		.loc 1 427 1 discriminator 1
+ 1971 0124 1846     		mov	r0, r3
+ 1972 0126 2437     		adds	r7, r7, #36
+ 1973              	.LCFI59:
+ 1974              		.cfi_def_cfa_offset 12
+ 1975 0128 BD46     		mov	sp, r7
+ 1976              	.LCFI60:
+ 1977              		.cfi_def_cfa_register 13
+ 1978              		@ sp needed
+ 1979 012a 90BD     		pop	{r4, r7, pc}
+ 1980              	.L95:
+ 1981              		.align	2
+ 1982              	.L94:
+ 1983 012c 00000000 		.word	endpoints
+ 1984              		.cfi_endproc
+ 1985              	.LFE13:
+ 1987              		.section	.text.coap_setup,"ax",%progbits
+ 1988              		.align	1
+ 1989              		.global	coap_setup
+ 1990              		.syntax unified
+ 1991              		.thumb
+ 1992              		.thumb_func
+ 1994              	coap_setup:
+ 1995              	.LFB14:
+ 428:coapLIB/coap.c **** 
+ 429:coapLIB/coap.c **** void coap_setup(void)
+ 430:coapLIB/coap.c **** {
+ 1996              		.loc 1 430 1
+ 1997              		.cfi_startproc
+ 1998              		@ args = 0, pretend = 0, frame = 0
+ 1999              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2000              		@ link register save eliminated.
+ 2001 0000 80B4     		push	{r7}
+ 2002              	.LCFI61:
+ 2003              		.cfi_def_cfa_offset 4
+ 2004              		.cfi_offset 7, -4
+ 2005 0002 00AF     		add	r7, sp, #0
+ 2006              	.LCFI62:
+ 2007              		.cfi_def_cfa_register 7
+ 431:coapLIB/coap.c **** }
+ 2008              		.loc 1 431 1
+ 2009 0004 00BF     		nop
+ 2010 0006 BD46     		mov	sp, r7
+ 2011              	.LCFI63:
+ 2012              		.cfi_def_cfa_register 13
+ 2013              		@ sp needed
+ 2014 0008 5DF8047B 		ldr	r7, [sp], #4
+ 2015              	.LCFI64:
+ 2016              		.cfi_restore 7
+ 2017              		.cfi_def_cfa_offset 0
+ 2018 000c 7047     		bx	lr
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 44
+
+
+ 2019              		.cfi_endproc
+ 2020              	.LFE14:
+ 2022              		.text
+ 2023              	.Letext0:
+ 2024              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 2025              		.file 3 "d:\\gcc arm\\10 2021.10\\lib\\gcc\\arm-none-eabi\\10.3.1\\include\\stddef.h"
+ 2026              		.file 4 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 2027              		.file 5 "coapLIB/coap.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s 			page 45
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 coap.c
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:20     .text.coap_parseHeader:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:26     .text.coap_parseHeader:00000000 coap_parseHeader
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:129    .text.coap_parseToken:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:135    .text.coap_parseToken:00000000 coap_parseToken
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:231    .text.coap_parseOption:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:237    .text.coap_parseOption:00000000 coap_parseOption
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:537    .text.coap_parseOptionsAndPayload:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:543    .text.coap_parseOptionsAndPayload:00000000 coap_parseOptionsAndPayload
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:709    .text.coap_parse:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:715    .text.coap_parse:00000000 coap_parse
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:816    .text.coap_findOptions:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:822    .text.coap_findOptions:00000000 coap_findOptions
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:939    .text.coap_buffer_to_string:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:945    .text.coap_buffer_to_string:00000000 coap_buffer_to_string
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1013   .text.coap_build:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1019   .text.coap_build:00000000 coap_build
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1538   .text.coap_option_nibble:00000000 coap_option_nibble
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1532   .text.coap_option_nibble:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1607   .text.coap_option_nibble:00000044 $d
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1612   .text.coap_make_response:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1618   .text.coap_make_response:00000000 coap_make_response
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1757   .text.coap_handle_req:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1763   .text.coap_handle_req:00000000 coap_handle_req
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1983   .text.coap_handle_req:0000012c $d
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1988   .text.coap_setup:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cciSzAEh.s:1994   .text.coap_setup:00000000 coap_setup
+
+UNDEFINED SYMBOLS
+memcpy
+strlen
+memcmp
+endpoints

@@ -15,38 +15,8 @@ MEMORY
 _estack = ORIGIN(RAM) + LENGTH(RAM);    /* end of RAM */
 
 
-/* TEE sections */
-/* _stee      = 0x08000000;
-_shash     = 0x08000100;
-_sauth_tag = 0x08000120;
-_sboot     = 0x08000220; */
-
-/* START User App */
-/* _app_start = 0x08001000; */
-
-
 SECTIONS
 {
-  /* The savety area .tee: */
-  /* . = ALIGN(8);             
-  _stee = .;                
-
-  .tee :
-  {
-    KEEP(*(.tee))
-    . = ALIGN(8);           
-  } > FLASH
-
-  _etee = .;                 */
-
-  /* Size check section .tee */
-  /* ASSERT((_etee - _stee) <= 1024, "ERROR: .tee section too big! (max 1024 bytes)")
-  ASSERT((_sboot - _stee) >= 0, "TEE layout overlap error!")
-  ASSERT((_app_start - _sauth_tag) >= 0x100, "Too small gap after .auth_tag") */
-
-  /* START User App */
-  /* . = _app_start; */
-
   /* The startup code goes first into FLASH */
   .isr_vector :
   {

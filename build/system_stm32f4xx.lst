@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s 			page 1
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,151 +12,583 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 1
+  12              		.eabi_attribute 30, 6
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"system_stm32f4xx.c"
   16              		.text
-  17              		.align	1
-  18              		.global	SystemInit
-  19              		.syntax unified
-  20              		.thumb
-  21              		.thumb_func
-  23              	SystemInit:
-  24              		@ args = 0, pretend = 0, frame = 0
-  25              		@ frame_needed = 0, uses_anonymous_args = 0
-  26              		@ link register save eliminated.
-  27 0000 034A     		ldr	r2, .L2
-  28 0002 D2F88830 		ldr	r3, [r2, #136]
-  29 0006 43F47003 		orr	r3, r3, #15728640
-  30 000a C2F88830 		str	r3, [r2, #136]
-  31 000e 7047     		bx	lr
-  32              	.L3:
-  33              		.align	2
-  34              	.L2:
-  35 0010 00ED00E0 		.word	-536810240
-  37              		.align	1
-  38              		.global	SystemCoreClockUpdate
-  39              		.syntax unified
-  40              		.thumb
-  41              		.thumb_func
-  43              	SystemCoreClockUpdate:
-  44              		@ args = 0, pretend = 0, frame = 0
-  45              		@ frame_needed = 0, uses_anonymous_args = 0
-  46              		@ link register save eliminated.
-  47 0014 224B     		ldr	r3, .L12
-  48 0016 9B68     		ldr	r3, [r3, #8]
-  49 0018 03F00C03 		and	r3, r3, #12
-  50 001c 042B     		cmp	r3, #4
-  51 001e 14D0     		beq	.L5
-  52 0020 082B     		cmp	r3, #8
-  53 0022 16D0     		beq	.L6
-  54 0024 1BB1     		cbz	r3, .L11
-  55 0026 1F4B     		ldr	r3, .L12+4
-  56 0028 1F4A     		ldr	r2, .L12+8
-  57 002a 1A60     		str	r2, [r3]
-  58 002c 02E0     		b	.L8
-  59              	.L11:
-  60 002e 1D4B     		ldr	r3, .L12+4
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s 			page 2
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	SystemCoreClock
+  20              		.section	.data.SystemCoreClock,"aw"
+  21              		.align	2
+  24              	SystemCoreClock:
+  25 0000 0024F400 		.word	16000000
+  26              		.global	AHBPrescTable
+  27              		.section	.rodata.AHBPrescTable,"a"
+  28              		.align	2
+  31              	AHBPrescTable:
+  32 0000 00000000 		.ascii	"\000\000\000\000\000\000\000\000\001\002\003\004\006"
+  32      00000000 
+  32      01020304 
+  32      06
+  33 000d 070809   		.ascii	"\007\010\011"
+  34              		.global	APBPrescTable
+  35              		.section	.rodata.APBPrescTable,"a"
+  36              		.align	2
+  39              	APBPrescTable:
+  40 0000 00000000 		.ascii	"\000\000\000\000\001\002\003\004"
+  40      01020304 
+  41              		.section	.text.SystemInit,"ax",%progbits
+  42              		.align	1
+  43              		.global	SystemInit
+  44              		.syntax unified
+  45              		.thumb
+  46              		.thumb_func
+  48              	SystemInit:
+  49              	.LFB130:
+  50              		.file 1 "CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c"
+   1:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /**
+   2:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   ******************************************************************************
+   3:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @file    system_stm32f4xx.c
+   4:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @author  MCD Application Team
+   5:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @brief   CMSIS Cortex-M4 Device Peripheral Access Layer System Source File.
+   6:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *
+   7:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *   This file provides two functions and one global variable to be called from 
+   8:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *   user application:
+   9:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *      - SystemInit(): This function is called at startup just after reset and 
+  10:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *                      before branch to main program. This call is made inside
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 2
 
 
-  61 0030 1D4A     		ldr	r2, .L12+8
-  62 0032 1A60     		str	r2, [r3]
-  63              	.L8:
-  64 0034 1A4B     		ldr	r3, .L12
-  65 0036 9B68     		ldr	r3, [r3, #8]
-  66 0038 C3F30313 		ubfx	r3, r3, #4, #4
-  67 003c 1B4A     		ldr	r2, .L12+12
-  68 003e D15C     		ldrb	r1, [r2, r3]	@ zero_extendqisi2
-  69 0040 184A     		ldr	r2, .L12+4
-  70 0042 1368     		ldr	r3, [r2]
-  71 0044 CB40     		lsrs	r3, r3, r1
-  72 0046 1360     		str	r3, [r2]
-  73 0048 7047     		bx	lr
-  74              	.L5:
-  75 004a 164B     		ldr	r3, .L12+4
-  76 004c 184A     		ldr	r2, .L12+16
-  77 004e 1A60     		str	r2, [r3]
-  78 0050 F0E7     		b	.L8
-  79              	.L6:
-  80 0052 134B     		ldr	r3, .L12
-  81 0054 5968     		ldr	r1, [r3, #4]
-  82 0056 5A68     		ldr	r2, [r3, #4]
-  83 0058 02F03F02 		and	r2, r2, #63
-  84 005c 11F4800F 		tst	r1, #4194304
-  85 0060 13D0     		beq	.L9
-  86 0062 134B     		ldr	r3, .L12+16
-  87 0064 B3FBF2F3 		udiv	r3, r3, r2
-  88 0068 0D4A     		ldr	r2, .L12
-  89 006a 5268     		ldr	r2, [r2, #4]
-  90 006c C2F38812 		ubfx	r2, r2, #6, #9
-  91 0070 02FB03F3 		mul	r3, r2, r3
-  92              	.L10:
-  93 0074 0A4A     		ldr	r2, .L12
-  94 0076 5268     		ldr	r2, [r2, #4]
-  95 0078 C2F30142 		ubfx	r2, r2, #16, #2
-  96 007c 0132     		adds	r2, r2, #1
-  97 007e 5200     		lsls	r2, r2, #1
-  98 0080 B3FBF2F3 		udiv	r3, r3, r2
-  99 0084 074A     		ldr	r2, .L12+4
- 100 0086 1360     		str	r3, [r2]
- 101 0088 D4E7     		b	.L8
- 102              	.L9:
- 103 008a 074B     		ldr	r3, .L12+8
- 104 008c B3FBF2F3 		udiv	r3, r3, r2
- 105 0090 034A     		ldr	r2, .L12
- 106 0092 5268     		ldr	r2, [r2, #4]
- 107 0094 C2F38812 		ubfx	r2, r2, #6, #9
- 108 0098 02FB03F3 		mul	r3, r2, r3
- 109 009c EAE7     		b	.L10
- 110              	.L13:
- 111 009e 00BF     		.align	2
- 112              	.L12:
- 113 00a0 00380240 		.word	1073887232
- 114 00a4 00000000 		.word	.LANCHOR0
- 115 00a8 0024F400 		.word	16000000
- 116 00ac 00000000 		.word	.LANCHOR1
- 117 00b0 40787D01 		.word	25000000
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s 			page 3
+  11:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *                      the "startup_stm32f4xx.s" file.
+  12:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *
+  13:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *      - SystemCoreClock variable: Contains the core clock (HCLK), it can be used
+  14:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *                                  by the user application to setup the SysTick 
+  15:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *                                  timer or configure other parameters.
+  16:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *                                     
+  17:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *      - SystemCoreClockUpdate(): Updates the variable SystemCoreClock and must
+  18:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *                                 be called whenever the core clock is changed
+  19:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *                                 during program execution.
+  20:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *
+  21:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *
+  22:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   ******************************************************************************
+  23:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @attention
+  24:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *
+  25:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * Copyright (c) 2017 STMicroelectronics.
+  26:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * All rights reserved.
+  27:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *
+  28:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  29:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * in the root directory of this software component.
+  30:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  31:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *
+  32:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   ******************************************************************************
+  33:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+  34:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  35:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /** @addtogroup CMSIS
+  36:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @{
+  37:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+  38:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  39:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /** @addtogroup stm32f4xx_system
+  40:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @{
+  41:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */  
+  42:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   
+  43:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_Includes
+  44:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @{
+  45:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+  46:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  47:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  48:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #include "stm32f4xx.h"
+  49:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  50:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #if !defined  (HSE_VALUE) 
+  51:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   #define HSE_VALUE    ((uint32_t)25000000) /*!< Default value of the External oscillator in Hz */
+  52:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #endif /* HSE_VALUE */
+  53:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  54:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #if !defined  (HSI_VALUE)
+  55:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   #define HSI_VALUE    ((uint32_t)16000000) /*!< Value of the Internal oscillator in Hz*/
+  56:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #endif /* HSI_VALUE */
+  57:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  58:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /**
+  59:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @}
+  60:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+  61:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  62:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_TypesDefinitions
+  63:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @{
+  64:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+  65:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  66:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /**
+  67:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @}
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 3
 
 
- 119              		.global	APBPrescTable
- 120              		.global	AHBPrescTable
- 121              		.global	SystemCoreClock
- 122              		.section	.rodata
- 123              		.align	2
- 124              		.set	.LANCHOR1,. + 0
- 127              	AHBPrescTable:
- 128 0000 00000000 		.ascii	"\000\000\000\000\000\000\000\000\001\002\003\004\006"
- 128      00000000 
- 128      01020304 
- 128      06
- 129 000d 070809   		.ascii	"\007\010\011"
- 132              	APBPrescTable:
- 133 0010 00000000 		.ascii	"\000\000\000\000\001\002\003\004"
- 133      01020304 
- 134              		.data
- 135              		.align	2
- 136              		.set	.LANCHOR0,. + 0
- 139              	SystemCoreClock:
- 140 0000 0024F400 		.word	16000000
- 141              		.ident	"GCC: (GNU Arm Embedded Toolchain 10.3-2021.10) 10.3.1 20210824 (release)"
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s 			page 4
+  68:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+  69:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  70:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_Defines
+  71:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @{
+  72:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+  73:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  74:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /************************* Miscellaneous Configuration ************************/
+  75:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /*!< Uncomment the following line if you need to use external SRAM or SDRAM as data memory  */
+  76:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx)\
+  77:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****  || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)\
+  78:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****  || defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F412Zx) || defined(STM32F412Vx)
+  79:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /* #define DATA_IN_ExtSRAM */
+  80:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #endif /* STM32F40xxx || STM32F41xxx || STM32F42xxx || STM32F43xxx || STM32F469xx || STM32F479xx ||
+  81:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****           STM32F412Zx || STM32F412Vx */
+  82:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****  
+  83:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)\
+  84:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****  || defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
+  85:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /* #define DATA_IN_ExtSDRAM */
+  86:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F446xx || STM32F469xx ||
+  87:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****           STM32F479xx */
+  88:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  89:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /* Note: Following vector table addresses must be defined in line with linker
+  90:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****          configuration. */
+  91:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /*!< Uncomment the following line if you need to relocate the vector table
+  92:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****      anywhere in Flash or Sram, else the vector table is kept at the automatic
+  93:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****      remap of boot address selected */
+  94:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /* #define USER_VECT_TAB_ADDRESS */
+  95:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+  96:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #if defined(USER_VECT_TAB_ADDRESS)
+  97:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /*!< Uncomment the following line if you need to relocate your vector Table
+  98:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****      in Sram else user remap will be done in Flash. */
+  99:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /* #define VECT_TAB_SRAM */
+ 100:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #if defined(VECT_TAB_SRAM)
+ 101:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #define VECT_TAB_BASE_ADDRESS   SRAM_BASE       /*!< Vector Table base address field.
+ 102:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****                                                      This value must be a multiple of 0x200. */
+ 103:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table base offset field.
+ 104:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****                                                      This value must be a multiple of 0x200. */
+ 105:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #else
+ 106:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #define VECT_TAB_BASE_ADDRESS   FLASH_BASE      /*!< Vector Table base address field.
+ 107:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****                                                      This value must be a multiple of 0x200. */
+ 108:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #define VECT_TAB_OFFSET         0x00000000U     /*!< Vector Table base offset field.
+ 109:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****                                                      This value must be a multiple of 0x200. */
+ 110:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #endif /* VECT_TAB_SRAM */
+ 111:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #endif /* USER_VECT_TAB_ADDRESS */
+ 112:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /******************************************************************************/
+ 113:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 114:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /**
+ 115:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @}
+ 116:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ 117:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 118:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_Macros
+ 119:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @{
+ 120:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ 121:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 122:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /**
+ 123:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @}
+ 124:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 4
+
+
+ 125:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 126:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_Variables
+ 127:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @{
+ 128:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ 129:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   /* This variable is updated in three ways:
+ 130:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       1) by calling CMSIS function SystemCoreClockUpdate()
+ 131:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       2) by calling HAL API function HAL_RCC_GetHCLKFreq()
+ 132:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency 
+ 133:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****          Note: If you use this function to configure the system clock; then there
+ 134:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****                is no need to call the 2 first functions listed above, since SystemCoreClock
+ 135:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****                variable is updated automatically.
+ 136:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ 137:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** uint32_t SystemCoreClock = 16000000;
+ 138:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** const uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+ 139:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** const uint8_t APBPrescTable[8]  = {0, 0, 0, 0, 1, 2, 3, 4};
+ 140:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /**
+ 141:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @}
+ 142:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ 143:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 144:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_FunctionPrototypes
+ 145:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @{
+ 146:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ 147:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 148:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #if defined (DATA_IN_ExtSRAM) || defined (DATA_IN_ExtSDRAM)
+ 149:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   static void SystemInit_ExtMemCtl(void); 
+ 150:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #endif /* DATA_IN_ExtSRAM || DATA_IN_ExtSDRAM */
+ 151:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 152:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /**
+ 153:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @}
+ 154:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ 155:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 156:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /** @addtogroup STM32F4xx_System_Private_Functions
+ 157:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @{
+ 158:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ 159:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 160:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /**
+ 161:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @brief  Setup the microcontroller system
+ 162:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         Initialize the FPU setting, vector table location and External memory 
+ 163:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         configuration.
+ 164:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @param  None
+ 165:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @retval None
+ 166:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ 167:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** void SystemInit(void)
+ 168:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** {
+  51              		.loc 1 168 1
+  52              		.cfi_startproc
+  53              		@ args = 0, pretend = 0, frame = 0
+  54              		@ frame_needed = 1, uses_anonymous_args = 0
+  55              		@ link register save eliminated.
+  56 0000 80B4     		push	{r7}
+  57              	.LCFI0:
+  58              		.cfi_def_cfa_offset 4
+  59              		.cfi_offset 7, -4
+  60 0002 00AF     		add	r7, sp, #0
+  61              	.LCFI1:
+  62              		.cfi_def_cfa_register 7
+ 169:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   /* FPU settings ------------------------------------------------------------*/
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 5
+
+
+ 170:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
+ 171:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****     SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));  /* set CP10 and CP11 Full Access */
+  63              		.loc 1 171 16
+  64 0004 064B     		ldr	r3, .L2
+  65 0006 D3F88830 		ldr	r3, [r3, #136]
+  66 000a 054A     		ldr	r2, .L2
+  67 000c 43F47003 		orr	r3, r3, #15728640
+  68 0010 C2F88830 		str	r3, [r2, #136]
+ 172:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   #endif
+ 173:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 174:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #if defined (DATA_IN_ExtSRAM) || defined (DATA_IN_ExtSDRAM)
+ 175:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   SystemInit_ExtMemCtl(); 
+ 176:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #endif /* DATA_IN_ExtSRAM || DATA_IN_ExtSDRAM */
+ 177:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 178:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   /* Configure the Vector Table location -------------------------------------*/
+ 179:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #if defined(USER_VECT_TAB_ADDRESS)
+ 180:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   SCB->VTOR = VECT_TAB_BASE_ADDRESS | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM 
+ 181:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** #endif /* USER_VECT_TAB_ADDRESS */
+ 182:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** }
+  69              		.loc 1 182 1
+  70 0014 00BF     		nop
+  71 0016 BD46     		mov	sp, r7
+  72              	.LCFI2:
+  73              		.cfi_def_cfa_register 13
+  74              		@ sp needed
+  75 0018 5DF8047B 		ldr	r7, [sp], #4
+  76              	.LCFI3:
+  77              		.cfi_restore 7
+  78              		.cfi_def_cfa_offset 0
+  79 001c 7047     		bx	lr
+  80              	.L3:
+  81 001e 00BF     		.align	2
+  82              	.L2:
+  83 0020 00ED00E0 		.word	-536810240
+  84              		.cfi_endproc
+  85              	.LFE130:
+  87              		.section	.text.SystemCoreClockUpdate,"ax",%progbits
+  88              		.align	1
+  89              		.global	SystemCoreClockUpdate
+  90              		.syntax unified
+  91              		.thumb
+  92              		.thumb_func
+  94              	SystemCoreClockUpdate:
+  95              	.LFB131:
+ 183:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 184:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** /**
+ 185:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****    * @brief  Update SystemCoreClock variable according to Clock Register Values.
+ 186:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         The SystemCoreClock variable contains the core clock (HCLK), it can
+ 187:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         be used by the user application to setup the SysTick timer or configure
+ 188:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         other parameters.
+ 189:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *           
+ 190:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @note   Each time the core clock (HCLK) changes, this function must be called
+ 191:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         to update SystemCoreClock variable value. Otherwise, any configuration
+ 192:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         based on this variable will be incorrect.         
+ 193:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *     
+ 194:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @note   - The system frequency computed by this function is not the real 
+ 195:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *           frequency in the chip. It is calculated based on the predefined 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 6
+
+
+ 196:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *           constant and the selected clock source:
+ 197:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *             
+ 198:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *           - If SYSCLK source is HSI, SystemCoreClock will contain the HSI_VALUE(*)
+ 199:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *                                              
+ 200:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *           - If SYSCLK source is HSE, SystemCoreClock will contain the HSE_VALUE(**)
+ 201:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *                          
+ 202:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *           - If SYSCLK source is PLL, SystemCoreClock will contain the HSE_VALUE(**) 
+ 203:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *             or HSI_VALUE(*) multiplied/divided by the PLL factors.
+ 204:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         
+ 205:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         (*) HSI_VALUE is a constant defined in stm32f4xx_hal_conf.h file (default value
+ 206:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *             16 MHz) but the real value may vary depending on the variations
+ 207:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *             in voltage and temperature.   
+ 208:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *    
+ 209:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         (**) HSE_VALUE is a constant defined in stm32f4xx_hal_conf.h file (its value
+ 210:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *              depends on the application requirements), user has to ensure that HSE_VALUE
+ 211:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *              is same as the real frequency of the crystal used. Otherwise, this function
+ 212:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *              may have wrong result.
+ 213:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *                
+ 214:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *         - The result of this function could be not correct when using fractional
+ 215:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *           value for HSE crystal.
+ 216:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   *     
+ 217:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @param  None
+ 218:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   * @retval None
+ 219:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   */
+ 220:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** void SystemCoreClockUpdate(void)
+ 221:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** {
+  96              		.loc 1 221 1
+  97              		.cfi_startproc
+  98              		@ args = 0, pretend = 0, frame = 24
+  99              		@ frame_needed = 1, uses_anonymous_args = 0
+ 100              		@ link register save eliminated.
+ 101 0000 80B4     		push	{r7}
+ 102              	.LCFI4:
+ 103              		.cfi_def_cfa_offset 4
+ 104              		.cfi_offset 7, -4
+ 105 0002 87B0     		sub	sp, sp, #28
+ 106              	.LCFI5:
+ 107              		.cfi_def_cfa_offset 32
+ 108 0004 00AF     		add	r7, sp, #0
+ 109              	.LCFI6:
+ 110              		.cfi_def_cfa_register 7
+ 222:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   uint32_t tmp = 0, pllvco = 0, pllp = 2, pllsource = 0, pllm = 2;
+ 111              		.loc 1 222 12
+ 112 0006 0023     		movs	r3, #0
+ 113 0008 3B61     		str	r3, [r7, #16]
+ 114              		.loc 1 222 21
+ 115 000a 0023     		movs	r3, #0
+ 116 000c 7B61     		str	r3, [r7, #20]
+ 117              		.loc 1 222 33
+ 118 000e 0223     		movs	r3, #2
+ 119 0010 FB60     		str	r3, [r7, #12]
+ 120              		.loc 1 222 43
+ 121 0012 0023     		movs	r3, #0
+ 122 0014 BB60     		str	r3, [r7, #8]
+ 123              		.loc 1 222 58
+ 124 0016 0223     		movs	r3, #2
+ 125 0018 7B60     		str	r3, [r7, #4]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 7
+
+
+ 223:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   
+ 224:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   /* Get SYSCLK source -------------------------------------------------------*/
+ 225:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   tmp = RCC->CFGR & RCC_CFGR_SWS;
+ 126              		.loc 1 225 12
+ 127 001a 344B     		ldr	r3, .L12
+ 128 001c 9B68     		ldr	r3, [r3, #8]
+ 129              		.loc 1 225 7
+ 130 001e 03F00C03 		and	r3, r3, #12
+ 131 0022 3B61     		str	r3, [r7, #16]
+ 226:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 227:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   switch (tmp)
+ 132              		.loc 1 227 3
+ 133 0024 3B69     		ldr	r3, [r7, #16]
+ 134 0026 082B     		cmp	r3, #8
+ 135 0028 11D0     		beq	.L5
+ 136 002a 3B69     		ldr	r3, [r7, #16]
+ 137 002c 082B     		cmp	r3, #8
+ 138 002e 44D8     		bhi	.L6
+ 139 0030 3B69     		ldr	r3, [r7, #16]
+ 140 0032 002B     		cmp	r3, #0
+ 141 0034 03D0     		beq	.L7
+ 142 0036 3B69     		ldr	r3, [r7, #16]
+ 143 0038 042B     		cmp	r3, #4
+ 144 003a 04D0     		beq	.L8
+ 145 003c 3DE0     		b	.L6
+ 146              	.L7:
+ 228:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   {
+ 229:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****     case 0x00:  /* HSI used as system clock source */
+ 230:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       SystemCoreClock = HSI_VALUE;
+ 147              		.loc 1 230 23
+ 148 003e 2C4B     		ldr	r3, .L12+4
+ 149 0040 2C4A     		ldr	r2, .L12+8
+ 150 0042 1A60     		str	r2, [r3]
+ 231:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       break;
+ 151              		.loc 1 231 7
+ 152 0044 3DE0     		b	.L9
+ 153              	.L8:
+ 232:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****     case 0x04:  /* HSE used as system clock source */
+ 233:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       SystemCoreClock = HSE_VALUE;
+ 154              		.loc 1 233 23
+ 155 0046 2A4B     		ldr	r3, .L12+4
+ 156 0048 2B4A     		ldr	r2, .L12+12
+ 157 004a 1A60     		str	r2, [r3]
+ 234:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       break;
+ 158              		.loc 1 234 7
+ 159 004c 39E0     		b	.L9
+ 160              	.L5:
+ 235:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****     case 0x08:  /* PLL used as system clock source */
+ 236:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 237:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       /* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N
+ 238:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****          SYSCLK = PLL_VCO / PLL_P
+ 239:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****          */    
+ 240:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       pllsource = (RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) >> 22;
+ 161              		.loc 1 240 23
+ 162 004e 274B     		ldr	r3, .L12
+ 163 0050 5B68     		ldr	r3, [r3, #4]
+ 164              		.loc 1 240 55
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 8
+
+
+ 165 0052 9B0D     		lsrs	r3, r3, #22
+ 166              		.loc 1 240 17
+ 167 0054 03F00103 		and	r3, r3, #1
+ 168 0058 BB60     		str	r3, [r7, #8]
+ 241:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       pllm = RCC->PLLCFGR & RCC_PLLCFGR_PLLM;
+ 169              		.loc 1 241 17
+ 170 005a 244B     		ldr	r3, .L12
+ 171 005c 5B68     		ldr	r3, [r3, #4]
+ 172              		.loc 1 241 12
+ 173 005e 03F03F03 		and	r3, r3, #63
+ 174 0062 7B60     		str	r3, [r7, #4]
+ 242:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       
+ 243:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       if (pllsource != 0)
+ 175              		.loc 1 243 10
+ 176 0064 BB68     		ldr	r3, [r7, #8]
+ 177 0066 002B     		cmp	r3, #0
+ 178 0068 0CD0     		beq	.L10
+ 244:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       {
+ 245:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****         /* HSE used as PLL clock source */
+ 246:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****         pllvco = (HSE_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
+ 179              		.loc 1 246 29
+ 180 006a 234A     		ldr	r2, .L12+12
+ 181 006c 7B68     		ldr	r3, [r7, #4]
+ 182 006e B2FBF3F3 		udiv	r3, r2, r3
+ 183              		.loc 1 246 44
+ 184 0072 1E4A     		ldr	r2, .L12
+ 185 0074 5268     		ldr	r2, [r2, #4]
+ 186              		.loc 1 246 74
+ 187 0076 9209     		lsrs	r2, r2, #6
+ 188 0078 C2F30802 		ubfx	r2, r2, #0, #9
+ 189              		.loc 1 246 16
+ 190 007c 02FB03F3 		mul	r3, r2, r3
+ 191 0080 7B61     		str	r3, [r7, #20]
+ 192 0082 0BE0     		b	.L11
+ 193              	.L10:
+ 247:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       }
+ 248:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       else
+ 249:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       {
+ 250:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****         /* HSI used as PLL clock source */
+ 251:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****         pllvco = (HSI_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> 6);
+ 194              		.loc 1 251 29
+ 195 0084 1B4A     		ldr	r2, .L12+8
+ 196 0086 7B68     		ldr	r3, [r7, #4]
+ 197 0088 B2FBF3F3 		udiv	r3, r2, r3
+ 198              		.loc 1 251 44
+ 199 008c 174A     		ldr	r2, .L12
+ 200 008e 5268     		ldr	r2, [r2, #4]
+ 201              		.loc 1 251 74
+ 202 0090 9209     		lsrs	r2, r2, #6
+ 203 0092 C2F30802 		ubfx	r2, r2, #0, #9
+ 204              		.loc 1 251 16
+ 205 0096 02FB03F3 		mul	r3, r2, r3
+ 206 009a 7B61     		str	r3, [r7, #20]
+ 207              	.L11:
+ 252:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       }
+ 253:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** 
+ 254:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       pllp = (((RCC->PLLCFGR & RCC_PLLCFGR_PLLP) >>16) + 1 ) *2;
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 9
+
+
+ 208              		.loc 1 254 20
+ 209 009c 134B     		ldr	r3, .L12
+ 210 009e 5B68     		ldr	r3, [r3, #4]
+ 211              		.loc 1 254 50
+ 212 00a0 1B0C     		lsrs	r3, r3, #16
+ 213 00a2 03F00303 		and	r3, r3, #3
+ 214              		.loc 1 254 56
+ 215 00a6 0133     		adds	r3, r3, #1
+ 216              		.loc 1 254 12
+ 217 00a8 5B00     		lsls	r3, r3, #1
+ 218 00aa FB60     		str	r3, [r7, #12]
+ 255:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       SystemCoreClock = pllvco/pllp;
+ 219              		.loc 1 255 31
+ 220 00ac 7A69     		ldr	r2, [r7, #20]
+ 221 00ae FB68     		ldr	r3, [r7, #12]
+ 222 00b0 B2FBF3F3 		udiv	r3, r2, r3
+ 223              		.loc 1 255 23
+ 224 00b4 0E4A     		ldr	r2, .L12+4
+ 225 00b6 1360     		str	r3, [r2]
+ 256:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       break;
+ 226              		.loc 1 256 7
+ 227 00b8 03E0     		b	.L9
+ 228              	.L6:
+ 257:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****     default:
+ 258:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       SystemCoreClock = HSI_VALUE;
+ 229              		.loc 1 258 23
+ 230 00ba 0D4B     		ldr	r3, .L12+4
+ 231 00bc 0D4A     		ldr	r2, .L12+8
+ 232 00be 1A60     		str	r2, [r3]
+ 259:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****       break;
+ 233              		.loc 1 259 7
+ 234 00c0 00BF     		nop
+ 235              	.L9:
+ 260:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   }
+ 261:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   /* Compute HCLK frequency --------------------------------------------------*/
+ 262:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   /* Get HCLK prescaler */
+ 263:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+ 236              		.loc 1 263 28
+ 237 00c2 0A4B     		ldr	r3, .L12
+ 238 00c4 9B68     		ldr	r3, [r3, #8]
+ 239              		.loc 1 263 52
+ 240 00c6 1B09     		lsrs	r3, r3, #4
+ 241 00c8 03F00F03 		and	r3, r3, #15
+ 242              		.loc 1 263 22
+ 243 00cc 0B4A     		ldr	r2, .L12+16
+ 244 00ce D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 245              		.loc 1 263 7
+ 246 00d0 3B61     		str	r3, [r7, #16]
+ 264:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   /* HCLK frequency */
+ 265:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c ****   SystemCoreClock >>= tmp;
+ 247              		.loc 1 265 19
+ 248 00d2 074B     		ldr	r3, .L12+4
+ 249 00d4 1A68     		ldr	r2, [r3]
+ 250 00d6 3B69     		ldr	r3, [r7, #16]
+ 251 00d8 22FA03F3 		lsr	r3, r2, r3
+ 252 00dc 044A     		ldr	r2, .L12+4
+ 253 00de 1360     		str	r3, [r2]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 10
+
+
+ 266:CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c **** }
+ 254              		.loc 1 266 1
+ 255 00e0 00BF     		nop
+ 256 00e2 1C37     		adds	r7, r7, #28
+ 257              	.LCFI7:
+ 258              		.cfi_def_cfa_offset 4
+ 259 00e4 BD46     		mov	sp, r7
+ 260              	.LCFI8:
+ 261              		.cfi_def_cfa_register 13
+ 262              		@ sp needed
+ 263 00e6 5DF8047B 		ldr	r7, [sp], #4
+ 264              	.LCFI9:
+ 265              		.cfi_restore 7
+ 266              		.cfi_def_cfa_offset 0
+ 267 00ea 7047     		bx	lr
+ 268              	.L13:
+ 269              		.align	2
+ 270              	.L12:
+ 271 00ec 00380240 		.word	1073887232
+ 272 00f0 00000000 		.word	SystemCoreClock
+ 273 00f4 0024F400 		.word	16000000
+ 274 00f8 40787D01 		.word	25000000
+ 275 00fc 00000000 		.word	AHBPrescTable
+ 276              		.cfi_endproc
+ 277              	.LFE131:
+ 279              		.text
+ 280              	.Letext0:
+ 281              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 282              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 283              		.file 4 "CMSIS/Include/core_cm4.h"
+ 284              		.file 5 "CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+ 285              		.file 6 "CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 system_stm32f4xx.c
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:17     .text:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:23     .text:00000000 SystemInit
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:35     .text:00000010 $d
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:37     .text:00000014 $t
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:43     .text:00000014 SystemCoreClockUpdate
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:113    .text:000000a0 $d
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:132    .rodata:00000010 APBPrescTable
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:127    .rodata:00000000 AHBPrescTable
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:139    .data:00000000 SystemCoreClock
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:123    .rodata:00000000 $d
-C:\Users\clay0\AppData\Local\Temp\ccLzwtFo.s:135    .data:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:24     .data.SystemCoreClock:00000000 SystemCoreClock
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:21     .data.SystemCoreClock:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:31     .rodata.AHBPrescTable:00000000 AHBPrescTable
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:28     .rodata.AHBPrescTable:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:39     .rodata.APBPrescTable:00000000 APBPrescTable
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:36     .rodata.APBPrescTable:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:42     .text.SystemInit:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:48     .text.SystemInit:00000000 SystemInit
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:83     .text.SystemInit:00000020 $d
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:88     .text.SystemCoreClockUpdate:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:94     .text.SystemCoreClockUpdate:00000000 SystemCoreClockUpdate
+C:\Users\clay0\AppData\Local\Temp\cc8rChhP.s:271    .text.SystemCoreClockUpdate:000000ec $d
 
 NO UNDEFINED SYMBOLS

@@ -1,0 +1,772 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"endpoints.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.data.light,"aw"
+  22              	light:
+  23 0000 30       		.byte	48
+  24              		.global	rsplen
+  25              		.section	.rodata.rsplen,"a"
+  26              		.align	1
+  29              	rsplen:
+  30 0000 DC05     		.short	1500
+  31              		.section	.bss.rsp,"aw",%nobits
+  32              		.align	2
+  35              	rsp:
+  36 0000 00000000 		.space	1500
+  36      00000000 
+  36      00000000 
+  36      00000000 
+  36      00000000 
+  37              		.section	.text.endpoint_setup,"ax",%progbits
+  38              		.align	1
+  39              		.global	endpoint_setup
+  40              		.syntax unified
+  41              		.thumb
+  42              		.thumb_func
+  44              	endpoint_setup:
+  45              	.LFB135:
+  46              		.file 1 "coapLIB/endpoints.c"
+   1:coapLIB/endpoints.c **** #include <stdio.h>
+   2:coapLIB/endpoints.c **** #include <stdbool.h>
+   3:coapLIB/endpoints.c **** #include <string.h>
+   4:coapLIB/endpoints.c **** #include "coap.h"
+   5:coapLIB/endpoints.c **** #include "main.h"
+   6:coapLIB/endpoints.c **** 
+   7:coapLIB/endpoints.c **** static char light = '0';
+   8:coapLIB/endpoints.c **** 
+   9:coapLIB/endpoints.c **** const uint16_t rsplen = 1500;
+  10:coapLIB/endpoints.c **** static char rsp[1500] = "";
+  11:coapLIB/endpoints.c **** void build_rsp(void);
+  12:coapLIB/endpoints.c **** 
+  13:coapLIB/endpoints.c **** 
+  14:coapLIB/endpoints.c **** void endpoint_setup(void)
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 2
+
+
+  15:coapLIB/endpoints.c **** {
+  47              		.loc 1 15 1
+  48              		.cfi_startproc
+  49              		@ args = 0, pretend = 0, frame = 0
+  50              		@ frame_needed = 1, uses_anonymous_args = 0
+  51 0000 80B5     		push	{r7, lr}
+  52              	.LCFI0:
+  53              		.cfi_def_cfa_offset 8
+  54              		.cfi_offset 7, -8
+  55              		.cfi_offset 14, -4
+  56 0002 00AF     		add	r7, sp, #0
+  57              	.LCFI1:
+  58              		.cfi_def_cfa_register 7
+  16:coapLIB/endpoints.c ****     blink_run(50);
+  59              		.loc 1 16 5
+  60 0004 3220     		movs	r0, #50
+  61 0006 FFF7FEFF 		bl	blink_run
+  17:coapLIB/endpoints.c ****     build_rsp();
+  62              		.loc 1 17 5
+  63 000a FFF7FEFF 		bl	build_rsp
+  18:coapLIB/endpoints.c **** }
+  64              		.loc 1 18 1
+  65 000e 00BF     		nop
+  66 0010 80BD     		pop	{r7, pc}
+  67              		.cfi_endproc
+  68              	.LFE135:
+  70              		.section	.rodata
+  71              		.align	2
+  72              	.LC0:
+  73 0000 2E77656C 		.ascii	".well-known\000"
+  73      6C2D6B6E 
+  73      6F776E00 
+  74              		.align	2
+  75              	.LC1:
+  76 000c 636F7265 		.ascii	"core\000"
+  76      00
+  77              		.section	.rodata.path_well_known_core,"a"
+  78              		.align	2
+  81              	path_well_known_core:
+  82 0000 02000000 		.word	2
+  83 0004 00000000 		.word	.LC0
+  84 0008 0C000000 		.word	.LC1
+  85              		.section	.text.handle_get_well_known_core,"ax",%progbits
+  86              		.align	1
+  87              		.syntax unified
+  88              		.thumb
+  89              		.thumb_func
+  91              	handle_get_well_known_core:
+  92              	.LFB136:
+  19:coapLIB/endpoints.c **** 
+  20:coapLIB/endpoints.c **** static const coap_endpoint_path_t path_well_known_core = {2, {".well-known", "core"}};
+  21:coapLIB/endpoints.c **** static int handle_get_well_known_core(coap_rw_buffer_t *scratch, const coap_packet_t *inpkt, coap_p
+  22:coapLIB/endpoints.c **** {
+  93              		.loc 1 22 1
+  94              		.cfi_startproc
+  95              		@ args = 4, pretend = 0, frame = 16
+  96              		@ frame_needed = 1, uses_anonymous_args = 0
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 3
+
+
+  97 0000 80B5     		push	{r7, lr}
+  98              	.LCFI2:
+  99              		.cfi_def_cfa_offset 8
+ 100              		.cfi_offset 7, -8
+ 101              		.cfi_offset 14, -4
+ 102 0002 8AB0     		sub	sp, sp, #40
+ 103              	.LCFI3:
+ 104              		.cfi_def_cfa_offset 48
+ 105 0004 06AF     		add	r7, sp, #24
+ 106              	.LCFI4:
+ 107              		.cfi_def_cfa 7, 24
+ 108 0006 F860     		str	r0, [r7, #12]
+ 109 0008 B960     		str	r1, [r7, #8]
+ 110 000a 7A60     		str	r2, [r7, #4]
+ 111 000c FB70     		strb	r3, [r7, #3]
+  23:coapLIB/endpoints.c ****     return coap_make_response(scratch, outpkt, (const uint8_t *)rsp, strlen(rsp), id_hi, id_lo, &in
+ 112              		.loc 1 23 12
+ 113 000e 0D48     		ldr	r0, .L4
+ 114 0010 FFF7FEFF 		bl	strlen
+ 115 0014 0246     		mov	r2, r0
+ 116 0016 BB68     		ldr	r3, [r7, #8]
+ 117 0018 0833     		adds	r3, r3, #8
+ 118 001a 2821     		movs	r1, #40
+ 119 001c 0491     		str	r1, [sp, #16]
+ 120 001e 4521     		movs	r1, #69
+ 121 0020 0391     		str	r1, [sp, #12]
+ 122 0022 0293     		str	r3, [sp, #8]
+ 123 0024 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 124 0026 0193     		str	r3, [sp, #4]
+ 125 0028 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 126 002a 0093     		str	r3, [sp]
+ 127 002c 1346     		mov	r3, r2
+ 128 002e 054A     		ldr	r2, .L4
+ 129 0030 7968     		ldr	r1, [r7, #4]
+ 130 0032 F868     		ldr	r0, [r7, #12]
+ 131 0034 FFF7FEFF 		bl	coap_make_response
+ 132 0038 0346     		mov	r3, r0
+  24:coapLIB/endpoints.c **** }
+ 133              		.loc 1 24 1
+ 134 003a 1846     		mov	r0, r3
+ 135 003c 1037     		adds	r7, r7, #16
+ 136              	.LCFI5:
+ 137              		.cfi_def_cfa_offset 8
+ 138 003e BD46     		mov	sp, r7
+ 139              	.LCFI6:
+ 140              		.cfi_def_cfa_register 13
+ 141              		@ sp needed
+ 142 0040 80BD     		pop	{r7, pc}
+ 143              	.L5:
+ 144 0042 00BF     		.align	2
+ 145              	.L4:
+ 146 0044 00000000 		.word	rsp
+ 147              		.cfi_endproc
+ 148              	.LFE136:
+ 150              		.section	.rodata
+ 151 0011 000000   		.align	2
+ 152              	.LC2:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 4
+
+
+ 153 0014 6C696768 		.ascii	"light\000"
+ 153      7400
+ 154              		.section	.rodata.path_light,"a"
+ 155              		.align	2
+ 158              	path_light:
+ 159 0000 01000000 		.word	1
+ 160 0004 14000000 		.word	.LC2
+ 161 0008 00000000 		.space	4
+ 162              		.section	.text.handle_get_light,"ax",%progbits
+ 163              		.align	1
+ 164              		.syntax unified
+ 165              		.thumb
+ 166              		.thumb_func
+ 168              	handle_get_light:
+ 169              	.LFB137:
+  25:coapLIB/endpoints.c **** 
+  26:coapLIB/endpoints.c **** static const coap_endpoint_path_t path_light = {1, {"light"}};
+  27:coapLIB/endpoints.c **** static int handle_get_light(coap_rw_buffer_t *scratch, const coap_packet_t *inpkt, coap_packet_t *o
+  28:coapLIB/endpoints.c **** {
+ 170              		.loc 1 28 1
+ 171              		.cfi_startproc
+ 172              		@ args = 4, pretend = 0, frame = 16
+ 173              		@ frame_needed = 1, uses_anonymous_args = 0
+ 174 0000 80B5     		push	{r7, lr}
+ 175              	.LCFI7:
+ 176              		.cfi_def_cfa_offset 8
+ 177              		.cfi_offset 7, -8
+ 178              		.cfi_offset 14, -4
+ 179 0002 8AB0     		sub	sp, sp, #40
+ 180              	.LCFI8:
+ 181              		.cfi_def_cfa_offset 48
+ 182 0004 06AF     		add	r7, sp, #24
+ 183              	.LCFI9:
+ 184              		.cfi_def_cfa 7, 24
+ 185 0006 F860     		str	r0, [r7, #12]
+ 186 0008 B960     		str	r1, [r7, #8]
+ 187 000a 7A60     		str	r2, [r7, #4]
+ 188 000c FB70     		strb	r3, [r7, #3]
+  29:coapLIB/endpoints.c ****     return coap_make_response(scratch, outpkt, (const uint8_t *)&light, 1, id_hi, id_lo, &inpkt->to
+ 189              		.loc 1 29 12
+ 190 000e BB68     		ldr	r3, [r7, #8]
+ 191 0010 0833     		adds	r3, r3, #8
+ 192 0012 0022     		movs	r2, #0
+ 193 0014 0492     		str	r2, [sp, #16]
+ 194 0016 4522     		movs	r2, #69
+ 195 0018 0392     		str	r2, [sp, #12]
+ 196 001a 0293     		str	r3, [sp, #8]
+ 197 001c 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 198 001e 0193     		str	r3, [sp, #4]
+ 199 0020 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 200 0022 0093     		str	r3, [sp]
+ 201 0024 0123     		movs	r3, #1
+ 202 0026 054A     		ldr	r2, .L8
+ 203 0028 7968     		ldr	r1, [r7, #4]
+ 204 002a F868     		ldr	r0, [r7, #12]
+ 205 002c FFF7FEFF 		bl	coap_make_response
+ 206 0030 0346     		mov	r3, r0
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 5
+
+
+  30:coapLIB/endpoints.c **** }
+ 207              		.loc 1 30 1
+ 208 0032 1846     		mov	r0, r3
+ 209 0034 1037     		adds	r7, r7, #16
+ 210              	.LCFI10:
+ 211              		.cfi_def_cfa_offset 8
+ 212 0036 BD46     		mov	sp, r7
+ 213              	.LCFI11:
+ 214              		.cfi_def_cfa_register 13
+ 215              		@ sp needed
+ 216 0038 80BD     		pop	{r7, pc}
+ 217              	.L9:
+ 218 003a 00BF     		.align	2
+ 219              	.L8:
+ 220 003c 00000000 		.word	light
+ 221              		.cfi_endproc
+ 222              	.LFE137:
+ 224              		.section	.text.handle_put_light,"ax",%progbits
+ 225              		.align	1
+ 226              		.syntax unified
+ 227              		.thumb
+ 228              		.thumb_func
+ 230              	handle_put_light:
+ 231              	.LFB138:
+  31:coapLIB/endpoints.c **** 
+  32:coapLIB/endpoints.c **** static int handle_put_light(coap_rw_buffer_t *scratch, const coap_packet_t *inpkt, coap_packet_t *o
+  33:coapLIB/endpoints.c **** {
+ 232              		.loc 1 33 1
+ 233              		.cfi_startproc
+ 234              		@ args = 4, pretend = 0, frame = 16
+ 235              		@ frame_needed = 1, uses_anonymous_args = 0
+ 236 0000 80B5     		push	{r7, lr}
+ 237              	.LCFI12:
+ 238              		.cfi_def_cfa_offset 8
+ 239              		.cfi_offset 7, -8
+ 240              		.cfi_offset 14, -4
+ 241 0002 8AB0     		sub	sp, sp, #40
+ 242              	.LCFI13:
+ 243              		.cfi_def_cfa_offset 48
+ 244 0004 06AF     		add	r7, sp, #24
+ 245              	.LCFI14:
+ 246              		.cfi_def_cfa 7, 24
+ 247 0006 F860     		str	r0, [r7, #12]
+ 248 0008 B960     		str	r1, [r7, #8]
+ 249 000a 7A60     		str	r2, [r7, #4]
+ 250 000c FB70     		strb	r3, [r7, #3]
+  34:coapLIB/endpoints.c ****     if (inpkt->payload.len == 0)
+ 251              		.loc 1 34 23
+ 252 000e BB68     		ldr	r3, [r7, #8]
+ 253 0010 D3F8D830 		ldr	r3, [r3, #216]
+ 254              		.loc 1 34 8
+ 255 0014 002B     		cmp	r3, #0
+ 256 0016 12D1     		bne	.L11
+  35:coapLIB/endpoints.c ****         return coap_make_response(scratch, outpkt, NULL, 0, id_hi, id_lo, &inpkt->tok, COAP_RSPCODE
+ 257              		.loc 1 35 16
+ 258 0018 BB68     		ldr	r3, [r7, #8]
+ 259 001a 0833     		adds	r3, r3, #8
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 6
+
+
+ 260 001c 0022     		movs	r2, #0
+ 261 001e 0492     		str	r2, [sp, #16]
+ 262 0020 8022     		movs	r2, #128
+ 263 0022 0392     		str	r2, [sp, #12]
+ 264 0024 0293     		str	r3, [sp, #8]
+ 265 0026 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 266 0028 0193     		str	r3, [sp, #4]
+ 267 002a FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 268 002c 0093     		str	r3, [sp]
+ 269 002e 0023     		movs	r3, #0
+ 270 0030 0022     		movs	r2, #0
+ 271 0032 7968     		ldr	r1, [r7, #4]
+ 272 0034 F868     		ldr	r0, [r7, #12]
+ 273 0036 FFF7FEFF 		bl	coap_make_response
+ 274 003a 0346     		mov	r3, r0
+ 275 003c 36E0     		b	.L12
+ 276              	.L11:
+  36:coapLIB/endpoints.c ****     if (inpkt->payload.p[0] == '1')
+ 277              		.loc 1 36 23
+ 278 003e BB68     		ldr	r3, [r7, #8]
+ 279 0040 D3F8D430 		ldr	r3, [r3, #212]
+ 280              		.loc 1 36 25
+ 281 0044 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 282              		.loc 1 36 8
+ 283 0046 312B     		cmp	r3, #49
+ 284 0048 18D1     		bne	.L13
+  37:coapLIB/endpoints.c ****     {
+  38:coapLIB/endpoints.c ****         light = '1';
+ 285              		.loc 1 38 15
+ 286 004a 1A4B     		ldr	r3, .L14
+ 287 004c 3122     		movs	r2, #49
+ 288 004e 1A70     		strb	r2, [r3]
+  39:coapLIB/endpoints.c **** 
+  40:coapLIB/endpoints.c ****         blink_run(50);
+ 289              		.loc 1 40 9
+ 290 0050 3220     		movs	r0, #50
+ 291 0052 FFF7FEFF 		bl	blink_run
+  41:coapLIB/endpoints.c ****         return coap_make_response(scratch, outpkt, (const uint8_t *)&light, 1, id_hi, id_lo, &inpkt
+ 292              		.loc 1 41 16
+ 293 0056 BB68     		ldr	r3, [r7, #8]
+ 294 0058 0833     		adds	r3, r3, #8
+ 295 005a 0022     		movs	r2, #0
+ 296 005c 0492     		str	r2, [sp, #16]
+ 297 005e 4422     		movs	r2, #68
+ 298 0060 0392     		str	r2, [sp, #12]
+ 299 0062 0293     		str	r3, [sp, #8]
+ 300 0064 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 301 0066 0193     		str	r3, [sp, #4]
+ 302 0068 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 303 006a 0093     		str	r3, [sp]
+ 304 006c 0123     		movs	r3, #1
+ 305 006e 114A     		ldr	r2, .L14
+ 306 0070 7968     		ldr	r1, [r7, #4]
+ 307 0072 F868     		ldr	r0, [r7, #12]
+ 308 0074 FFF7FEFF 		bl	coap_make_response
+ 309 0078 0346     		mov	r3, r0
+ 310 007a 17E0     		b	.L12
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 7
+
+
+ 311              	.L13:
+  42:coapLIB/endpoints.c ****     }
+  43:coapLIB/endpoints.c ****     else
+  44:coapLIB/endpoints.c ****     {
+  45:coapLIB/endpoints.c ****         light = '0';
+ 312              		.loc 1 45 15
+ 313 007c 0D4B     		ldr	r3, .L14
+ 314 007e 3022     		movs	r2, #48
+ 315 0080 1A70     		strb	r2, [r3]
+  46:coapLIB/endpoints.c ****         blink_run(50);
+ 316              		.loc 1 46 9
+ 317 0082 3220     		movs	r0, #50
+ 318 0084 FFF7FEFF 		bl	blink_run
+  47:coapLIB/endpoints.c ****         return coap_make_response(scratch, outpkt, (const uint8_t *)&light, 1, id_hi, id_lo, &inpkt
+ 319              		.loc 1 47 16
+ 320 0088 BB68     		ldr	r3, [r7, #8]
+ 321 008a 0833     		adds	r3, r3, #8
+ 322 008c 0022     		movs	r2, #0
+ 323 008e 0492     		str	r2, [sp, #16]
+ 324 0090 4422     		movs	r2, #68
+ 325 0092 0392     		str	r2, [sp, #12]
+ 326 0094 0293     		str	r3, [sp, #8]
+ 327 0096 3B7E     		ldrb	r3, [r7, #24]	@ zero_extendqisi2
+ 328 0098 0193     		str	r3, [sp, #4]
+ 329 009a FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 330 009c 0093     		str	r3, [sp]
+ 331 009e 0123     		movs	r3, #1
+ 332 00a0 044A     		ldr	r2, .L14
+ 333 00a2 7968     		ldr	r1, [r7, #4]
+ 334 00a4 F868     		ldr	r0, [r7, #12]
+ 335 00a6 FFF7FEFF 		bl	coap_make_response
+ 336 00aa 0346     		mov	r3, r0
+ 337              	.L12:
+  48:coapLIB/endpoints.c ****     }
+  49:coapLIB/endpoints.c **** }
+ 338              		.loc 1 49 1
+ 339 00ac 1846     		mov	r0, r3
+ 340 00ae 1037     		adds	r7, r7, #16
+ 341              	.LCFI15:
+ 342              		.cfi_def_cfa_offset 8
+ 343 00b0 BD46     		mov	sp, r7
+ 344              	.LCFI16:
+ 345              		.cfi_def_cfa_register 13
+ 346              		@ sp needed
+ 347 00b2 80BD     		pop	{r7, pc}
+ 348              	.L15:
+ 349              		.align	2
+ 350              	.L14:
+ 351 00b4 00000000 		.word	light
+ 352              		.cfi_endproc
+ 353              	.LFE138:
+ 355              		.global	endpoints
+ 356              		.section	.rodata
+ 357 001a 0000     		.align	2
+ 358              	.LC3:
+ 359 001c 63743D34 		.ascii	"ct=40\000"
+ 359      3000
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 8
+
+
+ 360 0022 0000     		.align	2
+ 361              	.LC4:
+ 362 0024 63743D30 		.ascii	"ct=0\000"
+ 362      00
+ 363              		.section	.rodata.endpoints,"a"
+ 364              		.align	2
+ 367              	endpoints:
+ 368 0000 01       		.byte	1
+ 369 0001 000000   		.space	3
+ 370 0004 00000000 		.word	handle_get_well_known_core
+ 371 0008 00000000 		.word	path_well_known_core
+ 372 000c 1C000000 		.word	.LC3
+ 373 0010 01       		.byte	1
+ 374 0011 000000   		.space	3
+ 375 0014 00000000 		.word	handle_get_light
+ 376 0018 00000000 		.word	path_light
+ 377 001c 24000000 		.word	.LC4
+ 378 0020 03       		.byte	3
+ 379 0021 000000   		.space	3
+ 380 0024 00000000 		.word	handle_put_light
+ 381 0028 00000000 		.word	path_light
+ 382 002c 00000000 		.word	0
+ 383 0030 00       		.byte	0
+ 384 0031 000000   		.space	3
+ 385 0034 00000000 		.word	0
+ 386 0038 00000000 		.word	0
+ 387 003c 00000000 		.word	0
+ 388              		.section	.rodata
+ 389 0029 000000   		.align	2
+ 390              	.LC5:
+ 391 002c 2C00     		.ascii	",\000"
+ 392 002e 0000     		.align	2
+ 393              	.LC6:
+ 394 0030 3C00     		.ascii	"<\000"
+ 395 0032 0000     		.align	2
+ 396              	.LC7:
+ 397 0034 2F00     		.ascii	"/\000"
+ 398 0036 0000     		.align	2
+ 399              	.LC8:
+ 400 0038 3E3B00   		.ascii	">;\000"
+ 401              		.section	.text.build_rsp,"ax",%progbits
+ 402              		.align	1
+ 403              		.global	build_rsp
+ 404              		.syntax unified
+ 405              		.thumb
+ 406              		.thumb_func
+ 408              	build_rsp:
+ 409              	.LFB139:
+  50:coapLIB/endpoints.c **** 
+  51:coapLIB/endpoints.c **** const coap_endpoint_t endpoints[] =
+  52:coapLIB/endpoints.c **** {
+  53:coapLIB/endpoints.c ****     {COAP_METHOD_GET, handle_get_well_known_core, &path_well_known_core, "ct=40"},
+  54:coapLIB/endpoints.c ****     {COAP_METHOD_GET, handle_get_light, &path_light, "ct=0"},
+  55:coapLIB/endpoints.c ****     {COAP_METHOD_PUT, handle_put_light, &path_light, NULL},
+  56:coapLIB/endpoints.c ****     {(coap_method_t)0, NULL, NULL, NULL}
+  57:coapLIB/endpoints.c **** };
+  58:coapLIB/endpoints.c **** 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 9
+
+
+  59:coapLIB/endpoints.c **** void build_rsp(void)
+  60:coapLIB/endpoints.c **** {
+ 410              		.loc 1 60 1
+ 411              		.cfi_startproc
+ 412              		@ args = 0, pretend = 0, frame = 16
+ 413              		@ frame_needed = 1, uses_anonymous_args = 0
+ 414 0000 80B5     		push	{r7, lr}
+ 415              	.LCFI17:
+ 416              		.cfi_def_cfa_offset 8
+ 417              		.cfi_offset 7, -8
+ 418              		.cfi_offset 14, -4
+ 419 0002 84B0     		sub	sp, sp, #16
+ 420              	.LCFI18:
+ 421              		.cfi_def_cfa_offset 24
+ 422 0004 00AF     		add	r7, sp, #0
+ 423              	.LCFI19:
+ 424              		.cfi_def_cfa_register 7
+  61:coapLIB/endpoints.c ****     uint16_t len = rsplen;
+ 425              		.loc 1 61 14
+ 426 0006 40F2DC53 		movw	r3, #1500
+ 427 000a FB81     		strh	r3, [r7, #14]	@ movhi
+  62:coapLIB/endpoints.c ****     const coap_endpoint_t *ep = endpoints;
+ 428              		.loc 1 62 28
+ 429 000c 3B4B     		ldr	r3, .L23
+ 430 000e BB60     		str	r3, [r7, #8]
+  63:coapLIB/endpoints.c ****     int i;
+  64:coapLIB/endpoints.c **** 
+  65:coapLIB/endpoints.c ****     len--; // Null-terminated string
+ 431              		.loc 1 65 8
+ 432 0010 FB89     		ldrh	r3, [r7, #14]
+ 433 0012 013B     		subs	r3, r3, #1
+ 434 0014 FB81     		strh	r3, [r7, #14]	@ movhi
+  66:coapLIB/endpoints.c **** 
+  67:coapLIB/endpoints.c ****     while(NULL != ep->handler)
+ 435              		.loc 1 67 10
+ 436 0016 68E0     		b	.L17
+ 437              	.L22:
+  68:coapLIB/endpoints.c ****     {
+  69:coapLIB/endpoints.c ****         if (NULL == ep->core_attr) {
+ 438              		.loc 1 69 23
+ 439 0018 BB68     		ldr	r3, [r7, #8]
+ 440 001a DB68     		ldr	r3, [r3, #12]
+ 441              		.loc 1 69 12
+ 442 001c 002B     		cmp	r3, #0
+ 443 001e 03D1     		bne	.L18
+  70:coapLIB/endpoints.c ****             ep++;
+ 444              		.loc 1 70 15
+ 445 0020 BB68     		ldr	r3, [r7, #8]
+ 446 0022 1033     		adds	r3, r3, #16
+ 447 0024 BB60     		str	r3, [r7, #8]
+  71:coapLIB/endpoints.c ****             continue;
+ 448              		.loc 1 71 13
+ 449 0026 60E0     		b	.L17
+ 450              	.L18:
+  72:coapLIB/endpoints.c ****         }
+  73:coapLIB/endpoints.c **** 
+  74:coapLIB/endpoints.c ****         if (0 < strlen(rsp)) {
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 10
+
+
+ 451              		.loc 1 74 24
+ 452 0028 354B     		ldr	r3, .L23+4
+ 453              		.loc 1 74 15
+ 454 002a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 455              		.loc 1 74 12
+ 456 002c 002B     		cmp	r3, #0
+ 457 002e 08D0     		beq	.L19
+  75:coapLIB/endpoints.c ****             strncat(rsp, ",", len);
+ 458              		.loc 1 75 13
+ 459 0030 FB89     		ldrh	r3, [r7, #14]
+ 460 0032 1A46     		mov	r2, r3
+ 461 0034 3349     		ldr	r1, .L23+8
+ 462 0036 3248     		ldr	r0, .L23+4
+ 463 0038 FFF7FEFF 		bl	strncat
+  76:coapLIB/endpoints.c ****             len--;
+ 464              		.loc 1 76 16
+ 465 003c FB89     		ldrh	r3, [r7, #14]
+ 466 003e 013B     		subs	r3, r3, #1
+ 467 0040 FB81     		strh	r3, [r7, #14]	@ movhi
+ 468              	.L19:
+  77:coapLIB/endpoints.c ****         }
+  78:coapLIB/endpoints.c **** 
+  79:coapLIB/endpoints.c ****         strncat(rsp, "<", len);
+ 469              		.loc 1 79 9
+ 470 0042 FB89     		ldrh	r3, [r7, #14]
+ 471 0044 1A46     		mov	r2, r3
+ 472 0046 3049     		ldr	r1, .L23+12
+ 473 0048 2D48     		ldr	r0, .L23+4
+ 474 004a FFF7FEFF 		bl	strncat
+  80:coapLIB/endpoints.c ****         len--;
+ 475              		.loc 1 80 12
+ 476 004e FB89     		ldrh	r3, [r7, #14]
+ 477 0050 013B     		subs	r3, r3, #1
+ 478 0052 FB81     		strh	r3, [r7, #14]	@ movhi
+  81:coapLIB/endpoints.c **** 
+  82:coapLIB/endpoints.c ****         for (i = 0; i < ep->path->count; i++) {
+ 479              		.loc 1 82 16
+ 480 0054 0023     		movs	r3, #0
+ 481 0056 7B60     		str	r3, [r7, #4]
+ 482              		.loc 1 82 9
+ 483 0058 24E0     		b	.L20
+ 484              	.L21:
+  83:coapLIB/endpoints.c ****             strncat(rsp, "/", len);
+ 485              		.loc 1 83 13 discriminator 3
+ 486 005a FB89     		ldrh	r3, [r7, #14]
+ 487 005c 1A46     		mov	r2, r3
+ 488 005e 2B49     		ldr	r1, .L23+16
+ 489 0060 2748     		ldr	r0, .L23+4
+ 490 0062 FFF7FEFF 		bl	strncat
+  84:coapLIB/endpoints.c ****             len--;
+ 491              		.loc 1 84 16 discriminator 3
+ 492 0066 FB89     		ldrh	r3, [r7, #14]
+ 493 0068 013B     		subs	r3, r3, #1
+ 494 006a FB81     		strh	r3, [r7, #14]	@ movhi
+  85:coapLIB/endpoints.c **** 
+  86:coapLIB/endpoints.c ****             strncat(rsp, ep->path->elems[i], len);
+ 495              		.loc 1 86 28 discriminator 3
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 11
+
+
+ 496 006c BB68     		ldr	r3, [r7, #8]
+ 497 006e 9A68     		ldr	r2, [r3, #8]
+ 498              		.loc 1 86 13 discriminator 3
+ 499 0070 7B68     		ldr	r3, [r7, #4]
+ 500 0072 9B00     		lsls	r3, r3, #2
+ 501 0074 1344     		add	r3, r3, r2
+ 502 0076 5B68     		ldr	r3, [r3, #4]
+ 503 0078 FA89     		ldrh	r2, [r7, #14]
+ 504 007a 1946     		mov	r1, r3
+ 505 007c 2048     		ldr	r0, .L23+4
+ 506 007e FFF7FEFF 		bl	strncat
+  87:coapLIB/endpoints.c ****             len -= strlen(ep->path->elems[i]);
+ 507              		.loc 1 87 29 discriminator 3
+ 508 0082 BB68     		ldr	r3, [r7, #8]
+ 509 0084 9A68     		ldr	r2, [r3, #8]
+ 510              		.loc 1 87 20 discriminator 3
+ 511 0086 7B68     		ldr	r3, [r7, #4]
+ 512 0088 9B00     		lsls	r3, r3, #2
+ 513 008a 1344     		add	r3, r3, r2
+ 514 008c 5B68     		ldr	r3, [r3, #4]
+ 515 008e 1846     		mov	r0, r3
+ 516 0090 FFF7FEFF 		bl	strlen
+ 517 0094 0346     		mov	r3, r0
+ 518              		.loc 1 87 17 discriminator 3
+ 519 0096 9BB2     		uxth	r3, r3
+ 520 0098 FA89     		ldrh	r2, [r7, #14]	@ movhi
+ 521 009a D31A     		subs	r3, r2, r3
+ 522 009c FB81     		strh	r3, [r7, #14]	@ movhi
+  82:coapLIB/endpoints.c ****             strncat(rsp, "/", len);
+ 523              		.loc 1 82 43 discriminator 3
+ 524 009e 7B68     		ldr	r3, [r7, #4]
+ 525 00a0 0133     		adds	r3, r3, #1
+ 526 00a2 7B60     		str	r3, [r7, #4]
+ 527              	.L20:
+  82:coapLIB/endpoints.c ****             strncat(rsp, "/", len);
+ 528              		.loc 1 82 27 discriminator 1
+ 529 00a4 BB68     		ldr	r3, [r7, #8]
+ 530 00a6 9B68     		ldr	r3, [r3, #8]
+  82:coapLIB/endpoints.c ****             strncat(rsp, "/", len);
+ 531              		.loc 1 82 33 discriminator 1
+ 532 00a8 1B68     		ldr	r3, [r3]
+  82:coapLIB/endpoints.c ****             strncat(rsp, "/", len);
+ 533              		.loc 1 82 9 discriminator 1
+ 534 00aa 7A68     		ldr	r2, [r7, #4]
+ 535 00ac 9A42     		cmp	r2, r3
+ 536 00ae D4DB     		blt	.L21
+  88:coapLIB/endpoints.c ****         }
+  89:coapLIB/endpoints.c **** 
+  90:coapLIB/endpoints.c ****         strncat(rsp, ">;", len);
+ 537              		.loc 1 90 9
+ 538 00b0 FB89     		ldrh	r3, [r7, #14]
+ 539 00b2 1A46     		mov	r2, r3
+ 540 00b4 1649     		ldr	r1, .L23+20
+ 541 00b6 1248     		ldr	r0, .L23+4
+ 542 00b8 FFF7FEFF 		bl	strncat
+  91:coapLIB/endpoints.c ****         len -= 2;
+ 543              		.loc 1 91 13
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 12
+
+
+ 544 00bc FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 545 00be 023B     		subs	r3, r3, #2
+ 546 00c0 FB81     		strh	r3, [r7, #14]	@ movhi
+  92:coapLIB/endpoints.c **** 
+  93:coapLIB/endpoints.c ****         strncat(rsp, ep->core_attr, len);
+ 547              		.loc 1 93 9
+ 548 00c2 BB68     		ldr	r3, [r7, #8]
+ 549 00c4 DB68     		ldr	r3, [r3, #12]
+ 550 00c6 FA89     		ldrh	r2, [r7, #14]
+ 551 00c8 1946     		mov	r1, r3
+ 552 00ca 0D48     		ldr	r0, .L23+4
+ 553 00cc FFF7FEFF 		bl	strncat
+  94:coapLIB/endpoints.c ****         len -= strlen(ep->core_attr);
+ 554              		.loc 1 94 16
+ 555 00d0 BB68     		ldr	r3, [r7, #8]
+ 556 00d2 DB68     		ldr	r3, [r3, #12]
+ 557 00d4 1846     		mov	r0, r3
+ 558 00d6 FFF7FEFF 		bl	strlen
+ 559 00da 0346     		mov	r3, r0
+ 560              		.loc 1 94 13
+ 561 00dc 9BB2     		uxth	r3, r3
+ 562 00de FA89     		ldrh	r2, [r7, #14]	@ movhi
+ 563 00e0 D31A     		subs	r3, r2, r3
+ 564 00e2 FB81     		strh	r3, [r7, #14]	@ movhi
+  95:coapLIB/endpoints.c **** 
+  96:coapLIB/endpoints.c ****         ep++;
+ 565              		.loc 1 96 11
+ 566 00e4 BB68     		ldr	r3, [r7, #8]
+ 567 00e6 1033     		adds	r3, r3, #16
+ 568 00e8 BB60     		str	r3, [r7, #8]
+ 569              	.L17:
+  67:coapLIB/endpoints.c ****     {
+ 570              		.loc 1 67 21
+ 571 00ea BB68     		ldr	r3, [r7, #8]
+ 572 00ec 5B68     		ldr	r3, [r3, #4]
+  67:coapLIB/endpoints.c ****     {
+ 573              		.loc 1 67 10
+ 574 00ee 002B     		cmp	r3, #0
+ 575 00f0 92D1     		bne	.L22
+  97:coapLIB/endpoints.c ****     }
+  98:coapLIB/endpoints.c **** }
+ 576              		.loc 1 98 1
+ 577 00f2 00BF     		nop
+ 578 00f4 00BF     		nop
+ 579 00f6 1037     		adds	r7, r7, #16
+ 580              	.LCFI20:
+ 581              		.cfi_def_cfa_offset 8
+ 582 00f8 BD46     		mov	sp, r7
+ 583              	.LCFI21:
+ 584              		.cfi_def_cfa_register 13
+ 585              		@ sp needed
+ 586 00fa 80BD     		pop	{r7, pc}
+ 587              	.L24:
+ 588              		.align	2
+ 589              	.L23:
+ 590 00fc 00000000 		.word	endpoints
+ 591 0100 00000000 		.word	rsp
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 13
+
+
+ 592 0104 2C000000 		.word	.LC5
+ 593 0108 30000000 		.word	.LC6
+ 594 010c 34000000 		.word	.LC7
+ 595 0110 38000000 		.word	.LC8
+ 596              		.cfi_endproc
+ 597              	.LFE139:
+ 599              		.text
+ 600              	.Letext0:
+ 601              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 602              		.file 3 "d:\\gcc arm\\10 2021.10\\lib\\gcc\\arm-none-eabi\\10.3.1\\include\\stddef.h"
+ 603              		.file 4 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 604              		.file 5 "coapLIB/coap.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 endpoints.c
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:22     .data.light:00000000 light
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:29     .rodata.rsplen:00000000 rsplen
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:26     .rodata.rsplen:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:32     .bss.rsp:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:35     .bss.rsp:00000000 rsp
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:38     .text.endpoint_setup:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:44     .text.endpoint_setup:00000000 endpoint_setup
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:408    .text.build_rsp:00000000 build_rsp
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:71     .rodata:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:78     .rodata.path_well_known_core:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:81     .rodata.path_well_known_core:00000000 path_well_known_core
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:86     .text.handle_get_well_known_core:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:91     .text.handle_get_well_known_core:00000000 handle_get_well_known_core
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:146    .text.handle_get_well_known_core:00000044 $d
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:155    .rodata.path_light:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:158    .rodata.path_light:00000000 path_light
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:163    .text.handle_get_light:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:168    .text.handle_get_light:00000000 handle_get_light
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:220    .text.handle_get_light:0000003c $d
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:225    .text.handle_put_light:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:230    .text.handle_put_light:00000000 handle_put_light
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:351    .text.handle_put_light:000000b4 $d
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:367    .rodata.endpoints:00000000 endpoints
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:364    .rodata.endpoints:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:402    .text.build_rsp:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccBbwe5Z.s:590    .text.build_rsp:000000fc $d
+
+UNDEFINED SYMBOLS
+blink_run
+strlen
+coap_make_response
+strncat

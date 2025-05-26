@@ -1,0 +1,626 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"w5500_host_config.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	ip_assigned
+  20              		.section	.bss.ip_assigned,"aw",%nobits
+  23              	ip_assigned:
+  24 0000 00       		.space	1
+  25              		.section	.text.static_host_configuration,"ax",%progbits
+  26              		.align	1
+  27              		.global	static_host_configuration
+  28              		.syntax unified
+  29              		.thumb
+  30              		.thumb_func
+  32              	static_host_configuration:
+  33              	.LFB135:
+  34              		.file 1 "ioLIB/w5500_host_config.c"
+   1:ioLIB/w5500_host_config.c **** #include <stdio.h>
+   2:ioLIB/w5500_host_config.c **** #include <stdint.h>
+   3:ioLIB/w5500_host_config.c **** #include "w5500_host_config.h"
+   4:ioLIB/w5500_host_config.c **** #include "wizchip_conf.h"
+   5:ioLIB/w5500_host_config.c **** #include "dhcp.h"
+   6:ioLIB/w5500_host_config.c **** #include "stdbool.h"
+   7:ioLIB/w5500_host_config.c **** #include "main.h"
+   8:ioLIB/w5500_host_config.c **** 
+   9:ioLIB/w5500_host_config.c **** 
+  10:ioLIB/w5500_host_config.c **** volatile bool ip_assigned = false;
+  11:ioLIB/w5500_host_config.c **** 
+  12:ioLIB/w5500_host_config.c **** /**
+  13:ioLIB/w5500_host_config.c ****  * @brief Callback function triggered when an IP address is successfully assigned by the DHCP serve
+  14:ioLIB/w5500_host_config.c ****  * @param None
+  15:ioLIB/w5500_host_config.c ****  * @retval None
+  16:ioLIB/w5500_host_config.c ****  */
+  17:ioLIB/w5500_host_config.c **** void callback_ip_assigned();
+  18:ioLIB/w5500_host_config.c **** 
+  19:ioLIB/w5500_host_config.c **** /**
+  20:ioLIB/w5500_host_config.c ****  * @brief Callback function triggered when the DHCP lease is renewed.
+  21:ioLIB/w5500_host_config.c ****  * @param None
+  22:ioLIB/w5500_host_config.c ****  * @retval None
+  23:ioLIB/w5500_host_config.c ****  */
+  24:ioLIB/w5500_host_config.c **** void callback_ip_renewed();
+  25:ioLIB/w5500_host_config.c **** 
+  26:ioLIB/w5500_host_config.c **** /**
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 2
+
+
+  27:ioLIB/w5500_host_config.c ****  * @brief Callback function triggered when an IP conflict is detected.
+  28:ioLIB/w5500_host_config.c ****  * @param None
+  29:ioLIB/w5500_host_config.c ****  * @retval None
+  30:ioLIB/w5500_host_config.c ****  */
+  31:ioLIB/w5500_host_config.c **** void callback_ip_conflict();
+  32:ioLIB/w5500_host_config.c **** 
+  33:ioLIB/w5500_host_config.c **** 
+  34:ioLIB/w5500_host_config.c **** /**
+  35:ioLIB/w5500_host_config.c ****  * @brief Configures the W5500 with a static IP address.
+  36:ioLIB/w5500_host_config.c ****  * @param mac Source MAC address
+  37:ioLIB/w5500_host_config.c ****  * @param ip Source IP address
+  38:ioLIB/w5500_host_config.c ****  * @param sn Subnet mask
+  39:ioLIB/w5500_host_config.c ****  * @param gw Gateway IP address
+  40:ioLIB/w5500_host_config.c ****  * @param dns DNS server IP address
+  41:ioLIB/w5500_host_config.c ****  * @retval None
+  42:ioLIB/w5500_host_config.c ****  */
+  43:ioLIB/w5500_host_config.c **** void static_host_configuration(uint8_t mac[6], uint8_t ip[4], uint8_t sn[4], uint8_t gw[4], uint8_t
+  44:ioLIB/w5500_host_config.c **** {
+  35              		.loc 1 44 1
+  36              		.cfi_startproc
+  37              		@ args = 4, pretend = 0, frame = 40
+  38              		@ frame_needed = 1, uses_anonymous_args = 0
+  39 0000 80B5     		push	{r7, lr}
+  40              	.LCFI0:
+  41              		.cfi_def_cfa_offset 8
+  42              		.cfi_offset 7, -8
+  43              		.cfi_offset 14, -4
+  44 0002 8AB0     		sub	sp, sp, #40
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 48
+  47 0004 00AF     		add	r7, sp, #0
+  48              	.LCFI2:
+  49              		.cfi_def_cfa_register 7
+  50 0006 F860     		str	r0, [r7, #12]
+  51 0008 B960     		str	r1, [r7, #8]
+  52 000a 7A60     		str	r2, [r7, #4]
+  53 000c 3B60     		str	r3, [r7]
+  45:ioLIB/w5500_host_config.c ****     wiz_NetInfo net_info = {
+  46:ioLIB/w5500_host_config.c ****         .mac = {mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]},  // Copy MAC address
+  54              		.loc 1 46 20
+  55 000e FB68     		ldr	r3, [r7, #12]
+  56 0010 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  45:ioLIB/w5500_host_config.c ****     wiz_NetInfo net_info = {
+  57              		.loc 1 45 17
+  58 0012 3B74     		strb	r3, [r7, #16]
+  59 0014 FB68     		ldr	r3, [r7, #12]
+  60 0016 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+  61 0018 7B74     		strb	r3, [r7, #17]
+  62 001a FB68     		ldr	r3, [r7, #12]
+  63 001c 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+  64 001e BB74     		strb	r3, [r7, #18]
+  65 0020 FB68     		ldr	r3, [r7, #12]
+  66 0022 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+  67 0024 FB74     		strb	r3, [r7, #19]
+  68 0026 FB68     		ldr	r3, [r7, #12]
+  69 0028 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+  70 002a 3B75     		strb	r3, [r7, #20]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 3
+
+
+  71 002c FB68     		ldr	r3, [r7, #12]
+  72 002e 5B79     		ldrb	r3, [r3, #5]	@ zero_extendqisi2
+  73 0030 7B75     		strb	r3, [r7, #21]
+  47:ioLIB/w5500_host_config.c ****         .ip = {ip[0], ip[1], ip[2], ip[3]},                      // Copy IP address
+  74              		.loc 1 47 18
+  75 0032 BB68     		ldr	r3, [r7, #8]
+  76 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  45:ioLIB/w5500_host_config.c ****     wiz_NetInfo net_info = {
+  77              		.loc 1 45 17
+  78 0036 BB75     		strb	r3, [r7, #22]
+  79 0038 BB68     		ldr	r3, [r7, #8]
+  80 003a 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+  81 003c FB75     		strb	r3, [r7, #23]
+  82 003e BB68     		ldr	r3, [r7, #8]
+  83 0040 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+  84 0042 3B76     		strb	r3, [r7, #24]
+  85 0044 BB68     		ldr	r3, [r7, #8]
+  86 0046 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+  87 0048 7B76     		strb	r3, [r7, #25]
+  48:ioLIB/w5500_host_config.c ****         .sn = {sn[0], sn[1], sn[2], sn[3]},                      // Copy subnet mask
+  88              		.loc 1 48 18
+  89 004a 7B68     		ldr	r3, [r7, #4]
+  90 004c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  45:ioLIB/w5500_host_config.c ****     wiz_NetInfo net_info = {
+  91              		.loc 1 45 17
+  92 004e BB76     		strb	r3, [r7, #26]
+  93 0050 7B68     		ldr	r3, [r7, #4]
+  94 0052 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+  95 0054 FB76     		strb	r3, [r7, #27]
+  96 0056 7B68     		ldr	r3, [r7, #4]
+  97 0058 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+  98 005a 3B77     		strb	r3, [r7, #28]
+  99 005c 7B68     		ldr	r3, [r7, #4]
+ 100 005e DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 101 0060 7B77     		strb	r3, [r7, #29]
+  49:ioLIB/w5500_host_config.c ****         .gw = {gw[0], gw[1], gw[2], gw[3]},                      // Copy gateway
+ 102              		.loc 1 49 18
+ 103 0062 3B68     		ldr	r3, [r7]
+ 104 0064 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  45:ioLIB/w5500_host_config.c ****         .mac = {mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]},  // Copy MAC address
+ 105              		.loc 1 45 17
+ 106 0066 BB77     		strb	r3, [r7, #30]
+ 107 0068 3B68     		ldr	r3, [r7]
+ 108 006a 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 109 006c FB77     		strb	r3, [r7, #31]
+ 110 006e 3B68     		ldr	r3, [r7]
+ 111 0070 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 112 0072 87F82030 		strb	r3, [r7, #32]
+ 113 0076 3B68     		ldr	r3, [r7]
+ 114 0078 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 115 007a 87F82130 		strb	r3, [r7, #33]
+  50:ioLIB/w5500_host_config.c ****         .dns = {dns[0], dns[1], dns[2], dns[3]},                 // Copy DNS server
+ 116              		.loc 1 50 20
+ 117 007e 3B6B     		ldr	r3, [r7, #48]
+ 118 0080 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  45:ioLIB/w5500_host_config.c ****         .mac = {mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]},  // Copy MAC address
+ 119              		.loc 1 45 17
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 4
+
+
+ 120 0082 87F82230 		strb	r3, [r7, #34]
+ 121 0086 3B6B     		ldr	r3, [r7, #48]
+ 122 0088 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 123 008a 87F82330 		strb	r3, [r7, #35]
+ 124 008e 3B6B     		ldr	r3, [r7, #48]
+ 125 0090 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 126 0092 87F82430 		strb	r3, [r7, #36]
+ 127 0096 3B6B     		ldr	r3, [r7, #48]
+ 128 0098 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 129 009a 87F82530 		strb	r3, [r7, #37]
+ 130 009e 0123     		movs	r3, #1
+ 131 00a0 87F82630 		strb	r3, [r7, #38]
+  51:ioLIB/w5500_host_config.c ****         .dhcp = NETINFO_STATIC                                   // Use static IP
+  52:ioLIB/w5500_host_config.c ****     };
+  53:ioLIB/w5500_host_config.c **** 
+  54:ioLIB/w5500_host_config.c ****     // printf("Setting up static host configuration...\r\n");
+  55:ioLIB/w5500_host_config.c **** 
+  56:ioLIB/w5500_host_config.c ****     // blink_run(50);
+  57:ioLIB/w5500_host_config.c **** 
+  58:ioLIB/w5500_host_config.c ****     // Set network configuration
+  59:ioLIB/w5500_host_config.c ****     ctlnetwork(CN_SET_NETINFO, (void*)&net_info);
+ 132              		.loc 1 59 5
+ 133 00a4 07F11003 		add	r3, r7, #16
+ 134 00a8 1946     		mov	r1, r3
+ 135 00aa 0020     		movs	r0, #0
+ 136 00ac FFF7FEFF 		bl	ctlnetwork
+  60:ioLIB/w5500_host_config.c **** 
+  61:ioLIB/w5500_host_config.c ****     // printf("Static IP configuration is done successfully.\r\n");
+  62:ioLIB/w5500_host_config.c **** 
+  63:ioLIB/w5500_host_config.c **** }
+ 137              		.loc 1 63 1
+ 138 00b0 00BF     		nop
+ 139 00b2 2837     		adds	r7, r7, #40
+ 140              	.LCFI3:
+ 141              		.cfi_def_cfa_offset 8
+ 142 00b4 BD46     		mov	sp, r7
+ 143              	.LCFI4:
+ 144              		.cfi_def_cfa_register 13
+ 145              		@ sp needed
+ 146 00b6 80BD     		pop	{r7, pc}
+ 147              		.cfi_endproc
+ 148              	.LFE135:
+ 150              		.section	.text.dynamic_host_configuration,"ax",%progbits
+ 151              		.align	1
+ 152              		.global	dynamic_host_configuration
+ 153              		.syntax unified
+ 154              		.thumb
+ 155              		.thumb_func
+ 157              	dynamic_host_configuration:
+ 158              	.LFB136:
+  64:ioLIB/w5500_host_config.c **** 
+  65:ioLIB/w5500_host_config.c **** /**
+  66:ioLIB/w5500_host_config.c ****  * @brief Configures the W5500 using DHCP for dynamic IP assignment.
+  67:ioLIB/w5500_host_config.c ****  * @param mac Source MAC address
+  68:ioLIB/w5500_host_config.c ****  * @retval None
+  69:ioLIB/w5500_host_config.c ****  */
+  70:ioLIB/w5500_host_config.c **** void dynamic_host_configuration(uint8_t mac[6])
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 5
+
+
+  71:ioLIB/w5500_host_config.c **** {
+ 159              		.loc 1 71 1
+ 160              		.cfi_startproc
+ 161              		@ args = 0, pretend = 0, frame = 1056
+ 162              		@ frame_needed = 1, uses_anonymous_args = 0
+ 163 0000 80B5     		push	{r7, lr}
+ 164              	.LCFI5:
+ 165              		.cfi_def_cfa_offset 8
+ 166              		.cfi_offset 7, -8
+ 167              		.cfi_offset 14, -4
+ 168 0002 ADF5846D 		sub	sp, sp, #1056
+ 169              	.LCFI6:
+ 170              		.cfi_def_cfa_offset 1064
+ 171 0006 00AF     		add	r7, sp, #0
+ 172              	.LCFI7:
+ 173              		.cfi_def_cfa_register 7
+ 174 0008 07F58463 		add	r3, r7, #1056
+ 175 000c A3F21C43 		subw	r3, r3, #1052
+ 176 0010 1860     		str	r0, [r3]
+  72:ioLIB/w5500_host_config.c **** 	uint8_t dhcp_buffer[1024];
+  73:ioLIB/w5500_host_config.c **** 
+  74:ioLIB/w5500_host_config.c ****     wiz_NetInfo net_info = {
+ 177              		.loc 1 74 17
+ 178 0012 07F58463 		add	r3, r7, #1056
+ 179 0016 A3F58363 		sub	r3, r3, #1048
+ 180 001a 1A46     		mov	r2, r3
+ 181 001c 0023     		movs	r3, #0
+ 182 001e 1360     		str	r3, [r2]
+ 183 0020 5360     		str	r3, [r2, #4]
+ 184 0022 9360     		str	r3, [r2, #8]
+ 185 0024 D360     		str	r3, [r2, #12]
+ 186 0026 1361     		str	r3, [r2, #16]
+ 187 0028 C2F81330 		str	r3, [r2, #19]	@ unaligned
+  75:ioLIB/w5500_host_config.c ****         .mac  = {mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]},  // Set MAC address
+ 188              		.loc 1 75 21
+ 189 002c 07F58463 		add	r3, r7, #1056
+ 190 0030 A3F21C43 		subw	r3, r3, #1052
+ 191 0034 1B68     		ldr	r3, [r3]
+ 192 0036 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+  74:ioLIB/w5500_host_config.c ****         .mac  = {mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]},  // Set MAC address
+ 193              		.loc 1 74 17
+ 194 0038 07F58463 		add	r3, r7, #1056
+ 195 003c A3F58363 		sub	r3, r3, #1048
+ 196 0040 1A70     		strb	r2, [r3]
+ 197 0042 07F58463 		add	r3, r7, #1056
+ 198 0046 A3F21C43 		subw	r3, r3, #1052
+ 199 004a 1B68     		ldr	r3, [r3]
+ 200 004c 5A78     		ldrb	r2, [r3, #1]	@ zero_extendqisi2
+ 201 004e 07F58463 		add	r3, r7, #1056
+ 202 0052 A3F58363 		sub	r3, r3, #1048
+ 203 0056 5A70     		strb	r2, [r3, #1]
+ 204 0058 07F58463 		add	r3, r7, #1056
+ 205 005c A3F21C43 		subw	r3, r3, #1052
+ 206 0060 1B68     		ldr	r3, [r3]
+ 207 0062 9A78     		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 208 0064 07F58463 		add	r3, r7, #1056
+ 209 0068 A3F58363 		sub	r3, r3, #1048
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 6
+
+
+ 210 006c 9A70     		strb	r2, [r3, #2]
+ 211 006e 07F58463 		add	r3, r7, #1056
+ 212 0072 A3F21C43 		subw	r3, r3, #1052
+ 213 0076 1B68     		ldr	r3, [r3]
+ 214 0078 DA78     		ldrb	r2, [r3, #3]	@ zero_extendqisi2
+ 215 007a 07F58463 		add	r3, r7, #1056
+ 216 007e A3F58363 		sub	r3, r3, #1048
+ 217 0082 DA70     		strb	r2, [r3, #3]
+ 218 0084 07F58463 		add	r3, r7, #1056
+ 219 0088 A3F21C43 		subw	r3, r3, #1052
+ 220 008c 1B68     		ldr	r3, [r3]
+ 221 008e 1A79     		ldrb	r2, [r3, #4]	@ zero_extendqisi2
+ 222 0090 07F58463 		add	r3, r7, #1056
+ 223 0094 A3F58363 		sub	r3, r3, #1048
+ 224 0098 1A71     		strb	r2, [r3, #4]
+ 225 009a 07F58463 		add	r3, r7, #1056
+ 226 009e A3F21C43 		subw	r3, r3, #1052
+ 227 00a2 1B68     		ldr	r3, [r3]
+ 228 00a4 5A79     		ldrb	r2, [r3, #5]	@ zero_extendqisi2
+ 229 00a6 07F58463 		add	r3, r7, #1056
+ 230 00aa A3F58363 		sub	r3, r3, #1048
+ 231 00ae 5A71     		strb	r2, [r3, #5]
+ 232 00b0 07F58463 		add	r3, r7, #1056
+ 233 00b4 A3F58363 		sub	r3, r3, #1048
+ 234 00b8 0222     		movs	r2, #2
+ 235 00ba 9A75     		strb	r2, [r3, #22]
+  76:ioLIB/w5500_host_config.c ****         .dhcp = NETINFO_DHCP                                      // Enable DHCP mode
+  77:ioLIB/w5500_host_config.c ****     };
+  78:ioLIB/w5500_host_config.c **** 
+  79:ioLIB/w5500_host_config.c ****     // printf("Setting up dynamic host configuration...\r\n");
+  80:ioLIB/w5500_host_config.c **** 
+  81:ioLIB/w5500_host_config.c **** 
+  82:ioLIB/w5500_host_config.c ****     // don't buffer the output of printf
+  83:ioLIB/w5500_host_config.c ****     setbuf(stdout, NULL);
+ 236              		.loc 1 83 12
+ 237 00bc 234B     		ldr	r3, .L5
+ 238 00be 1B68     		ldr	r3, [r3]
+ 239 00c0 9B68     		ldr	r3, [r3, #8]
+ 240              		.loc 1 83 5
+ 241 00c2 0021     		movs	r1, #0
+ 242 00c4 1846     		mov	r0, r3
+ 243 00c6 FFF7FEFF 		bl	setbuf
+  84:ioLIB/w5500_host_config.c **** 
+  85:ioLIB/w5500_host_config.c **** 
+  86:ioLIB/w5500_host_config.c ****     // Set the MAC address before using DHCP
+  87:ioLIB/w5500_host_config.c ****     setSHAR(net_info.mac);
+ 244              		.loc 1 87 5
+ 245 00ca 07F10803 		add	r3, r7, #8
+ 246 00ce 0622     		movs	r2, #6
+ 247 00d0 1946     		mov	r1, r3
+ 248 00d2 4FF41060 		mov	r0, #2304
+ 249 00d6 FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+  88:ioLIB/w5500_host_config.c **** 
+  89:ioLIB/w5500_host_config.c ****     // Initialize DHCP
+  90:ioLIB/w5500_host_config.c ****     DHCP_init(DHCP_SOCKET, dhcp_buffer);
+ 250              		.loc 1 90 5
+ 251 00da 07F12003 		add	r3, r7, #32
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 7
+
+
+ 252 00de 1946     		mov	r1, r3
+ 253 00e0 0020     		movs	r0, #0
+ 254 00e2 FFF7FEFF 		bl	DHCP_init
+  91:ioLIB/w5500_host_config.c **** 
+  92:ioLIB/w5500_host_config.c ****     // Register DHCP callback functions if needed
+  93:ioLIB/w5500_host_config.c ****     reg_dhcp_cbfunc(callback_ip_assigned, callback_ip_assigned, callback_ip_conflict);
+ 255              		.loc 1 93 5
+ 256 00e6 1A4A     		ldr	r2, .L5+4
+ 257 00e8 1A49     		ldr	r1, .L5+8
+ 258 00ea 1A48     		ldr	r0, .L5+8
+ 259 00ec FFF7FEFF 		bl	reg_dhcp_cbfunc
+  94:ioLIB/w5500_host_config.c **** 
+  95:ioLIB/w5500_host_config.c ****     // Run DHCP process in a loop until IP is assigned
+  96:ioLIB/w5500_host_config.c ****     while ((!ip_assigned)) {
+ 260              		.loc 1 96 11
+ 261 00f0 01E0     		b	.L3
+ 262              	.L4:
+  97:ioLIB/w5500_host_config.c ****         DHCP_run();
+ 263              		.loc 1 97 9
+ 264 00f2 FFF7FEFF 		bl	DHCP_run
+ 265              	.L3:
+  96:ioLIB/w5500_host_config.c ****         DHCP_run();
+ 266              		.loc 1 96 13
+ 267 00f6 184B     		ldr	r3, .L5+12
+ 268 00f8 1B78     		ldrb	r3, [r3]
+ 269 00fa DBB2     		uxtb	r3, r3
+ 270 00fc 83F00103 		eor	r3, r3, #1
+ 271 0100 DBB2     		uxtb	r3, r3
+  96:ioLIB/w5500_host_config.c ****         DHCP_run();
+ 272              		.loc 1 96 11
+ 273 0102 002B     		cmp	r3, #0
+ 274 0104 F5D1     		bne	.L4
+  98:ioLIB/w5500_host_config.c ****     }
+  99:ioLIB/w5500_host_config.c **** 
+ 100:ioLIB/w5500_host_config.c ****     // Retrieve IP, gateway, subnet mask, and DNS from DHCP
+ 101:ioLIB/w5500_host_config.c ****     getIPfromDHCP(net_info.ip);
+ 275              		.loc 1 101 5
+ 276 0106 07F10803 		add	r3, r7, #8
+ 277 010a 0633     		adds	r3, r3, #6
+ 278 010c 1846     		mov	r0, r3
+ 279 010e FFF7FEFF 		bl	getIPfromDHCP
+ 102:ioLIB/w5500_host_config.c ****     getGWfromDHCP(net_info.gw);
+ 280              		.loc 1 102 5
+ 281 0112 07F10803 		add	r3, r7, #8
+ 282 0116 0E33     		adds	r3, r3, #14
+ 283 0118 1846     		mov	r0, r3
+ 284 011a FFF7FEFF 		bl	getGWfromDHCP
+ 103:ioLIB/w5500_host_config.c ****     getSNfromDHCP(net_info.sn);
+ 285              		.loc 1 103 5
+ 286 011e 07F10803 		add	r3, r7, #8
+ 287 0122 0A33     		adds	r3, r3, #10
+ 288 0124 1846     		mov	r0, r3
+ 289 0126 FFF7FEFF 		bl	getSNfromDHCP
+ 104:ioLIB/w5500_host_config.c ****     getDNSfromDHCP(net_info.dns);
+ 290              		.loc 1 104 5
+ 291 012a 07F10803 		add	r3, r7, #8
+ 292 012e 1233     		adds	r3, r3, #18
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 8
+
+
+ 293 0130 1846     		mov	r0, r3
+ 294 0132 FFF7FEFF 		bl	getDNSfromDHCP
+ 105:ioLIB/w5500_host_config.c **** 
+ 106:ioLIB/w5500_host_config.c ****     // Set network information obtained from DHCP
+ 107:ioLIB/w5500_host_config.c ****     wizchip_setnetinfo(&net_info);
+ 295              		.loc 1 107 5
+ 296 0136 07F10803 		add	r3, r7, #8
+ 297 013a 1846     		mov	r0, r3
+ 298 013c FFF7FEFF 		bl	wizchip_setnetinfo
+ 108:ioLIB/w5500_host_config.c **** 
+ 109:ioLIB/w5500_host_config.c ****     // printf("Dynamic IP configuration is done successfully.\r\n");
+ 110:ioLIB/w5500_host_config.c **** }
+ 299              		.loc 1 110 1
+ 300 0140 00BF     		nop
+ 301 0142 07F58467 		add	r7, r7, #1056
+ 302              	.LCFI8:
+ 303              		.cfi_def_cfa_offset 8
+ 304 0146 BD46     		mov	sp, r7
+ 305              	.LCFI9:
+ 306              		.cfi_def_cfa_register 13
+ 307              		@ sp needed
+ 308 0148 80BD     		pop	{r7, pc}
+ 309              	.L6:
+ 310 014a 00BF     		.align	2
+ 311              	.L5:
+ 312 014c 00000000 		.word	_impure_ptr
+ 313 0150 00000000 		.word	callback_ip_conflict
+ 314 0154 00000000 		.word	callback_ip_assigned
+ 315 0158 00000000 		.word	ip_assigned
+ 316              		.cfi_endproc
+ 317              	.LFE136:
+ 319              		.section	.text.callback_ip_assigned,"ax",%progbits
+ 320              		.align	1
+ 321              		.global	callback_ip_assigned
+ 322              		.syntax unified
+ 323              		.thumb
+ 324              		.thumb_func
+ 326              	callback_ip_assigned:
+ 327              	.LFB137:
+ 111:ioLIB/w5500_host_config.c **** 
+ 112:ioLIB/w5500_host_config.c **** 
+ 113:ioLIB/w5500_host_config.c **** void callback_ip_assigned()
+ 114:ioLIB/w5500_host_config.c **** {
+ 328              		.loc 1 114 1
+ 329              		.cfi_startproc
+ 330              		@ args = 0, pretend = 0, frame = 0
+ 331              		@ frame_needed = 1, uses_anonymous_args = 0
+ 332              		@ link register save eliminated.
+ 333 0000 80B4     		push	{r7}
+ 334              	.LCFI10:
+ 335              		.cfi_def_cfa_offset 4
+ 336              		.cfi_offset 7, -4
+ 337 0002 00AF     		add	r7, sp, #0
+ 338              	.LCFI11:
+ 339              		.cfi_def_cfa_register 7
+ 115:ioLIB/w5500_host_config.c ****     // printf("DHCP: IP assigned\n");
+ 116:ioLIB/w5500_host_config.c ****     ip_assigned = true;
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 9
+
+
+ 340              		.loc 1 116 17
+ 341 0004 034B     		ldr	r3, .L8
+ 342 0006 0122     		movs	r2, #1
+ 343 0008 1A70     		strb	r2, [r3]
+ 117:ioLIB/w5500_host_config.c **** }
+ 344              		.loc 1 117 1
+ 345 000a 00BF     		nop
+ 346 000c BD46     		mov	sp, r7
+ 347              	.LCFI12:
+ 348              		.cfi_def_cfa_register 13
+ 349              		@ sp needed
+ 350 000e 5DF8047B 		ldr	r7, [sp], #4
+ 351              	.LCFI13:
+ 352              		.cfi_restore 7
+ 353              		.cfi_def_cfa_offset 0
+ 354 0012 7047     		bx	lr
+ 355              	.L9:
+ 356              		.align	2
+ 357              	.L8:
+ 358 0014 00000000 		.word	ip_assigned
+ 359              		.cfi_endproc
+ 360              	.LFE137:
+ 362              		.section	.text.callback_ip_renewed,"ax",%progbits
+ 363              		.align	1
+ 364              		.global	callback_ip_renewed
+ 365              		.syntax unified
+ 366              		.thumb
+ 367              		.thumb_func
+ 369              	callback_ip_renewed:
+ 370              	.LFB138:
+ 118:ioLIB/w5500_host_config.c **** 
+ 119:ioLIB/w5500_host_config.c **** void callback_ip_renewed()
+ 120:ioLIB/w5500_host_config.c **** {
+ 371              		.loc 1 120 1
+ 372              		.cfi_startproc
+ 373              		@ args = 0, pretend = 0, frame = 0
+ 374              		@ frame_needed = 1, uses_anonymous_args = 0
+ 375              		@ link register save eliminated.
+ 376 0000 80B4     		push	{r7}
+ 377              	.LCFI14:
+ 378              		.cfi_def_cfa_offset 4
+ 379              		.cfi_offset 7, -4
+ 380 0002 00AF     		add	r7, sp, #0
+ 381              	.LCFI15:
+ 382              		.cfi_def_cfa_register 7
+ 121:ioLIB/w5500_host_config.c ****     // printf("DHCP: IP renewed\n");
+ 122:ioLIB/w5500_host_config.c **** }
+ 383              		.loc 1 122 1
+ 384 0004 00BF     		nop
+ 385 0006 BD46     		mov	sp, r7
+ 386              	.LCFI16:
+ 387              		.cfi_def_cfa_register 13
+ 388              		@ sp needed
+ 389 0008 5DF8047B 		ldr	r7, [sp], #4
+ 390              	.LCFI17:
+ 391              		.cfi_restore 7
+ 392              		.cfi_def_cfa_offset 0
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 10
+
+
+ 393 000c 7047     		bx	lr
+ 394              		.cfi_endproc
+ 395              	.LFE138:
+ 397              		.section	.text.callback_ip_conflict,"ax",%progbits
+ 398              		.align	1
+ 399              		.global	callback_ip_conflict
+ 400              		.syntax unified
+ 401              		.thumb
+ 402              		.thumb_func
+ 404              	callback_ip_conflict:
+ 405              	.LFB139:
+ 123:ioLIB/w5500_host_config.c **** 
+ 124:ioLIB/w5500_host_config.c **** void callback_ip_conflict()
+ 125:ioLIB/w5500_host_config.c **** {
+ 406              		.loc 1 125 1
+ 407              		.cfi_startproc
+ 408              		@ args = 0, pretend = 0, frame = 0
+ 409              		@ frame_needed = 1, uses_anonymous_args = 0
+ 410              		@ link register save eliminated.
+ 411 0000 80B4     		push	{r7}
+ 412              	.LCFI18:
+ 413              		.cfi_def_cfa_offset 4
+ 414              		.cfi_offset 7, -4
+ 415 0002 00AF     		add	r7, sp, #0
+ 416              	.LCFI19:
+ 417              		.cfi_def_cfa_register 7
+ 126:ioLIB/w5500_host_config.c ****     // printf("DHCP: IP conflict detected\n");
+ 127:ioLIB/w5500_host_config.c **** }
+ 418              		.loc 1 127 1
+ 419 0004 00BF     		nop
+ 420 0006 BD46     		mov	sp, r7
+ 421              	.LCFI20:
+ 422              		.cfi_def_cfa_register 13
+ 423              		@ sp needed
+ 424 0008 5DF8047B 		ldr	r7, [sp], #4
+ 425              	.LCFI21:
+ 426              		.cfi_restore 7
+ 427              		.cfi_def_cfa_offset 0
+ 428 000c 7047     		bx	lr
+ 429              		.cfi_endproc
+ 430              	.LFE139:
+ 432              		.text
+ 433              	.Letext0:
+ 434              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 435              		.file 3 "d:\\gcc arm\\10 2021.10\\lib\\gcc\\arm-none-eabi\\10.3.1\\include\\stddef.h"
+ 436              		.file 4 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_types.h"
+ 437              		.file 5 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\reent.h"
+ 438              		.file 6 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\lock.h"
+ 439              		.file 7 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 440              		.file 8 "ioLIB/wizchip_conf.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 w5500_host_config.c
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:23     .bss.ip_assigned:00000000 ip_assigned
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:24     .bss.ip_assigned:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:26     .text.static_host_configuration:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:32     .text.static_host_configuration:00000000 static_host_configuration
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:151    .text.dynamic_host_configuration:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:157    .text.dynamic_host_configuration:00000000 dynamic_host_configuration
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:312    .text.dynamic_host_configuration:0000014c $d
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:404    .text.callback_ip_conflict:00000000 callback_ip_conflict
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:326    .text.callback_ip_assigned:00000000 callback_ip_assigned
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:320    .text.callback_ip_assigned:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:358    .text.callback_ip_assigned:00000014 $d
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:363    .text.callback_ip_renewed:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:369    .text.callback_ip_renewed:00000000 callback_ip_renewed
+C:\Users\clay0\AppData\Local\Temp\ccoiZ3Ka.s:398    .text.callback_ip_conflict:00000000 $t
+
+UNDEFINED SYMBOLS
+ctlnetwork
+setbuf
+WIZCHIP_WRITE_BUF
+DHCP_init
+reg_dhcp_cbfunc
+DHCP_run
+getIPfromDHCP
+getGWfromDHCP
+getSNfromDHCP
+getDNSfromDHCP
+wizchip_setnetinfo
+_impure_ptr

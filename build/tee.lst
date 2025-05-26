@@ -1,0 +1,309 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"tee.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.kms,"a"
+  20              		.align	2
+  23              	tee_root:
+  24 0000 45455254 		.word	1414677829
+  25 0004 01020300 		.ascii	"\001\002\003\000"
+  26 0008 00000000 		.space	28
+  26      00000000 
+  26      00000000 
+  26      00000000 
+  26      00000000 
+  27              		.global	root_of_trust_key
+  28              		.align	2
+  31              	root_of_trust_key:
+  32 0024 00000000 		.space	32
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  33              		.section	.text.TEE_Init,"ax",%progbits
+  34              		.align	1
+  35              		.global	TEE_Init
+  36              		.syntax unified
+  37              		.thumb
+  38              		.thumb_func
+  40              	TEE_Init:
+  41              	.LFB135:
+  42              		.file 1 "Core/tee.c"
+   1:Core/tee.c    **** #include "main.h"
+   2:Core/tee.c    **** #include "tee.h"
+   3:Core/tee.c    **** 
+   4:Core/tee.c    **** typedef struct
+   5:Core/tee.c    **** {
+   6:Core/tee.c    ****     uint32_t magic;
+   7:Core/tee.c    ****     uint8_t cert[32];
+   8:Core/tee.c    **** } TEE_TrustRoot;
+   9:Core/tee.c    **** 
+  10:Core/tee.c    **** __attribute__((section(".kms"))) static const TEE_TrustRoot tee_root =
+  11:Core/tee.c    **** {
+  12:Core/tee.c    ****     .magic = 0x54524545,
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s 			page 2
+
+
+  13:Core/tee.c    ****     .cert = {0x01, 0x02, 0x03}
+  14:Core/tee.c    **** };
+  15:Core/tee.c    **** 
+  16:Core/tee.c    **** __attribute__((section(".kms")))
+  17:Core/tee.c    **** const uint8_t root_of_trust_key[32] = {};
+  18:Core/tee.c    **** 
+  19:Core/tee.c    **** void TEE_Init(void)
+  20:Core/tee.c    **** {
+  43              		.loc 1 20 1
+  44              		.cfi_startproc
+  45              		@ args = 0, pretend = 0, frame = 0
+  46              		@ frame_needed = 1, uses_anonymous_args = 0
+  47              		@ link register save eliminated.
+  48 0000 80B4     		push	{r7}
+  49              	.LCFI0:
+  50              		.cfi_def_cfa_offset 4
+  51              		.cfi_offset 7, -4
+  52 0002 00AF     		add	r7, sp, #0
+  53              	.LCFI1:
+  54              		.cfi_def_cfa_register 7
+  21:Core/tee.c    ****     if (tee_root.magic != 0x54524545)
+  55              		.loc 1 21 17
+  56 0004 044A     		ldr	r2, .L5
+  57              		.loc 1 21 8
+  58 0006 044B     		ldr	r3, .L5
+  59 0008 9A42     		cmp	r2, r3
+  60 000a 00D0     		beq	.L4
+  61              	.L3:
+  22:Core/tee.c    ****     {
+  23:Core/tee.c    ****         while (1); // повреждённая область TEE
+  62              		.loc 1 23 15 discriminator 1
+  63 000c FEE7     		b	.L3
+  64              	.L4:
+  24:Core/tee.c    ****     }
+  25:Core/tee.c    **** }
+  65              		.loc 1 25 1
+  66 000e 00BF     		nop
+  67 0010 BD46     		mov	sp, r7
+  68              	.LCFI2:
+  69              		.cfi_def_cfa_register 13
+  70              		@ sp needed
+  71 0012 5DF8047B 		ldr	r7, [sp], #4
+  72              	.LCFI3:
+  73              		.cfi_restore 7
+  74              		.cfi_def_cfa_offset 0
+  75 0016 7047     		bx	lr
+  76              	.L6:
+  77              		.align	2
+  78              	.L5:
+  79 0018 45455254 		.word	1414677829
+  80              		.cfi_endproc
+  81              	.LFE135:
+  83              		.section	.text.verify_firmware,"ax",%progbits
+  84              		.align	1
+  85              		.global	verify_firmware
+  86              		.syntax unified
+  87              		.thumb
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s 			page 3
+
+
+  88              		.thumb_func
+  90              	verify_firmware:
+  91              	.LFB136:
+  26:Core/tee.c    **** 
+  27:Core/tee.c    **** int verify_firmware(void)
+  28:Core/tee.c    **** {
+  92              		.loc 1 28 1
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 1, uses_anonymous_args = 0
+  96              		@ link register save eliminated.
+  97 0000 80B4     		push	{r7}
+  98              	.LCFI4:
+  99              		.cfi_def_cfa_offset 4
+ 100              		.cfi_offset 7, -4
+ 101 0002 00AF     		add	r7, sp, #0
+ 102              	.LCFI5:
+ 103              		.cfi_def_cfa_register 7
+  29:Core/tee.c    ****     // uint8_t hash[32];
+  30:Core/tee.c    ****     // uint8_t signature[SIGNATURE_SIZE] = {/* Подпись из UART или Flash */};
+  31:Core/tee.c    ****     // mbedtls_sha256_context sha_ctx;
+  32:Core/tee.c    ****     // mbedtls_ecdsa_context ecdsa_ctx;
+  33:Core/tee.c    **** 
+  34:Core/tee.c    ****     // // Инициализация
+  35:Core/tee.c    ****     // mbedtls_sha256_init(&sha_ctx);
+  36:Core/tee.c    ****     // mbedtls_ecdsa_init(&ecdsa_ctx);
+  37:Core/tee.c    **** 
+  38:Core/tee.c    ****     // // Вычисление SHA-256 хэша прошивки
+  39:Core/tee.c    ****     // mbedtls_sha256_starts(&sha_ctx, 0); // 0 = SHA-256
+  40:Core/tee.c    ****     // mbedtls_sha256_update(&sha_ctx, (const uint8_t *)FIRMWARE_ADDR, FIRMWARE_SIZE);
+  41:Core/tee.c    ****     // mbedtls_sha256_finish(&sha_ctx, hash);
+  42:Core/tee.c    **** 
+  43:Core/tee.c    ****     // // Загрузка публичного ключа (из RoT)
+  44:Core/tee.c    ****     // const uint8_t *public_key = root_of_trust_key; // Укажите ваш ключ
+  45:Core/tee.c    ****     // mbedtls_ecdsa_read_pubkey(&ecdsa_ctx, public_key, sizeof(root_of_trust_key));
+  46:Core/tee.c    **** 
+  47:Core/tee.c    ****     // // Проверка подписи
+  48:Core/tee.c    ****     // int ret = mbedtls_ecdsa_verify(&ecdsa_ctx, hash, sizeof(hash), signature, &SIGNATURE_SIZE);
+  49:Core/tee.c    ****     // if (ret != 0)
+  50:Core/tee.c    ****     // {
+  51:Core/tee.c    ****     //     return -1; // Проверка не пройдена
+  52:Core/tee.c    ****     // }
+  53:Core/tee.c    **** 
+  54:Core/tee.c    ****     // // Создание новой подписи (если требуется)
+  55:Core/tee.c    ****     // uint8_t new_signature[SIGNATURE_SIZE];
+  56:Core/tee.c    ****     // ret = mbedtls_ecdsa_write_signature(&ecdsa_ctx, hash, sizeof(hash), new_signature, sizeof(ne
+  57:Core/tee.c    ****     // if (ret != 0)
+  58:Core/tee.c    ****     // {
+  59:Core/tee.c    ****     //     return -1;
+  60:Core/tee.c    ****     // }
+  61:Core/tee.c    **** 
+  62:Core/tee.c    ****     // return 0; // Успех
+  63:Core/tee.c    **** }
+ 104              		.loc 1 63 1
+ 105 0004 00BF     		nop
+ 106 0006 1846     		mov	r0, r3
+ 107 0008 BD46     		mov	sp, r7
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s 			page 4
+
+
+ 108              	.LCFI6:
+ 109              		.cfi_def_cfa_register 13
+ 110              		@ sp needed
+ 111 000a 5DF8047B 		ldr	r7, [sp], #4
+ 112              	.LCFI7:
+ 113              		.cfi_restore 7
+ 114              		.cfi_def_cfa_offset 0
+ 115 000e 7047     		bx	lr
+ 116              		.cfi_endproc
+ 117              	.LFE136:
+ 119              		.section	.rodata
+ 120              		.align	2
+ 121              	.LC0:
+ 122 0000 456E7669 		.ascii	"Environment secure. Starting application.\012\000"
+ 122      726F6E6D 
+ 122      656E7420 
+ 122      73656375 
+ 122      72652E20 
+ 123 002b 00       		.align	2
+ 124              	.LC1:
+ 125 002c 56657269 		.ascii	"Verification failed!\012\000"
+ 125      66696361 
+ 125      74696F6E 
+ 125      20666169 
+ 125      6C656421 
+ 126              		.section	.text.check_sign_firmware,"ax",%progbits
+ 127              		.align	1
+ 128              		.global	check_sign_firmware
+ 129              		.syntax unified
+ 130              		.thumb
+ 131              		.thumb_func
+ 133              	check_sign_firmware:
+ 134              	.LFB137:
+  64:Core/tee.c    **** 
+  65:Core/tee.c    **** 
+  66:Core/tee.c    **** void check_sign_firmware(void)
+  67:Core/tee.c    **** {
+ 135              		.loc 1 67 1
+ 136              		.cfi_startproc
+ 137              		@ args = 0, pretend = 0, frame = 0
+ 138              		@ frame_needed = 1, uses_anonymous_args = 0
+ 139 0000 80B5     		push	{r7, lr}
+ 140              	.LCFI8:
+ 141              		.cfi_def_cfa_offset 8
+ 142              		.cfi_offset 7, -8
+ 143              		.cfi_offset 14, -4
+ 144 0002 00AF     		add	r7, sp, #0
+ 145              	.LCFI9:
+ 146              		.cfi_def_cfa_register 7
+  68:Core/tee.c    ****     if (verify_firmware() == 0) 
+ 147              		.loc 1 68 9
+ 148 0004 FFF7FEFF 		bl	verify_firmware
+ 149 0008 0346     		mov	r3, r0
+ 150              		.loc 1 68 8
+ 151 000a 002B     		cmp	r3, #0
+ 152 000c 06D1     		bne	.L9
+ 153              	.LBB2:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s 			page 5
+
+
+  69:Core/tee.c    ****     {
+  70:Core/tee.c    ****         uart_send("Environment secure. Starting application.\n", 40);
+ 154              		.loc 1 70 9
+ 155 000e 2821     		movs	r1, #40
+ 156 0010 0548     		ldr	r0, .L13
+ 157 0012 FFF7FEFF 		bl	uart_send
+  71:Core/tee.c    ****         jump_to_application();
+ 158              		.loc 1 71 9
+ 159 0016 FFF7FEFF 		bl	jump_to_application
+ 160              	.LBE2:
+  72:Core/tee.c    ****     } 
+  73:Core/tee.c    ****     else
+  74:Core/tee.c    ****     {
+  75:Core/tee.c    ****         uart_send("Verification failed!\n", 20);
+  76:Core/tee.c    ****         while (1);
+  77:Core/tee.c    ****     }
+  78:Core/tee.c    **** }...
+ 161              		.loc 1 78 1
+ 162 001a 04E0     		b	.L12
+ 163              	.L9:
+ 164              	.LBB3:
+  75:Core/tee.c    ****         uart_send("Verification failed!\n", 20);
+ 165              		.loc 1 75 9
+ 166 001c 1421     		movs	r1, #20
+ 167 001e 0348     		ldr	r0, .L13+4
+ 168 0020 FFF7FEFF 		bl	uart_send
+ 169              	.L11:
+  76:Core/tee.c    ****         while (1);
+ 170              		.loc 1 76 15 discriminator 1
+ 171 0024 FEE7     		b	.L11
+ 172              	.L12:
+ 173              	.LBE3:
+ 174              		.loc 1 78 1
+ 175 0026 80BD     		pop	{r7, pc}
+ 176              	.L14:
+ 177              		.align	2
+ 178              	.L13:
+ 179 0028 00000000 		.word	.LC0
+ 180 002c 2C000000 		.word	.LC1
+ 181              		.cfi_endproc
+ 182              	.LFE137:
+ 184              		.text
+ 185              	.Letext0:
+ 186              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 187              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 tee.c
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:20     .kms:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:23     .kms:00000000 tee_root
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:31     .kms:00000024 root_of_trust_key
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:34     .text.TEE_Init:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:40     .text.TEE_Init:00000000 TEE_Init
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:79     .text.TEE_Init:00000018 $d
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:84     .text.verify_firmware:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:90     .text.verify_firmware:00000000 verify_firmware
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:120    .rodata:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:127    .text.check_sign_firmware:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:133    .text.check_sign_firmware:00000000 check_sign_firmware
+C:\Users\clay0\AppData\Local\Temp\cc5BRs7L.s:179    .text.check_sign_firmware:00000028 $d
+
+UNDEFINED SYMBOLS
+uart_send
+jump_to_application

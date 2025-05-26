@@ -1,0 +1,178 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccl1KvSF.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"blink.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.blink_init,"ax",%progbits
+  20              		.align	1
+  21              		.global	blink_init
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	blink_init:
+  27              	.LFB135:
+  28              		.file 1 "Core/blink.c"
+   1:Core/blink.c  **** #include "main.h"
+   2:Core/blink.c  **** #include "clock.h"
+   3:Core/blink.c  **** 
+   4:Core/blink.c  **** void blink_init(void)
+   5:Core/blink.c  **** {
+  29              		.loc 1 5 1
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 4
+  37              		.cfi_offset 7, -4
+  38 0002 00AF     		add	r7, sp, #0
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_register 7
+   6:Core/blink.c  ****     RCC->AHB1ENR	|= RCC_AHB1ENR_GPIOCEN;
+  41              		.loc 1 6 18
+  42 0004 0B4B     		ldr	r3, .L2
+  43 0006 1B6B     		ldr	r3, [r3, #48]
+  44 0008 0A4A     		ldr	r2, .L2
+  45 000a 43F00403 		orr	r3, r3, #4
+  46 000e 1363     		str	r3, [r2, #48]
+   7:Core/blink.c  ****     GPIOC->MODER	|= GPIO_MODER_MODER13_0;
+  47              		.loc 1 7 18
+  48 0010 094B     		ldr	r3, .L2+4
+  49 0012 1B68     		ldr	r3, [r3]
+  50 0014 084A     		ldr	r2, .L2+4
+  51 0016 43F08063 		orr	r3, r3, #67108864
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccl1KvSF.s 			page 2
+
+
+  52 001a 1360     		str	r3, [r2]
+   8:Core/blink.c  ****     SET_BIT(GPIOC->BSRR, GPIO_BSRR_BS13);
+  53              		.loc 1 8 5
+  54 001c 064B     		ldr	r3, .L2+4
+  55 001e 9B69     		ldr	r3, [r3, #24]
+  56 0020 054A     		ldr	r2, .L2+4
+  57 0022 43F40053 		orr	r3, r3, #8192
+  58 0026 9361     		str	r3, [r2, #24]
+   9:Core/blink.c  **** }
+  59              		.loc 1 9 1
+  60 0028 00BF     		nop
+  61 002a BD46     		mov	sp, r7
+  62              	.LCFI2:
+  63              		.cfi_def_cfa_register 13
+  64              		@ sp needed
+  65 002c 5DF8047B 		ldr	r7, [sp], #4
+  66              	.LCFI3:
+  67              		.cfi_restore 7
+  68              		.cfi_def_cfa_offset 0
+  69 0030 7047     		bx	lr
+  70              	.L3:
+  71 0032 00BF     		.align	2
+  72              	.L2:
+  73 0034 00380240 		.word	1073887232
+  74 0038 00080240 		.word	1073874944
+  75              		.cfi_endproc
+  76              	.LFE135:
+  78              		.section	.text.blink_run,"ax",%progbits
+  79              		.align	1
+  80              		.global	blink_run
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  85              	blink_run:
+  86              	.LFB136:
+  10:Core/blink.c  **** 
+  11:Core/blink.c  **** void blink_run(uint32_t ms)
+  12:Core/blink.c  **** {
+  87              		.loc 1 12 1
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 8
+  90              		@ frame_needed = 1, uses_anonymous_args = 0
+  91 0000 80B5     		push	{r7, lr}
+  92              	.LCFI4:
+  93              		.cfi_def_cfa_offset 8
+  94              		.cfi_offset 7, -8
+  95              		.cfi_offset 14, -4
+  96 0002 82B0     		sub	sp, sp, #8
+  97              	.LCFI5:
+  98              		.cfi_def_cfa_offset 16
+  99 0004 00AF     		add	r7, sp, #0
+ 100              	.LCFI6:
+ 101              		.cfi_def_cfa_register 7
+ 102 0006 7860     		str	r0, [r7, #4]
+  13:Core/blink.c  ****     SET_BIT(GPIOC->BSRR, GPIO_BSRR_BR13);
+ 103              		.loc 1 13 5
+ 104 0008 0A4B     		ldr	r3, .L5
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccl1KvSF.s 			page 3
+
+
+ 105 000a 9B69     		ldr	r3, [r3, #24]
+ 106 000c 094A     		ldr	r2, .L5
+ 107 000e 43F00053 		orr	r3, r3, #536870912
+ 108 0012 9361     		str	r3, [r2, #24]
+  14:Core/blink.c  ****     delay_ms(ms);
+ 109              		.loc 1 14 5
+ 110 0014 7868     		ldr	r0, [r7, #4]
+ 111 0016 FFF7FEFF 		bl	delay_ms
+  15:Core/blink.c  ****     SET_BIT(GPIOC->BSRR, GPIO_BSRR_BS13);
+ 112              		.loc 1 15 5
+ 113 001a 064B     		ldr	r3, .L5
+ 114 001c 9B69     		ldr	r3, [r3, #24]
+ 115 001e 054A     		ldr	r2, .L5
+ 116 0020 43F40053 		orr	r3, r3, #8192
+ 117 0024 9361     		str	r3, [r2, #24]
+  16:Core/blink.c  ****     delay_ms(ms);
+ 118              		.loc 1 16 5
+ 119 0026 7868     		ldr	r0, [r7, #4]
+ 120 0028 FFF7FEFF 		bl	delay_ms
+  17:Core/blink.c  **** }...
+ 121              		.loc 1 17 1
+ 122 002c 00BF     		nop
+ 123 002e 0837     		adds	r7, r7, #8
+ 124              	.LCFI7:
+ 125              		.cfi_def_cfa_offset 8
+ 126 0030 BD46     		mov	sp, r7
+ 127              	.LCFI8:
+ 128              		.cfi_def_cfa_register 13
+ 129              		@ sp needed
+ 130 0032 80BD     		pop	{r7, pc}
+ 131              	.L6:
+ 132              		.align	2
+ 133              	.L5:
+ 134 0034 00080240 		.word	1073874944
+ 135              		.cfi_endproc
+ 136              	.LFE136:
+ 138              		.text
+ 139              	.Letext0:
+ 140              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 141              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 142              		.file 4 "CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccl1KvSF.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 blink.c
+C:\Users\clay0\AppData\Local\Temp\ccl1KvSF.s:20     .text.blink_init:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccl1KvSF.s:26     .text.blink_init:00000000 blink_init
+C:\Users\clay0\AppData\Local\Temp\ccl1KvSF.s:73     .text.blink_init:00000034 $d
+C:\Users\clay0\AppData\Local\Temp\ccl1KvSF.s:79     .text.blink_run:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccl1KvSF.s:85     .text.blink_run:00000000 blink_run
+C:\Users\clay0\AppData\Local\Temp\ccl1KvSF.s:134    .text.blink_run:00000034 $d
+
+UNDEFINED SYMBOLS
+delay_ms

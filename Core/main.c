@@ -1,33 +1,61 @@
 #include "main.h"
 #include "clock.h"
-#include "uart.h"
 
-const char * msg = "hello";
+#include "uart.h"
+#include "w5500_run.h"
+#include <coap_port.h>
+
+#include "boot.h"
+#include "tee.h"
+
+const uint8_t * msg = "hello";
+uint8_t *ptr_buff = NULL;
+bool flag_receive = false;
+bool flag_transmit = false;
+volatile uint8_t  size = 0;
 
 int main(void) 
 {
-    SysTick_Config(SystemCoreClock/1000);
+    ptr_buff = malloc(20*sizeof(uint8_t));
     
-    RCC->AHB1ENR	|= RCC_AHB1ENR_GPIOCEN;
-    GPIOC->MODER	|= GPIO_MODER_MODER13_0;    
-    GPIOC->OTYPER   &= ~GPIO_OTYPER_OT13;
-    GPIOC->PUPDR    |= GPIO_PUPDR_PUPD13_1;
+    SysTick_Config(SystemCoreClock/1000);
+    blink_init();
+    // uart_init(115200);
+    w5500_network_init();
 
-    uart_init(115200);
-
-    uint8_t msg_rx[50] = {0,};
-    uint8_t msg_tx[50] = {0,};
-
+    coap_init();
+    coap_send_get("check_firmware");
+    
     while (1) 
     {
-        SET_BIT(GPIOC->BSRR, GPIO_BSRR_BS13);
-        // GPIOC->BSRR = GPIO_BSRR_BS13;
-        delay_ms(1000);
-        uart_receive(msg_rx, 50);
-        memcpy(msg_tx, msg_rx, sizeof(msg_rx));
-        uart_send(msg_tx, sizeof(msg_tx));
-        SET_BIT(GPIOC->BSRR, GPIO_BSRR_BR13);
-        // GPIOC->BSRR = GPIO_BSRR_BR13;
-        delay_ms(1000);
+        
+
+        if (flag_receive)
+        {
+            // compltReceive(size, ptr_buff);
+            flag_receive = false;
+            blink_run(100);
+
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////
+//Handlers
+////////////////////////////////////////////////////////////
+void USART1_IRQHandler(void)
+{
+	if (USART1->SR & USART_SR_RXNE) 
+	{
+        if (USART1->DR == 0x1f)
+        {
+            flag_receive = true;
+        }
+        *(ptr_buff++) = USART1->DR;
+        size++;
+	}
+    if (USART1->SR & USART_SR_TXE)
+    {
+        flag_transmit = true;
     }
 }

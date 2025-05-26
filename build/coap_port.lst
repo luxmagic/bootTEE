@@ -1,0 +1,1109 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 6
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"coap_port.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.bss.socket_id,"aw",%nobits
+  22              	socket_id:
+  23 0000 00       		.space	1
+  24              		.section	.bss.rx_buffer,"aw",%nobits
+  25              		.align	2
+  28              	rx_buffer:
+  29 0000 00000000 		.space	256
+  29      00000000 
+  29      00000000 
+  29      00000000 
+  29      00000000 
+  30              		.section	.bss.tx_buffer,"aw",%nobits
+  31              		.align	2
+  34              	tx_buffer:
+  35 0000 00000000 		.space	256
+  35      00000000 
+  35      00000000 
+  35      00000000 
+  35      00000000 
+  36              		.section	.text.coap_init,"ax",%progbits
+  37              		.align	1
+  38              		.global	coap_init
+  39              		.syntax unified
+  40              		.thumb
+  41              		.thumb_func
+  43              	coap_init:
+  44              	.LFB135:
+  45              		.file 1 "coapLIB/coap_port.c"
+   1:coapLIB/coap_port.c **** #include "main.h"
+   2:coapLIB/coap_port.c **** #include "coap.h"
+   3:coapLIB/coap_port.c **** #include <socket.h>
+   4:coapLIB/coap_port.c **** #include <w5500_run.h>
+   5:coapLIB/coap_port.c **** 
+   6:coapLIB/coap_port.c **** #define COAP_PORT 5683
+   7:coapLIB/coap_port.c **** #define SERVER_IP {192, 168, 1, 101}
+   8:coapLIB/coap_port.c **** #define SERVER_PORT 5683
+   9:coapLIB/coap_port.c **** 
+  10:coapLIB/coap_port.c **** static uint8_t socket_id = 0;
+  11:coapLIB/coap_port.c **** static uint8_t rx_buffer[COAP_MAX_PACKET_SIZE];
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 2
+
+
+  12:coapLIB/coap_port.c **** static uint8_t tx_buffer[COAP_MAX_PACKET_SIZE];
+  13:coapLIB/coap_port.c **** 
+  14:coapLIB/coap_port.c **** void coap_init(void)
+  15:coapLIB/coap_port.c **** {
+  46              		.loc 1 15 1
+  47              		.cfi_startproc
+  48              		@ args = 0, pretend = 0, frame = 0
+  49              		@ frame_needed = 1, uses_anonymous_args = 0
+  50 0000 80B5     		push	{r7, lr}
+  51              	.LCFI0:
+  52              		.cfi_def_cfa_offset 8
+  53              		.cfi_offset 7, -8
+  54              		.cfi_offset 14, -4
+  55 0002 00AF     		add	r7, sp, #0
+  56              	.LCFI1:
+  57              		.cfi_def_cfa_register 7
+  16:coapLIB/coap_port.c ****     udp_init(socket_id, COAP_PORT);
+  58              		.loc 1 16 5
+  59 0004 044B     		ldr	r3, .L2
+  60 0006 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  61 0008 41F23361 		movw	r1, #5683
+  62 000c 1846     		mov	r0, r3
+  63 000e FFF7FEFF 		bl	udp_init
+  17:coapLIB/coap_port.c **** }
+  64              		.loc 1 17 1
+  65 0012 00BF     		nop
+  66 0014 80BD     		pop	{r7, pc}
+  67              	.L3:
+  68 0016 00BF     		.align	2
+  69              	.L2:
+  70 0018 00000000 		.word	socket_id
+  71              		.cfi_endproc
+  72              	.LFE135:
+  74              		.section	.text.coap_send,"ax",%progbits
+  75              		.align	1
+  76              		.global	coap_send
+  77              		.syntax unified
+  78              		.thumb
+  79              		.thumb_func
+  81              	coap_send:
+  82              	.LFB136:
+  18:coapLIB/coap_port.c **** 
+  19:coapLIB/coap_port.c **** int coap_send(const uint8_t *data, size_t len, uint8_t *dest_ip, uint16_t dest_port)
+  20:coapLIB/coap_port.c **** {
+  83              		.loc 1 20 1
+  84              		.cfi_startproc
+  85              		@ args = 0, pretend = 0, frame = 24
+  86              		@ frame_needed = 1, uses_anonymous_args = 0
+  87 0000 80B5     		push	{r7, lr}
+  88              	.LCFI2:
+  89              		.cfi_def_cfa_offset 8
+  90              		.cfi_offset 7, -8
+  91              		.cfi_offset 14, -4
+  92 0002 88B0     		sub	sp, sp, #32
+  93              	.LCFI3:
+  94              		.cfi_def_cfa_offset 40
+  95 0004 02AF     		add	r7, sp, #8
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 3
+
+
+  96              	.LCFI4:
+  97              		.cfi_def_cfa 7, 32
+  98 0006 F860     		str	r0, [r7, #12]
+  99 0008 B960     		str	r1, [r7, #8]
+ 100 000a 7A60     		str	r2, [r7, #4]
+ 101 000c 7B80     		strh	r3, [r7, #2]	@ movhi
+  21:coapLIB/coap_port.c ****     int32_t ret = sendto(socket_id, (uint8_t *)data, len, dest_ip, dest_port);
+ 102              		.loc 1 21 19
+ 103 000e 0B4B     		ldr	r3, .L8
+ 104 0010 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 105 0012 BB68     		ldr	r3, [r7, #8]
+ 106 0014 9AB2     		uxth	r2, r3
+ 107 0016 7B88     		ldrh	r3, [r7, #2]
+ 108 0018 0093     		str	r3, [sp]
+ 109 001a 7B68     		ldr	r3, [r7, #4]
+ 110 001c F968     		ldr	r1, [r7, #12]
+ 111 001e FFF7FEFF 		bl	sendto
+ 112 0022 7861     		str	r0, [r7, #20]
+  22:coapLIB/coap_port.c ****     return ret > 0 ? 0 : -1;
+ 113              		.loc 1 22 24
+ 114 0024 7B69     		ldr	r3, [r7, #20]
+ 115 0026 002B     		cmp	r3, #0
+ 116 0028 01DD     		ble	.L5
+ 117              		.loc 1 22 24 is_stmt 0 discriminator 1
+ 118 002a 0023     		movs	r3, #0
+ 119 002c 01E0     		b	.L7
+ 120              	.L5:
+ 121              		.loc 1 22 24 discriminator 2
+ 122 002e 4FF0FF33 		mov	r3, #-1
+ 123              	.L7:
+  23:coapLIB/coap_port.c **** }
+ 124              		.loc 1 23 1 is_stmt 1 discriminator 5
+ 125 0032 1846     		mov	r0, r3
+ 126 0034 1837     		adds	r7, r7, #24
+ 127              	.LCFI5:
+ 128              		.cfi_def_cfa_offset 8
+ 129 0036 BD46     		mov	sp, r7
+ 130              	.LCFI6:
+ 131              		.cfi_def_cfa_register 13
+ 132              		@ sp needed
+ 133 0038 80BD     		pop	{r7, pc}
+ 134              	.L9:
+ 135 003a 00BF     		.align	2
+ 136              	.L8:
+ 137 003c 00000000 		.word	socket_id
+ 138              		.cfi_endproc
+ 139              	.LFE136:
+ 141              		.section	.text.coap_receive,"ax",%progbits
+ 142              		.align	1
+ 143              		.global	coap_receive
+ 144              		.syntax unified
+ 145              		.thumb
+ 146              		.thumb_func
+ 148              	coap_receive:
+ 149              	.LFB137:
+  24:coapLIB/coap_port.c **** 
+  25:coapLIB/coap_port.c **** int coap_receive(uint8_t *data, size_t *len, uint8_t *src_ip, uint16_t *src_port)
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 4
+
+
+  26:coapLIB/coap_port.c **** {
+ 150              		.loc 1 26 1
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 24
+ 153              		@ frame_needed = 1, uses_anonymous_args = 0
+ 154 0000 80B5     		push	{r7, lr}
+ 155              	.LCFI7:
+ 156              		.cfi_def_cfa_offset 8
+ 157              		.cfi_offset 7, -8
+ 158              		.cfi_offset 14, -4
+ 159 0002 88B0     		sub	sp, sp, #32
+ 160              	.LCFI8:
+ 161              		.cfi_def_cfa_offset 40
+ 162 0004 02AF     		add	r7, sp, #8
+ 163              	.LCFI9:
+ 164              		.cfi_def_cfa 7, 32
+ 165 0006 F860     		str	r0, [r7, #12]
+ 166 0008 B960     		str	r1, [r7, #8]
+ 167 000a 7A60     		str	r2, [r7, #4]
+ 168 000c 3B60     		str	r3, [r7]
+  27:coapLIB/coap_port.c ****     int32_t ret = recvfrom(socket_id, data, *len, src_ip, src_port);
+ 169              		.loc 1 27 19
+ 170 000e 0D4B     		ldr	r3, .L13
+ 171 0010 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 172              		.loc 1 27 45
+ 173 0012 BB68     		ldr	r3, [r7, #8]
+ 174 0014 1B68     		ldr	r3, [r3]
+ 175              		.loc 1 27 19
+ 176 0016 9AB2     		uxth	r2, r3
+ 177 0018 3B68     		ldr	r3, [r7]
+ 178 001a 0093     		str	r3, [sp]
+ 179 001c 7B68     		ldr	r3, [r7, #4]
+ 180 001e F968     		ldr	r1, [r7, #12]
+ 181 0020 FFF7FEFF 		bl	recvfrom
+ 182 0024 7861     		str	r0, [r7, #20]
+  28:coapLIB/coap_port.c ****     if (ret > 0)
+ 183              		.loc 1 28 8
+ 184 0026 7B69     		ldr	r3, [r7, #20]
+ 185 0028 002B     		cmp	r3, #0
+ 186 002a 04DD     		ble	.L11
+  29:coapLIB/coap_port.c ****     {
+  30:coapLIB/coap_port.c ****         *len = ret;
+ 187              		.loc 1 30 14
+ 188 002c 7A69     		ldr	r2, [r7, #20]
+ 189 002e BB68     		ldr	r3, [r7, #8]
+ 190 0030 1A60     		str	r2, [r3]
+  31:coapLIB/coap_port.c ****         return 0;
+ 191              		.loc 1 31 16
+ 192 0032 0023     		movs	r3, #0
+ 193 0034 01E0     		b	.L12
+ 194              	.L11:
+  32:coapLIB/coap_port.c ****     }
+  33:coapLIB/coap_port.c ****     return -1;
+ 195              		.loc 1 33 12
+ 196 0036 4FF0FF33 		mov	r3, #-1
+ 197              	.L12:
+  34:coapLIB/coap_port.c **** }
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 5
+
+
+ 198              		.loc 1 34 1
+ 199 003a 1846     		mov	r0, r3
+ 200 003c 1837     		adds	r7, r7, #24
+ 201              	.LCFI10:
+ 202              		.cfi_def_cfa_offset 8
+ 203 003e BD46     		mov	sp, r7
+ 204              	.LCFI11:
+ 205              		.cfi_def_cfa_register 13
+ 206              		@ sp needed
+ 207 0040 80BD     		pop	{r7, pc}
+ 208              	.L14:
+ 209 0042 00BF     		.align	2
+ 210              	.L13:
+ 211 0044 00000000 		.word	socket_id
+ 212              		.cfi_endproc
+ 213              	.LFE137:
+ 215              		.section	.text.coap_send_get,"ax",%progbits
+ 216              		.align	1
+ 217              		.global	coap_send_get
+ 218              		.syntax unified
+ 219              		.thumb
+ 220              		.thumb_func
+ 222              	coap_send_get:
+ 223              	.LFB138:
+  35:coapLIB/coap_port.c **** 
+  36:coapLIB/coap_port.c **** int coap_send_get(const char *path)
+  37:coapLIB/coap_port.c **** {
+ 224              		.loc 1 37 1
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 496
+ 227              		@ frame_needed = 1, uses_anonymous_args = 0
+ 228 0000 80B5     		push	{r7, lr}
+ 229              	.LCFI12:
+ 230              		.cfi_def_cfa_offset 8
+ 231              		.cfi_offset 7, -8
+ 232              		.cfi_offset 14, -4
+ 233 0002 FCB0     		sub	sp, sp, #496
+ 234              	.LCFI13:
+ 235              		.cfi_def_cfa_offset 504
+ 236 0004 00AF     		add	r7, sp, #0
+ 237              	.LCFI14:
+ 238              		.cfi_def_cfa_register 7
+ 239 0006 07F5F873 		add	r3, r7, #496
+ 240 000a A3F5F673 		sub	r3, r3, #492
+ 241 000e 1860     		str	r0, [r3]
+  38:coapLIB/coap_port.c ****     coap_packet_t packet;
+  39:coapLIB/coap_port.c ****     uint8_t buffer[COAP_MAX_PACKET_SIZE];
+  40:coapLIB/coap_port.c ****     size_t len = sizeof(buffer);
+ 242              		.loc 1 40 12
+ 243 0010 07F5F873 		add	r3, r7, #496
+ 244 0014 A3F5F073 		sub	r3, r3, #480
+ 245 0018 4FF48072 		mov	r2, #256
+ 246 001c 1A60     		str	r2, [r3]
+  41:coapLIB/coap_port.c **** 
+  42:coapLIB/coap_port.c ****     // Инициализация пакета
+  43:coapLIB/coap_port.c ****     memset(&packet, 0, sizeof(coap_packet_t));
+ 247              		.loc 1 43 5
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 6
+
+
+ 248 001e 07F58A73 		add	r3, r7, #276
+ 249 0022 DC22     		movs	r2, #220
+ 250 0024 0021     		movs	r1, #0
+ 251 0026 1846     		mov	r0, r3
+ 252 0028 FFF7FEFF 		bl	memset
+  44:coapLIB/coap_port.c ****     packet.hdr.ver = COAP_VERSION;
+ 253              		.loc 1 44 20
+ 254 002c 0123     		movs	r3, #1
+ 255 002e 87F81431 		strb	r3, [r7, #276]
+  45:coapLIB/coap_port.c ****     packet.hdr.t = COAP_TYPE_CON;
+ 256              		.loc 1 45 18
+ 257 0032 0023     		movs	r3, #0
+ 258 0034 87F81531 		strb	r3, [r7, #277]
+  46:coapLIB/coap_port.c ****     packet.hdr.tkl = 0; // Без токена
+ 259              		.loc 1 46 20
+ 260 0038 0023     		movs	r3, #0
+ 261 003a 87F81631 		strb	r3, [r7, #278]
+  47:coapLIB/coap_port.c ****     packet.hdr.code = COAP_METHOD_GET;
+ 262              		.loc 1 47 21
+ 263 003e 0123     		movs	r3, #1
+ 264 0040 87F81731 		strb	r3, [r7, #279]
+  48:coapLIB/coap_port.c ****     packet.hdr.id[0] = rand() & 0xFF;
+ 265              		.loc 1 48 24
+ 266 0044 FFF7FEFF 		bl	rand
+ 267 0048 0346     		mov	r3, r0
+ 268              		.loc 1 48 22
+ 269 004a DBB2     		uxtb	r3, r3
+ 270 004c 87F81831 		strb	r3, [r7, #280]
+  49:coapLIB/coap_port.c ****     packet.hdr.id[1] = rand() & 0xFF;
+ 271              		.loc 1 49 24
+ 272 0050 FFF7FEFF 		bl	rand
+ 273 0054 0346     		mov	r3, r0
+ 274              		.loc 1 49 22
+ 275 0056 DBB2     		uxtb	r3, r3
+ 276 0058 87F81931 		strb	r3, [r7, #281]
+  50:coapLIB/coap_port.c **** 
+  51:coapLIB/coap_port.c ****     // Опция Uri-Path
+  52:coapLIB/coap_port.c ****     packet.numopts = 1;
+ 277              		.loc 1 52 20
+ 278 005c 0123     		movs	r3, #1
+ 279 005e 87F82431 		strb	r3, [r7, #292]
+  53:coapLIB/coap_port.c ****     packet.opts[0].num = COAP_OPTION_URI_PATH;
+ 280              		.loc 1 53 24
+ 281 0062 0B23     		movs	r3, #11
+ 282 0064 87F82831 		strb	r3, [r7, #296]
+  54:coapLIB/coap_port.c ****     packet.opts[0].buf.p = (const uint8_t *)path;
+ 283              		.loc 1 54 26
+ 284 0068 07F5F873 		add	r3, r7, #496
+ 285 006c A3F5F673 		sub	r3, r3, #492
+ 286 0070 1B68     		ldr	r3, [r3]
+ 287 0072 C7F82C31 		str	r3, [r7, #300]
+  55:coapLIB/coap_port.c ****     packet.opts[0].buf.len = strlen(path);
+ 288              		.loc 1 55 30
+ 289 0076 07F5F873 		add	r3, r7, #496
+ 290 007a A3F5F673 		sub	r3, r3, #492
+ 291 007e 1868     		ldr	r0, [r3]
+ 292 0080 FFF7FEFF 		bl	strlen
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 7
+
+
+ 293 0084 0346     		mov	r3, r0
+ 294              		.loc 1 55 28
+ 295 0086 C7F83031 		str	r3, [r7, #304]
+  56:coapLIB/coap_port.c **** 
+  57:coapLIB/coap_port.c ****     // Сериализация
+  58:coapLIB/coap_port.c ****     if (coap_build(buffer, &len, &packet) != 0)
+ 296              		.loc 1 58 9
+ 297 008a 07F58A72 		add	r2, r7, #276
+ 298 008e 07F11001 		add	r1, r7, #16
+ 299 0092 07F11403 		add	r3, r7, #20
+ 300 0096 1846     		mov	r0, r3
+ 301 0098 FFF7FEFF 		bl	coap_build
+ 302 009c 0346     		mov	r3, r0
+ 303              		.loc 1 58 8
+ 304 009e 002B     		cmp	r3, #0
+ 305 00a0 02D0     		beq	.L16
+  59:coapLIB/coap_port.c ****     {
+  60:coapLIB/coap_port.c ****         return -1;
+ 306              		.loc 1 60 16
+ 307 00a2 4FF0FF33 		mov	r3, #-1
+ 308 00a6 13E0     		b	.L18
+ 309              	.L16:
+  61:coapLIB/coap_port.c ****     }
+  62:coapLIB/coap_port.c **** 
+  63:coapLIB/coap_port.c ****     // // Шифрование
+  64:coapLIB/coap_port.c ****     // uint8_t encrypted[COAP_MAX_PACKET_SIZE];
+  65:coapLIB/coap_port.c ****     // uint8_t hmac[32];
+  66:coapLIB/coap_port.c ****     // size_t encrypted_len, hmac_len;
+  67:coapLIB/coap_port.c ****     // if (encrypt_message(buffer, len, encrypted, &encrypted_len) != 0)
+  68:coapLIB/coap_port.c ****     //     return -1;
+  69:coapLIB/coap_port.c ****     // if (compute_hmac(encrypted, encrypted_len, hmac, &hmac_len) != 0)
+  70:coapLIB/coap_port.c ****     //     return -1;
+  71:coapLIB/coap_port.c **** 
+  72:coapLIB/coap_port.c ****     // // Формирование буфера: длина + шифрованное + HMAC
+  73:coapLIB/coap_port.c ****     // uint8_t send_buf[COAP_MAX_PACKET_SIZE];
+  74:coapLIB/coap_port.c ****     // send_buf[0] = (uint8_t)encrypted_len;
+  75:coapLIB/coap_port.c ****     // memcpy(send_buf + 1, encrypted, encrypted_len);
+  76:coapLIB/coap_port.c ****     // memcpy(send_buf + 1 + encrypted_len, hmac, hmac_len);
+  77:coapLIB/coap_port.c **** 
+  78:coapLIB/coap_port.c ****     // Отправка
+  79:coapLIB/coap_port.c ****     uint8_t dest_ip[4] = SERVER_IP;
+ 310              		.loc 1 79 13
+ 311 00a8 07F5F873 		add	r3, r7, #496
+ 312 00ac A3F5F273 		sub	r3, r3, #484
+ 313 00b0 0A4A     		ldr	r2, .L19
+ 314 00b2 1A60     		str	r2, [r3]
+  80:coapLIB/coap_port.c ****     return coap_send(buffer, len, dest_ip, SERVER_PORT);
+ 315              		.loc 1 80 12
+ 316 00b4 07F5F873 		add	r3, r7, #496
+ 317 00b8 A3F5F073 		sub	r3, r3, #480
+ 318 00bc 1968     		ldr	r1, [r3]
+ 319 00be 07F10C02 		add	r2, r7, #12
+ 320 00c2 07F11400 		add	r0, r7, #20
+ 321 00c6 41F23363 		movw	r3, #5683
+ 322 00ca FFF7FEFF 		bl	coap_send
+ 323 00ce 0346     		mov	r3, r0
+ 324              	.L18:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 8
+
+
+  81:coapLIB/coap_port.c **** }
+ 325              		.loc 1 81 1 discriminator 1
+ 326 00d0 1846     		mov	r0, r3
+ 327 00d2 07F5F877 		add	r7, r7, #496
+ 328              	.LCFI15:
+ 329              		.cfi_def_cfa_offset 8
+ 330 00d6 BD46     		mov	sp, r7
+ 331              	.LCFI16:
+ 332              		.cfi_def_cfa_register 13
+ 333              		@ sp needed
+ 334 00d8 80BD     		pop	{r7, pc}
+ 335              	.L20:
+ 336 00da 00BF     		.align	2
+ 337              	.L19:
+ 338 00dc C0A80165 		.word	1694607552
+ 339              		.cfi_endproc
+ 340              	.LFE138:
+ 342              		.section	.text.coap_send_put,"ax",%progbits
+ 343              		.align	1
+ 344              		.global	coap_send_put
+ 345              		.syntax unified
+ 346              		.thumb
+ 347              		.thumb_func
+ 349              	coap_send_put:
+ 350              	.LFB139:
+  82:coapLIB/coap_port.c **** 
+  83:coapLIB/coap_port.c **** int coap_send_put(const char *path, const uint8_t *payload, size_t payload_len)
+  84:coapLIB/coap_port.c **** {
+ 351              		.loc 1 84 1
+ 352              		.cfi_startproc
+ 353              		@ args = 0, pretend = 0, frame = 504
+ 354              		@ frame_needed = 1, uses_anonymous_args = 0
+ 355 0000 80B5     		push	{r7, lr}
+ 356              	.LCFI17:
+ 357              		.cfi_def_cfa_offset 8
+ 358              		.cfi_offset 7, -8
+ 359              		.cfi_offset 14, -4
+ 360 0002 FEB0     		sub	sp, sp, #504
+ 361              	.LCFI18:
+ 362              		.cfi_def_cfa_offset 512
+ 363 0004 00AF     		add	r7, sp, #0
+ 364              	.LCFI19:
+ 365              		.cfi_def_cfa_register 7
+ 366 0006 07F5FC73 		add	r3, r7, #504
+ 367 000a A3F5F673 		sub	r3, r3, #492
+ 368 000e 1860     		str	r0, [r3]
+ 369 0010 07F5FC73 		add	r3, r7, #504
+ 370 0014 A3F5F873 		sub	r3, r3, #496
+ 371 0018 1960     		str	r1, [r3]
+ 372 001a 07F5FC73 		add	r3, r7, #504
+ 373 001e A3F5FA73 		sub	r3, r3, #500
+ 374 0022 1A60     		str	r2, [r3]
+  85:coapLIB/coap_port.c ****     coap_packet_t packet;
+  86:coapLIB/coap_port.c ****     uint8_t buffer[COAP_MAX_PACKET_SIZE];
+  87:coapLIB/coap_port.c ****     size_t len = sizeof(buffer);
+ 375              		.loc 1 87 12
+ 376 0024 07F5FC73 		add	r3, r7, #504
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 9
+
+
+ 377 0028 A3F5F073 		sub	r3, r3, #480
+ 378 002c 4FF48072 		mov	r2, #256
+ 379 0030 1A60     		str	r2, [r3]
+  88:coapLIB/coap_port.c **** 
+  89:coapLIB/coap_port.c ****     // Проверка размера payload
+  90:coapLIB/coap_port.c ****     if (payload_len > COAP_MAX_PACKET_SIZE - 128)
+ 380              		.loc 1 90 8
+ 381 0032 07F5FC73 		add	r3, r7, #504
+ 382 0036 A3F5FA73 		sub	r3, r3, #500
+ 383 003a 1B68     		ldr	r3, [r3]
+ 384 003c 802B     		cmp	r3, #128
+ 385 003e 02D9     		bls	.L22
+  91:coapLIB/coap_port.c ****         return -1; // Ограничение для безопасности
+ 386              		.loc 1 91 16
+ 387 0040 4FF0FF33 		mov	r3, #-1
+ 388 0044 66E0     		b	.L25
+ 389              	.L22:
+  92:coapLIB/coap_port.c **** 
+  93:coapLIB/coap_port.c ****     // Инициализация пакета
+  94:coapLIB/coap_port.c ****     memset(&packet, 0, sizeof(coap_packet_t));
+ 390              		.loc 1 94 5
+ 391 0046 07F58E73 		add	r3, r7, #284
+ 392 004a DC22     		movs	r2, #220
+ 393 004c 0021     		movs	r1, #0
+ 394 004e 1846     		mov	r0, r3
+ 395 0050 FFF7FEFF 		bl	memset
+  95:coapLIB/coap_port.c ****     packet.hdr.ver = COAP_VERSION;
+ 396              		.loc 1 95 20
+ 397 0054 0123     		movs	r3, #1
+ 398 0056 87F81C31 		strb	r3, [r7, #284]
+  96:coapLIB/coap_port.c ****     packet.hdr.t = COAP_TYPE_CON;
+ 399              		.loc 1 96 18
+ 400 005a 0023     		movs	r3, #0
+ 401 005c 87F81D31 		strb	r3, [r7, #285]
+  97:coapLIB/coap_port.c ****     packet.hdr.tkl = 0;
+ 402              		.loc 1 97 20
+ 403 0060 0023     		movs	r3, #0
+ 404 0062 87F81E31 		strb	r3, [r7, #286]
+  98:coapLIB/coap_port.c ****     packet.hdr.code = COAP_METHOD_PUT;
+ 405              		.loc 1 98 21
+ 406 0066 0323     		movs	r3, #3
+ 407 0068 87F81F31 		strb	r3, [r7, #287]
+  99:coapLIB/coap_port.c ****     packet.hdr.id[0] = rand() & 0xFF;
+ 408              		.loc 1 99 24
+ 409 006c FFF7FEFF 		bl	rand
+ 410 0070 0346     		mov	r3, r0
+ 411              		.loc 1 99 22
+ 412 0072 DBB2     		uxtb	r3, r3
+ 413 0074 87F82031 		strb	r3, [r7, #288]
+ 100:coapLIB/coap_port.c ****     packet.hdr.id[1] = rand() & 0xFF;
+ 414              		.loc 1 100 24
+ 415 0078 FFF7FEFF 		bl	rand
+ 416 007c 0346     		mov	r3, r0
+ 417              		.loc 1 100 22
+ 418 007e DBB2     		uxtb	r3, r3
+ 419 0080 87F82131 		strb	r3, [r7, #289]
+ 101:coapLIB/coap_port.c **** 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 10
+
+
+ 102:coapLIB/coap_port.c ****     // Опция Uri-Path
+ 103:coapLIB/coap_port.c ****     packet.numopts = 1;
+ 420              		.loc 1 103 20
+ 421 0084 0123     		movs	r3, #1
+ 422 0086 87F82C31 		strb	r3, [r7, #300]
+ 104:coapLIB/coap_port.c ****     packet.opts[0].num = COAP_OPTION_URI_PATH;
+ 423              		.loc 1 104 24
+ 424 008a 0B23     		movs	r3, #11
+ 425 008c 87F83031 		strb	r3, [r7, #304]
+ 105:coapLIB/coap_port.c ****     packet.opts[0].buf.p = (const uint8_t *)path;
+ 426              		.loc 1 105 26
+ 427 0090 07F5FC73 		add	r3, r7, #504
+ 428 0094 A3F5F673 		sub	r3, r3, #492
+ 429 0098 1B68     		ldr	r3, [r3]
+ 430 009a C7F83431 		str	r3, [r7, #308]
+ 106:coapLIB/coap_port.c ****     packet.opts[0].buf.len = strlen(path);
+ 431              		.loc 1 106 30
+ 432 009e 07F5FC73 		add	r3, r7, #504
+ 433 00a2 A3F5F673 		sub	r3, r3, #492
+ 434 00a6 1868     		ldr	r0, [r3]
+ 435 00a8 FFF7FEFF 		bl	strlen
+ 436 00ac 0346     		mov	r3, r0
+ 437              		.loc 1 106 28
+ 438 00ae C7F83831 		str	r3, [r7, #312]
+ 107:coapLIB/coap_port.c **** 
+ 108:coapLIB/coap_port.c ****     // Payload
+ 109:coapLIB/coap_port.c ****     packet.payload.p = payload;
+ 439              		.loc 1 109 22
+ 440 00b2 07F5FC73 		add	r3, r7, #504
+ 441 00b6 A3F5F873 		sub	r3, r3, #496
+ 442 00ba 1B68     		ldr	r3, [r3]
+ 443 00bc C7F8F031 		str	r3, [r7, #496]
+ 110:coapLIB/coap_port.c ****     packet.payload.len = payload_len;
+ 444              		.loc 1 110 24
+ 445 00c0 07F5FC73 		add	r3, r7, #504
+ 446 00c4 A3F5FA73 		sub	r3, r3, #500
+ 447 00c8 1B68     		ldr	r3, [r3]
+ 448 00ca C7F8F431 		str	r3, [r7, #500]
+ 111:coapLIB/coap_port.c **** 
+ 112:coapLIB/coap_port.c ****     // Сериализация
+ 113:coapLIB/coap_port.c ****     if (coap_build(buffer, &len, &packet) != 0)
+ 449              		.loc 1 113 9
+ 450 00ce 07F58E72 		add	r2, r7, #284
+ 451 00d2 07F11801 		add	r1, r7, #24
+ 452 00d6 07F11C03 		add	r3, r7, #28
+ 453 00da 1846     		mov	r0, r3
+ 454 00dc FFF7FEFF 		bl	coap_build
+ 455 00e0 0346     		mov	r3, r0
+ 456              		.loc 1 113 8
+ 457 00e2 002B     		cmp	r3, #0
+ 458 00e4 02D0     		beq	.L24
+ 114:coapLIB/coap_port.c ****     {
+ 115:coapLIB/coap_port.c ****         return -1;
+ 459              		.loc 1 115 16
+ 460 00e6 4FF0FF33 		mov	r3, #-1
+ 461 00ea 13E0     		b	.L25
+ 462              	.L24:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 11
+
+
+ 116:coapLIB/coap_port.c ****     }
+ 117:coapLIB/coap_port.c **** 
+ 118:coapLIB/coap_port.c ****     // // Шифрование
+ 119:coapLIB/coap_port.c ****     // uint8_t encrypted[COAP_MAX_PACKET_SIZE];
+ 120:coapLIB/coap_port.c ****     // uint8_t hmac[32];
+ 121:coapLIB/coap_port.c ****     // size_t encrypted_len, hmac_len;
+ 122:coapLIB/coap_port.c ****     // if (encrypt_message(buffer, len, encrypted, &encrypted_len) != 0)
+ 123:coapLIB/coap_port.c ****     //     return -1;
+ 124:coapLIB/coap_port.c ****     // if (compute_hmac(encrypted, encrypted_len, hmac, &hmac_len) != 0)
+ 125:coapLIB/coap_port.c ****     //     return -1;
+ 126:coapLIB/coap_port.c **** 
+ 127:coapLIB/coap_port.c ****     // // Формирование буфера
+ 128:coapLIB/coap_port.c ****     // uint8_t send_buf[COAP_MAX_PACKET_SIZE];
+ 129:coapLIB/coap_port.c ****     // send_buf[0] = (uint8_t)encrypted_len;
+ 130:coapLIB/coap_port.c ****     // memcpy(send_buf + 1, encrypted, encrypted_len);
+ 131:coapLIB/coap_port.c ****     // memcpy(send_buf + 1 + encrypted_len, hmac, hmac_len);
+ 132:coapLIB/coap_port.c **** 
+ 133:coapLIB/coap_port.c ****     // Отправка
+ 134:coapLIB/coap_port.c ****     uint8_t dest_ip[4] = SERVER_IP;
+ 463              		.loc 1 134 13
+ 464 00ec 07F5FC73 		add	r3, r7, #504
+ 465 00f0 A3F5F273 		sub	r3, r3, #484
+ 466 00f4 0A4A     		ldr	r2, .L26
+ 467 00f6 1A60     		str	r2, [r3]
+ 135:coapLIB/coap_port.c ****     return coap_send(buffer, len, dest_ip, SERVER_PORT);
+ 468              		.loc 1 135 12
+ 469 00f8 07F5FC73 		add	r3, r7, #504
+ 470 00fc A3F5F073 		sub	r3, r3, #480
+ 471 0100 1968     		ldr	r1, [r3]
+ 472 0102 07F11402 		add	r2, r7, #20
+ 473 0106 07F11C00 		add	r0, r7, #28
+ 474 010a 41F23363 		movw	r3, #5683
+ 475 010e FFF7FEFF 		bl	coap_send
+ 476 0112 0346     		mov	r3, r0
+ 477              	.L25:
+ 136:coapLIB/coap_port.c **** }
+ 478              		.loc 1 136 1 discriminator 1
+ 479 0114 1846     		mov	r0, r3
+ 480 0116 07F5FC77 		add	r7, r7, #504
+ 481              	.LCFI20:
+ 482              		.cfi_def_cfa_offset 8
+ 483 011a BD46     		mov	sp, r7
+ 484              	.LCFI21:
+ 485              		.cfi_def_cfa_register 13
+ 486              		@ sp needed
+ 487 011c 80BD     		pop	{r7, pc}
+ 488              	.L27:
+ 489 011e 00BF     		.align	2
+ 490              	.L26:
+ 491 0120 C0A80165 		.word	1694607552
+ 492              		.cfi_endproc
+ 493              	.LFE139:
+ 495              		.section	.text.coap_handle_response,"ax",%progbits
+ 496              		.align	1
+ 497              		.global	coap_handle_response
+ 498              		.syntax unified
+ 499              		.thumb
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 12
+
+
+ 500              		.thumb_func
+ 502              	coap_handle_response:
+ 503              	.LFB140:
+ 137:coapLIB/coap_port.c **** 
+ 138:coapLIB/coap_port.c **** int coap_handle_response(uint8_t *response, size_t *response_len)
+ 139:coapLIB/coap_port.c **** {
+ 504              		.loc 1 139 1
+ 505              		.cfi_startproc
+ 506              		@ args = 0, pretend = 0, frame = 496
+ 507              		@ frame_needed = 1, uses_anonymous_args = 0
+ 508 0000 80B5     		push	{r7, lr}
+ 509              	.LCFI22:
+ 510              		.cfi_def_cfa_offset 8
+ 511              		.cfi_offset 7, -8
+ 512              		.cfi_offset 14, -4
+ 513 0002 FCB0     		sub	sp, sp, #496
+ 514              	.LCFI23:
+ 515              		.cfi_def_cfa_offset 504
+ 516 0004 00AF     		add	r7, sp, #0
+ 517              	.LCFI24:
+ 518              		.cfi_def_cfa_register 7
+ 519 0006 07F5F873 		add	r3, r7, #496
+ 520 000a A3F5F673 		sub	r3, r3, #492
+ 521 000e 1860     		str	r0, [r3]
+ 522 0010 07F5F873 		add	r3, r7, #496
+ 523 0014 A3F5F873 		sub	r3, r3, #496
+ 524 0018 1960     		str	r1, [r3]
+ 140:coapLIB/coap_port.c ****     uint8_t data[COAP_MAX_PACKET_SIZE];
+ 141:coapLIB/coap_port.c ****     size_t len = sizeof(data);
+ 525              		.loc 1 141 12
+ 526 001a 07F5F873 		add	r3, r7, #496
+ 527 001e A3F58273 		sub	r3, r3, #260
+ 528 0022 4FF48072 		mov	r2, #256
+ 529 0026 1A60     		str	r2, [r3]
+ 142:coapLIB/coap_port.c ****     uint8_t src_ip[4];
+ 143:coapLIB/coap_port.c ****     uint16_t src_port;
+ 144:coapLIB/coap_port.c **** 
+ 145:coapLIB/coap_port.c ****     if (coap_receive(data, &len, src_ip, &src_port) != 0)
+ 530              		.loc 1 145 9
+ 531 0028 07F1E603 		add	r3, r7, #230
+ 532 002c 07F1E802 		add	r2, r7, #232
+ 533 0030 07F1EC01 		add	r1, r7, #236
+ 534 0034 07F1F000 		add	r0, r7, #240
+ 535 0038 FFF7FEFF 		bl	coap_receive
+ 536 003c 0346     		mov	r3, r0
+ 537              		.loc 1 145 8
+ 538 003e 002B     		cmp	r3, #0
+ 539 0040 02D0     		beq	.L29
+ 146:coapLIB/coap_port.c ****     {
+ 147:coapLIB/coap_port.c ****         return -1;
+ 540              		.loc 1 147 16
+ 541 0042 4FF0FF33 		mov	r3, #-1
+ 542 0046 4AE0     		b	.L33
+ 543              	.L29:
+ 148:coapLIB/coap_port.c ****     }
+ 149:coapLIB/coap_port.c **** 
+ 150:coapLIB/coap_port.c ****     // Проверка HMAC
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 13
+
+
+ 151:coapLIB/coap_port.c ****     // uint8_t encrypted[COAP_MAX_PACKET_SIZE];
+ 152:coapLIB/coap_port.c ****     // uint8_t hmac[32];
+ 153:coapLIB/coap_port.c ****     // size_t encrypted_len = data[0];
+ 154:coapLIB/coap_port.c ****     // if (encrypted_len > len - 33)
+ 155:coapLIB/coap_port.c ****     //     return -1;
+ 156:coapLIB/coap_port.c ****     // memcpy(encrypted, data + 1, encrypted_len);
+ 157:coapLIB/coap_port.c ****     // memcpy(hmac, data + 1 + encrypted_len, 32);
+ 158:coapLIB/coap_port.c ****     // if (verify_hmac(encrypted, encrypted_len, hmac) != 0)
+ 159:coapLIB/coap_port.c ****     //     return -1;
+ 160:coapLIB/coap_port.c **** 
+ 161:coapLIB/coap_port.c ****     // // Дешифрование
+ 162:coapLIB/coap_port.c ****     // uint8_t decrypted[COAP_MAX_PACKET_SIZE];
+ 163:coapLIB/coap_port.c ****     // size_t decrypted_len;
+ 164:coapLIB/coap_port.c ****     // if (decrypt_message(encrypted, encrypted_len, decrypted, &decrypted_len) != 0)
+ 165:coapLIB/coap_port.c ****     //     return -1;
+ 166:coapLIB/coap_port.c **** 
+ 167:coapLIB/coap_port.c ****     // Парсинг CoAP
+ 168:coapLIB/coap_port.c ****     coap_packet_t packet;
+ 169:coapLIB/coap_port.c ****     if (coap_parse(&packet, data, len) != 0)
+ 544              		.loc 1 169 9
+ 545 0048 07F5F873 		add	r3, r7, #496
+ 546 004c A3F58273 		sub	r3, r3, #260
+ 547 0050 1A68     		ldr	r2, [r3]
+ 548 0052 07F1F001 		add	r1, r7, #240
+ 549 0056 07F10803 		add	r3, r7, #8
+ 550 005a 1846     		mov	r0, r3
+ 551 005c FFF7FEFF 		bl	coap_parse
+ 552 0060 0346     		mov	r3, r0
+ 553              		.loc 1 169 8
+ 554 0062 002B     		cmp	r3, #0
+ 555 0064 02D0     		beq	.L31
+ 170:coapLIB/coap_port.c ****     {
+ 171:coapLIB/coap_port.c ****         return -1;
+ 556              		.loc 1 171 16
+ 557 0066 4FF0FF33 		mov	r3, #-1
+ 558 006a 38E0     		b	.L33
+ 559              	.L31:
+ 172:coapLIB/coap_port.c ****     }
+ 173:coapLIB/coap_port.c **** 
+ 174:coapLIB/coap_port.c ****     // Копирование payload
+ 175:coapLIB/coap_port.c ****     if (packet.payload.len > 0 && packet.payload.len <= *response_len)
+ 560              		.loc 1 175 23
+ 561 006c 07F5F873 		add	r3, r7, #496
+ 562 0070 A3F5F473 		sub	r3, r3, #488
+ 563 0074 D3F8D830 		ldr	r3, [r3, #216]
+ 564              		.loc 1 175 8
+ 565 0078 002B     		cmp	r3, #0
+ 566 007a 2ED0     		beq	.L32
+ 567              		.loc 1 175 49 discriminator 1
+ 568 007c 07F5F873 		add	r3, r7, #496
+ 569 0080 A3F5F473 		sub	r3, r3, #488
+ 570 0084 D3F8D820 		ldr	r2, [r3, #216]
+ 571              		.loc 1 175 57 discriminator 1
+ 572 0088 07F5F873 		add	r3, r7, #496
+ 573 008c A3F5F873 		sub	r3, r3, #496
+ 574 0090 1B68     		ldr	r3, [r3]
+ 575 0092 1B68     		ldr	r3, [r3]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 14
+
+
+ 576              		.loc 1 175 32 discriminator 1
+ 577 0094 9A42     		cmp	r2, r3
+ 578 0096 20D8     		bhi	.L32
+ 176:coapLIB/coap_port.c ****     {
+ 177:coapLIB/coap_port.c ****         memcpy(response, packet.payload.p, packet.payload.len);
+ 579              		.loc 1 177 40
+ 580 0098 07F5F873 		add	r3, r7, #496
+ 581 009c A3F5F473 		sub	r3, r3, #488
+ 582 00a0 D3F8D410 		ldr	r1, [r3, #212]
+ 583              		.loc 1 177 9
+ 584 00a4 07F5F873 		add	r3, r7, #496
+ 585 00a8 A3F5F473 		sub	r3, r3, #488
+ 586 00ac D3F8D820 		ldr	r2, [r3, #216]
+ 587 00b0 07F5F873 		add	r3, r7, #496
+ 588 00b4 A3F5F673 		sub	r3, r3, #492
+ 589 00b8 1868     		ldr	r0, [r3]
+ 590 00ba FFF7FEFF 		bl	memcpy
+ 178:coapLIB/coap_port.c ****         *response_len = packet.payload.len;
+ 591              		.loc 1 178 39
+ 592 00be 07F5F873 		add	r3, r7, #496
+ 593 00c2 A3F5F473 		sub	r3, r3, #488
+ 594 00c6 D3F8D820 		ldr	r2, [r3, #216]
+ 595              		.loc 1 178 23
+ 596 00ca 07F5F873 		add	r3, r7, #496
+ 597 00ce A3F5F873 		sub	r3, r3, #496
+ 598 00d2 1B68     		ldr	r3, [r3]
+ 599 00d4 1A60     		str	r2, [r3]
+ 179:coapLIB/coap_port.c ****         return 0;
+ 600              		.loc 1 179 16
+ 601 00d6 0023     		movs	r3, #0
+ 602 00d8 01E0     		b	.L33
+ 603              	.L32:
+ 180:coapLIB/coap_port.c ****     }
+ 181:coapLIB/coap_port.c **** 
+ 182:coapLIB/coap_port.c ****     return -1;
+ 604              		.loc 1 182 12
+ 605 00da 4FF0FF33 		mov	r3, #-1
+ 606              	.L33:
+ 183:coapLIB/coap_port.c **** }
+ 607              		.loc 1 183 1 discriminator 1
+ 608 00de 1846     		mov	r0, r3
+ 609 00e0 07F5F877 		add	r7, r7, #496
+ 610              	.LCFI25:
+ 611              		.cfi_def_cfa_offset 8
+ 612 00e4 BD46     		mov	sp, r7
+ 613              	.LCFI26:
+ 614              		.cfi_def_cfa_register 13
+ 615              		@ sp needed
+ 616 00e6 80BD     		pop	{r7, pc}
+ 617              		.cfi_endproc
+ 618              	.LFE140:
+ 620              		.section	.rodata
+ 621              		.align	2
+ 622              	.LC0:
+ 623 0000 43484543 		.ascii	"CHECK_FIRMWARE_OK\000"
+ 623      4B5F4649 
+ 623      524D5741 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 15
+
+
+ 623      52455F4F 
+ 623      4B00
+ 624 0012 0000     		.align	2
+ 625              	.LC1:
+ 626 0014 63686563 		.ascii	"check_firmware\000"
+ 626      6B5F6669 
+ 626      726D7761 
+ 626      726500
+ 627 0023 00       		.align	2
+ 628              	.LC2:
+ 629 0024 63686563 		.ascii	"check/firmware\000"
+ 629      6B2F6669 
+ 629      726D7761 
+ 629      726500
+ 630              		.section	.text.EXTI1_IRQHandler,"ax",%progbits
+ 631              		.align	1
+ 632              		.global	EXTI1_IRQHandler
+ 633              		.syntax unified
+ 634              		.thumb
+ 635              		.thumb_func
+ 637              	EXTI1_IRQHandler:
+ 638              	.LFB141:
+ 184:coapLIB/coap_port.c **** 
+ 185:coapLIB/coap_port.c **** void EXTI1_IRQHandler(void)
+ 186:coapLIB/coap_port.c **** {
+ 639              		.loc 1 186 1
+ 640              		.cfi_startproc
+ 641              		@ args = 0, pretend = 0, frame = 264
+ 642              		@ frame_needed = 1, uses_anonymous_args = 0
+ 643 0000 80B5     		push	{r7, lr}
+ 644              	.LCFI27:
+ 645              		.cfi_def_cfa_offset 8
+ 646              		.cfi_offset 7, -8
+ 647              		.cfi_offset 14, -4
+ 648 0002 C2B0     		sub	sp, sp, #264
+ 649              	.LCFI28:
+ 650              		.cfi_def_cfa_offset 272
+ 651 0004 00AF     		add	r7, sp, #0
+ 652              	.LCFI29:
+ 653              		.cfi_def_cfa_register 7
+ 187:coapLIB/coap_port.c ****     if (EXTI->PR & EXTI_PR_PR1)
+ 654              		.loc 1 187 13
+ 655 0006 364B     		ldr	r3, .L39
+ 656 0008 5B69     		ldr	r3, [r3, #20]
+ 657              		.loc 1 187 18
+ 658 000a 03F00203 		and	r3, r3, #2
+ 659              		.loc 1 187 8
+ 660 000e 002B     		cmp	r3, #0
+ 661 0010 61D0     		beq	.L38
+ 662              	.LBB2:
+ 188:coapLIB/coap_port.c ****     {
+ 189:coapLIB/coap_port.c ****         EXTI->PR = EXTI_PR_PR1;
+ 663              		.loc 1 189 13
+ 664 0012 334B     		ldr	r3, .L39
+ 665              		.loc 1 189 18
+ 666 0014 0222     		movs	r2, #2
+ 667 0016 5A61     		str	r2, [r3, #20]
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 16
+
+
+ 190:coapLIB/coap_port.c ****         uint8_t socket = 0;
+ 668              		.loc 1 190 17
+ 669 0018 0023     		movs	r3, #0
+ 670 001a 87F80731 		strb	r3, [r7, #263]
+ 191:coapLIB/coap_port.c ****         uint8_t ir = getSn_IR(socket);
+ 671              		.loc 1 191 22
+ 672 001e 97F80731 		ldrb	r3, [r7, #263]	@ zero_extendqisi2
+ 673 0022 9B00     		lsls	r3, r3, #2
+ 674 0024 0133     		adds	r3, r3, #1
+ 675 0026 DB00     		lsls	r3, r3, #3
+ 676 0028 03F50073 		add	r3, r3, #512
+ 677 002c 1846     		mov	r0, r3
+ 678 002e FFF7FEFF 		bl	WIZCHIP_READ
+ 679 0032 0346     		mov	r3, r0
+ 680              		.loc 1 191 17
+ 681 0034 03F01F03 		and	r3, r3, #31
+ 682 0038 87F80631 		strb	r3, [r7, #262]
+ 192:coapLIB/coap_port.c **** 
+ 193:coapLIB/coap_port.c ****         if (ir & Sn_IR_RECV)
+ 683              		.loc 1 193 16
+ 684 003c 97F80631 		ldrb	r3, [r7, #262]	@ zero_extendqisi2
+ 685 0040 03F00403 		and	r3, r3, #4
+ 686              		.loc 1 193 12
+ 687 0044 002B     		cmp	r3, #0
+ 688 0046 32D0     		beq	.L36
+ 689              	.LBB3:
+ 194:coapLIB/coap_port.c ****         {
+ 195:coapLIB/coap_port.c ****             // blink_run(50);
+ 196:coapLIB/coap_port.c ****             setSn_IR(socket, Sn_IR_RECV);
+ 690              		.loc 1 196 13
+ 691 0048 97F80731 		ldrb	r3, [r7, #263]	@ zero_extendqisi2
+ 692 004c 9B00     		lsls	r3, r3, #2
+ 693 004e 0133     		adds	r3, r3, #1
+ 694 0050 DB00     		lsls	r3, r3, #3
+ 695 0052 03F50073 		add	r3, r3, #512
+ 696 0056 0421     		movs	r1, #4
+ 697 0058 1846     		mov	r0, r3
+ 698 005a FFF7FEFF 		bl	WIZCHIP_WRITE
+ 197:coapLIB/coap_port.c ****             uint8_t response[COAP_MAX_PACKET_SIZE];
+ 198:coapLIB/coap_port.c ****             uint16_t response_len = sizeof(response);
+ 699              		.loc 1 198 22
+ 700 005e 4FF48073 		mov	r3, #256
+ 701 0062 A7F80431 		strh	r3, [r7, #260]	@ movhi
+ 199:coapLIB/coap_port.c ****             if (coap_handle_response(response, &response_len) == 0)
+ 702              		.loc 1 199 17
+ 703 0066 07F58272 		add	r2, r7, #260
+ 704 006a 3B46     		mov	r3, r7
+ 705 006c 1146     		mov	r1, r2
+ 706 006e 1846     		mov	r0, r3
+ 707 0070 FFF7FEFF 		bl	coap_handle_response
+ 708 0074 0346     		mov	r3, r0
+ 709              		.loc 1 199 16
+ 710 0076 002B     		cmp	r3, #0
+ 711 0078 19D1     		bne	.L36
+ 200:coapLIB/coap_port.c ****             {
+ 201:coapLIB/coap_port.c ****                 // blink_run(50);
+ 202:coapLIB/coap_port.c ****                 if (strncmp((char *)response, "CHECK_FIRMWARE_OK", response_len) == 0)
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 17
+
+
+ 712              		.loc 1 202 21
+ 713 007a B7F80431 		ldrh	r3, [r7, #260]
+ 714 007e 1A46     		mov	r2, r3
+ 715 0080 3B46     		mov	r3, r7
+ 716 0082 1849     		ldr	r1, .L39+4
+ 717 0084 1846     		mov	r0, r3
+ 718 0086 FFF7FEFF 		bl	strncmp
+ 719 008a 0346     		mov	r3, r0
+ 720              		.loc 1 202 20
+ 721 008c 002B     		cmp	r3, #0
+ 722 008e 0ED1     		bne	.L36
+ 723              	.LBB4:
+ 203:coapLIB/coap_port.c ****                 {
+ 204:coapLIB/coap_port.c ****                     // if (verify_firmware() == 0)
+ 205:coapLIB/coap_port.c ****                     // {
+ 206:coapLIB/coap_port.c ****                         // Отправка PUT-запроса для обновления стат
+ 207:coapLIB/coap_port.c **** 
+ 208:coapLIB/coap_port.c ****                         const uint8_t payload[] = "1"; // Пример: включение
+ 724              		.loc 1 208 39
+ 725 0090 3123     		movs	r3, #49
+ 726 0092 A7F80031 		strh	r3, [r7, #256]	@ movhi
+ 209:coapLIB/coap_port.c ****                         coap_send_put("check_firmware", payload, strlen((char *)payload));
+ 727              		.loc 1 209 25
+ 728 0096 07F58073 		add	r3, r7, #256
+ 729 009a 1846     		mov	r0, r3
+ 730 009c FFF7FEFF 		bl	strlen
+ 731 00a0 0246     		mov	r2, r0
+ 732 00a2 07F58073 		add	r3, r7, #256
+ 733 00a6 1946     		mov	r1, r3
+ 734 00a8 0F48     		ldr	r0, .L39+8
+ 735 00aa FFF7FEFF 		bl	coap_send_put
+ 736              	.L36:
+ 737              	.LBE4:
+ 738              	.LBE3:
+ 210:coapLIB/coap_port.c ****                         // jump_to_application();
+ 211:coapLIB/coap_port.c ****                     // }
+ 212:coapLIB/coap_port.c ****                     // else
+ 213:coapLIB/coap_port.c ****                     // {
+ 214:coapLIB/coap_port.c ****                     //     coap_send_get("error");
+ 215:coapLIB/coap_port.c ****                     // }
+ 216:coapLIB/coap_port.c ****                 }
+ 217:coapLIB/coap_port.c ****             }
+ 218:coapLIB/coap_port.c ****         }
+ 219:coapLIB/coap_port.c **** 
+ 220:coapLIB/coap_port.c ****         if (ir & Sn_IR_TIMEOUT)
+ 739              		.loc 1 220 16
+ 740 00ae 97F80631 		ldrb	r3, [r7, #262]	@ zero_extendqisi2
+ 741 00b2 03F00803 		and	r3, r3, #8
+ 742              		.loc 1 220 12
+ 743 00b6 002B     		cmp	r3, #0
+ 744 00b8 0DD0     		beq	.L38
+ 221:coapLIB/coap_port.c ****         {
+ 222:coapLIB/coap_port.c ****             setSn_IR(socket, Sn_IR_TIMEOUT);
+ 745              		.loc 1 222 13
+ 746 00ba 97F80731 		ldrb	r3, [r7, #263]	@ zero_extendqisi2
+ 747 00be 9B00     		lsls	r3, r3, #2
+ 748 00c0 0133     		adds	r3, r3, #1
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 18
+
+
+ 749 00c2 DB00     		lsls	r3, r3, #3
+ 750 00c4 03F50073 		add	r3, r3, #512
+ 751 00c8 0821     		movs	r1, #8
+ 752 00ca 1846     		mov	r0, r3
+ 753 00cc FFF7FEFF 		bl	WIZCHIP_WRITE
+ 223:coapLIB/coap_port.c ****             coap_send_get("check/firmware");
+ 754              		.loc 1 223 13
+ 755 00d0 0648     		ldr	r0, .L39+12
+ 756 00d2 FFF7FEFF 		bl	coap_send_get
+ 757              	.L38:
+ 758              	.LBE2:
+ 224:coapLIB/coap_port.c ****         }
+ 225:coapLIB/coap_port.c ****     }
+ 226:coapLIB/coap_port.c **** }...
+ 759              		.loc 1 226 1
+ 760 00d6 00BF     		nop
+ 761 00d8 07F58477 		add	r7, r7, #264
+ 762              	.LCFI30:
+ 763              		.cfi_def_cfa_offset 8
+ 764 00dc BD46     		mov	sp, r7
+ 765              	.LCFI31:
+ 766              		.cfi_def_cfa_register 13
+ 767              		@ sp needed
+ 768 00de 80BD     		pop	{r7, pc}
+ 769              	.L40:
+ 770              		.align	2
+ 771              	.L39:
+ 772 00e0 003C0140 		.word	1073822720
+ 773 00e4 00000000 		.word	.LC0
+ 774 00e8 14000000 		.word	.LC1
+ 775 00ec 24000000 		.word	.LC2
+ 776              		.cfi_endproc
+ 777              	.LFE141:
+ 779              		.text
+ 780              	.Letext0:
+ 781              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 782              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 783              		.file 4 "CMSIS/Device/ST/STM32F4xx/Include/stm32f401xc.h"
+ 784              		.file 5 "d:\\gcc arm\\10 2021.10\\lib\\gcc\\arm-none-eabi\\10.3.1\\include\\stddef.h"
+ 785              		.file 6 "coapLIB/coap.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s 			page 19
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 coap_port.c
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:22     .bss.socket_id:00000000 socket_id
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:23     .bss.socket_id:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:25     .bss.rx_buffer:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:28     .bss.rx_buffer:00000000 rx_buffer
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:31     .bss.tx_buffer:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:34     .bss.tx_buffer:00000000 tx_buffer
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:37     .text.coap_init:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:43     .text.coap_init:00000000 coap_init
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:70     .text.coap_init:00000018 $d
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:75     .text.coap_send:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:81     .text.coap_send:00000000 coap_send
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:137    .text.coap_send:0000003c $d
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:142    .text.coap_receive:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:148    .text.coap_receive:00000000 coap_receive
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:211    .text.coap_receive:00000044 $d
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:216    .text.coap_send_get:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:222    .text.coap_send_get:00000000 coap_send_get
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:338    .text.coap_send_get:000000dc $d
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:343    .text.coap_send_put:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:349    .text.coap_send_put:00000000 coap_send_put
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:491    .text.coap_send_put:00000120 $d
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:496    .text.coap_handle_response:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:502    .text.coap_handle_response:00000000 coap_handle_response
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:621    .rodata:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:631    .text.EXTI1_IRQHandler:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:637    .text.EXTI1_IRQHandler:00000000 EXTI1_IRQHandler
+C:\Users\clay0\AppData\Local\Temp\cc1IfnTe.s:772    .text.EXTI1_IRQHandler:000000e0 $d
+
+UNDEFINED SYMBOLS
+udp_init
+sendto
+recvfrom
+memset
+rand
+strlen
+coap_build
+coap_parse
+memcpy
+WIZCHIP_READ
+WIZCHIP_WRITE
+strncmp

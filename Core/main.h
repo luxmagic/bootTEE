@@ -10,7 +10,11 @@ extern "C" {
 #include <mbedtls/ecdsa.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>		
+#include <stdbool.h>	
+
+void blink_init(void);
+void blink_run(uint32_t ms);
+void ext_init(void);
 
 #ifdef __cplusplus
 }
