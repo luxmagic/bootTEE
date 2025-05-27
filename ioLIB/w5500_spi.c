@@ -153,15 +153,17 @@ void w5500_pins_init()
 
 	// Настройка PB1 как вход с подтяжкой вверх
 	GPIOB->MODER &= ~GPIO_MODER_MODER1; // Input
+	GPIOB->PUPDR &= ~GPIO_PUPDR_PUPDR1; // Pull-up
 	GPIOB->PUPDR |= GPIO_PUPDR_PUPDR1_0; // Pull-up
 
 	// Настройка EXTI1 для PB1
-	SYSCFG->EXTICR[0] |= SYSCFG_EXTICR1_EXTI0_PB; // PB1 для EXTI1
+	SYSCFG->EXTICR[0] &= ~SYSCFG_EXTICR1_EXTI1; // PB1 для EXTI1
+	SYSCFG->EXTICR[0] |= SYSCFG_EXTICR1_EXTI1_PB; // PB1 для EXTI1
 	EXTI->IMR |= EXTI_IMR_MR1; // Разрешить прерывание
 	EXTI->FTSR |= EXTI_FTSR_TR1; // Падающий фронт
 
 	// Включение прерывания в NVIC
-	NVIC_SetPriority(EXTI1_IRQn, 0);
+	NVIC_SetPriority(EXTI1_IRQn, 1);
 	NVIC_EnableIRQ(EXTI1_IRQn);
 }
 
@@ -216,9 +218,9 @@ void w5500_init()
 	wizchip_init(memory_for_each_socket[0], memory_for_each_socket[1]);
 
 	// Включение прерываний для сокета 0
-	setIMR(0xFF); // Разрешить все прерывания (CON, DISCON, RECV, TIMEOUT, SENDOK)
-	setSn_IMR(0, Sn_IR_CON | Sn_IR_RECV); // Прерывания для соединения и получения данных
-	setSn_IR(0, 0xFF);
+	// setIMR(0xFF); // Разрешить все прерывания (CON, DISCON, RECV, TIMEOUT, SENDOK)
+	// setSn_IMR(0, Sn_IR_CON | Sn_IR_RECV); // Прерывания для соединения и получения данных
+	// setSn_IR(0, 0xFF);
 
 	printf("WIZCHIP initialization done successfully\r\n");
 }

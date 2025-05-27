@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 1
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,14 +12,14 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 30, 2
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"w5500_phy.c"
   16              		.text
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
-  19              		.section	.rodata
+  19              		.section	.rodata.check_cable_presence.str1.4,"aMS",%progbits,1
   20              		.align	2
   21              	.LC0:
   22 0000 0D0A4368 		.ascii	"\015\012Checking ethernet cable presence ...\015\000"
@@ -37,30 +37,31 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 1
   26 0055 0D00     		.ascii	"\015\000"
   27 0057 00       		.align	2
   28              	.LC2:
-  29 0058 4361626C 		.ascii	"Cable is not connected.\015\000"
+  29 0058 4361626C 		.ascii	"Cable is connected.\015\000"
   29      65206973 
-  29      206E6F74 
   29      20636F6E 
   29      6E656374 
-  30 0071 000000   		.align	2
+  29      65642E0D 
+  30 006d 000000   		.align	2
   31              	.LC3:
-  32 0074 4361626C 		.ascii	"Cable is connected.\015\000"
+  32 0070 4361626C 		.ascii	"Cable is not connected.\015\000"
   32      65206973 
+  32      206E6F74 
   32      20636F6E 
   32      6E656374 
-  32      65642E0D 
   33              		.section	.text.check_cable_presence,"ax",%progbits
   34              		.align	1
-  35              		.global	check_cable_presence
-  36              		.syntax unified
-  37              		.thumb
-  38              		.thumb_func
-  40              	check_cable_presence:
-  41              	.LFB3:
-  42              		.file 1 "ioLIB/w5500_phy.c"
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 2
+  35              		.p2align 2,,3
+  36              		.global	check_cable_presence
+  37              		.syntax unified
+  38              		.thumb
+  39              		.thumb_func
+  41              	check_cable_presence:
+  42              	.LFB3:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 2
 
 
+  43              		.file 1 "ioLIB/w5500_phy.c"
    1:ioLIB/w5500_phy.c **** /*
    2:ioLIB/w5500_phy.c ****  * w5500_phy.c
    3:ioLIB/w5500_phy.c ****  *
@@ -82,234 +83,265 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 1
   19:ioLIB/w5500_phy.c ****  * @return void
   20:ioLIB/w5500_phy.c ****  */
   21:ioLIB/w5500_phy.c **** void check_cable_presence() {
-  43              		.loc 1 21 29
-  44              		.cfi_startproc
-  45              		@ args = 0, pretend = 0, frame = 8
-  46              		@ frame_needed = 1, uses_anonymous_args = 0
-  47 0000 80B5     		push	{r7, lr}
-  48              	.LCFI0:
-  49              		.cfi_def_cfa_offset 8
-  50              		.cfi_offset 7, -8
-  51              		.cfi_offset 14, -4
-  52 0002 82B0     		sub	sp, sp, #8
-  53              	.LCFI1:
-  54              		.cfi_def_cfa_offset 16
-  55 0004 00AF     		add	r7, sp, #0
-  56              	.LCFI2:
-  57              		.cfi_def_cfa_register 7
+  44              		.loc 1 21 29 view -0
+  45              		.cfi_startproc
+  46              		@ args = 0, pretend = 0, frame = 8
+  47              		@ frame_needed = 0, uses_anonymous_args = 0
   22:ioLIB/w5500_phy.c ****     uint8_t phy_status;
+  48              		.loc 1 22 5 view .LVU1
   23:ioLIB/w5500_phy.c ****     int error_status;
+  49              		.loc 1 23 5 view .LVU2
   24:ioLIB/w5500_phy.c **** 
   25:ioLIB/w5500_phy.c ****     printf("\r\nChecking ethernet cable presence ...\r\n");
-  58              		.loc 1 25 5
-  59 0006 1548     		ldr	r0, .L5
-  60 0008 FFF7FEFF 		bl	puts
-  61              	.L4:
+  50              		.loc 1 25 5 view .LVU3
+  21:ioLIB/w5500_phy.c ****     uint8_t phy_status;
+  51              		.loc 1 21 29 is_stmt 0 view .LVU4
+  52 0000 30B5     		push	{r4, r5, lr}
+  53              	.LCFI0:
+  54              		.cfi_def_cfa_offset 12
+  55              		.cfi_offset 4, -12
+  56              		.cfi_offset 5, -8
+  57              		.cfi_offset 14, -4
+  58              		.loc 1 25 5 view .LVU5
+  59 0002 1248     		ldr	r0, .L14
   26:ioLIB/w5500_phy.c **** 
   27:ioLIB/w5500_phy.c ****     do {
   28:ioLIB/w5500_phy.c ****         // Get the PHY link status
   29:ioLIB/w5500_phy.c ****         error_status = ctlwizchip(CW_GET_PHYLINK, (void*)&phy_status);
-  62              		.loc 1 29 24
-  63 000c FB1C     		adds	r3, r7, #3
-  64 000e 1946     		mov	r1, r3
-  65 0010 0F20     		movs	r0, #15
-  66 0012 FFF7FEFF 		bl	ctlwizchip
-  67 0016 0346     		mov	r3, r0
-  68              		.loc 1 29 22
-  69 0018 7B60     		str	r3, [r7, #4]
   30:ioLIB/w5500_phy.c **** 
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 3
-
-
   31:ioLIB/w5500_phy.c ****         if (error_status == -1) {
-  70              		.loc 1 31 12
-  71 001a 7B68     		ldr	r3, [r7, #4]
-  72 001c B3F1FF3F 		cmp	r3, #-1
-  73 0020 03D1     		bne	.L2
   32:ioLIB/w5500_phy.c ****             printf("Failed to get PHY link info.\r\nTrying again...\r\n");
-  74              		.loc 1 32 13
-  75 0022 0F48     		ldr	r0, .L5+4
-  76 0024 FFF7FEFF 		bl	puts
   33:ioLIB/w5500_phy.c ****             continue;
-  77              		.loc 1 33 13
-  78 0028 09E0     		b	.L3
-  79              	.L2:
   34:ioLIB/w5500_phy.c ****         }
   35:ioLIB/w5500_phy.c **** 
   36:ioLIB/w5500_phy.c ****         // Check if the cable is not connected
   37:ioLIB/w5500_phy.c ****         if (phy_status == PHY_LINK_OFF) {
-  80              		.loc 1 37 24
-  81 002a FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
-  82              		.loc 1 37 12
-  83 002c 002B     		cmp	r3, #0
-  84 002e 06D1     		bne	.L3
   38:ioLIB/w5500_phy.c ****             printf("Cable is not connected.\r\n");
-  85              		.loc 1 38 13
-  86 0030 0C48     		ldr	r0, .L5+8
-  87 0032 FFF7FEFF 		bl	puts
+  60              		.loc 1 38 13 view .LVU6
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 3
+
+
+  61 0004 124C     		ldr	r4, .L14+4
+  32:ioLIB/w5500_phy.c ****             continue;
+  62              		.loc 1 32 13 view .LVU7
+  63 0006 134D     		ldr	r5, .L14+8
+  21:ioLIB/w5500_phy.c ****     uint8_t phy_status;
+  64              		.loc 1 21 29 view .LVU8
+  65 0008 83B0     		sub	sp, sp, #12
+  66              	.LCFI1:
+  67              		.cfi_def_cfa_offset 24
+  25:ioLIB/w5500_phy.c **** 
+  68              		.loc 1 25 5 view .LVU9
+  69 000a FFF7FEFF 		bl	puts
+  70              	.LVL0:
+  71              	.L2:
+  27:ioLIB/w5500_phy.c ****         // Get the PHY link status
+  72              		.loc 1 27 5 is_stmt 1 view .LVU10
+  29:ioLIB/w5500_phy.c **** 
+  73              		.loc 1 29 9 view .LVU11
+  29:ioLIB/w5500_phy.c **** 
+  74              		.loc 1 29 24 is_stmt 0 view .LVU12
+  75 000e 0DF10701 		add	r1, sp, #7
+  76 0012 0F20     		movs	r0, #15
+  77 0014 FFF7FEFF 		bl	ctlwizchip
+  78              	.LVL1:
+  37:ioLIB/w5500_phy.c ****             printf("Cable is not connected.\r\n");
+  79              		.loc 1 37 9 is_stmt 1 view .LVU13
+  31:ioLIB/w5500_phy.c ****             printf("Failed to get PHY link info.\r\nTrying again...\r\n");
+  80              		.loc 1 31 9 view .LVU14
+  31:ioLIB/w5500_phy.c ****             printf("Failed to get PHY link info.\r\nTrying again...\r\n");
+  81              		.loc 1 31 12 is_stmt 0 view .LVU15
+  82 0018 0130     		adds	r0, r0, #1
+  83              	.LVL2:
+  31:ioLIB/w5500_phy.c ****             printf("Failed to get PHY link info.\r\nTrying again...\r\n");
+  84              		.loc 1 31 12 view .LVU16
+  85 001a 13D0     		beq	.L13
+  37:ioLIB/w5500_phy.c ****             printf("Cable is not connected.\r\n");
+  86              		.loc 1 37 12 view .LVU17
+  87 001c 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+  88 0020 23B1     		cbz	r3, .L5
+  89              	.L6:
   39:ioLIB/w5500_phy.c ****             delay_ms(1500);
-  88              		.loc 1 39 13
-  89 0036 40F2DC50 		movw	r0, #1500
-  90 003a FFF7FEFF 		bl	delay_ms
-  91              	.L3:
   40:ioLIB/w5500_phy.c ****         }
   41:ioLIB/w5500_phy.c ****     } while (error_status == -1 || phy_status == PHY_LINK_OFF);
-  92              		.loc 1 41 5
-  93 003e 7B68     		ldr	r3, [r7, #4]
-  94 0040 B3F1FF3F 		cmp	r3, #-1
-  95 0044 E2D0     		beq	.L4
-  96              		.loc 1 41 47 discriminator 1
-  97 0046 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
-  98              		.loc 1 41 33 discriminator 1
-  99 0048 002B     		cmp	r3, #0
- 100 004a DFD0     		beq	.L4
   42:ioLIB/w5500_phy.c **** 
   43:ioLIB/w5500_phy.c ****     printf("Cable is connected.\r\n");
- 101              		.loc 1 43 5
- 102 004c 0648     		ldr	r0, .L5+12
- 103 004e FFF7FEFF 		bl	puts
+  90              		.loc 1 43 5 is_stmt 1 view .LVU18
+  91 0022 0D48     		ldr	r0, .L14+12
+  92 0024 FFF7FEFF 		bl	puts
+  93              	.LVL3:
   44:ioLIB/w5500_phy.c **** }
- 104              		.loc 1 44 1
- 105 0052 00BF     		nop
- 106 0054 0837     		adds	r7, r7, #8
- 107              	.LCFI3:
- 108              		.cfi_def_cfa_offset 8
- 109 0056 BD46     		mov	sp, r7
- 110              	.LCFI4:
- 111              		.cfi_def_cfa_register 13
- 112              		@ sp needed
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 4
+  94              		.loc 1 44 1 is_stmt 0 view .LVU19
+  95 0028 03B0     		add	sp, sp, #12
+  96              	.LCFI2:
+  97              		.cfi_remember_state
+  98              		.cfi_def_cfa_offset 12
+  99              		@ sp needed
+ 100 002a 30BD     		pop	{r4, r5, pc}
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 4
 
 
- 113 0058 80BD     		pop	{r7, pc}
- 114              	.L6:
- 115 005a 00BF     		.align	2
- 116              	.L5:
- 117 005c 00000000 		.word	.LC0
- 118 0060 28000000 		.word	.LC1
- 119 0064 58000000 		.word	.LC2
- 120 0068 74000000 		.word	.LC3
- 121              		.cfi_endproc
- 122              	.LFE3:
- 124              		.section	.rodata
- 125 0089 000000   		.align	2
- 126              	.LC4:
- 127 008c 4661696C 		.ascii	"Failed to get PHY link status.\015\000"
- 127      65642074 
- 127      6F206765 
- 127      74205048 
- 127      59206C69 
- 128              		.align	2
- 129              	.LC5:
- 130 00ac 50485920 		.ascii	"PHY Link is ON.\015\000"
- 130      4C696E6B 
- 130      20697320 
- 130      4F4E2E0D 
- 130      00
- 131 00bd 000000   		.align	2
- 132              	.LC6:
- 133 00c0 50485920 		.ascii	"PHY Link is OFF.\015\000"
- 133      4C696E6B 
- 133      20697320 
- 133      4F46462E 
- 133      0D00
- 134 00d2 0000     		.align	2
- 135              	.LC7:
- 136 00d4 4661696C 		.ascii	"Failed to get PHY configuration.\015\000"
- 136      65642074 
- 136      6F206765 
- 136      74205048 
- 136      5920636F 
- 137 00f6 0000     		.align	2
- 138              	.LC8:
- 139 00f8 50485920 		.ascii	"PHY Mode: \000"
- 139      4D6F6465 
- 139      3A2000
- 140 0103 00       		.align	2
- 141              	.LC9:
- 142 0104 436F6E66 		.ascii	"Configured by hardware.\015\000"
- 142      69677572 
- 142      65642062 
- 142      79206861 
- 142      72647761 
- 143 011d 000000   		.align	2
- 144              	.LC10:
- 145 0120 436F6E66 		.ascii	"Configured by software.\015\000"
- 145      69677572 
- 145      65642062 
- 145      7920736F 
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 5
+ 101              	.L5:
+ 102              	.LCFI3:
+ 103              		.cfi_restore_state
+  38:ioLIB/w5500_phy.c ****             delay_ms(1500);
+ 104              		.loc 1 38 13 is_stmt 1 view .LVU20
+ 105 002c 2046     		mov	r0, r4
+ 106 002e FFF7FEFF 		bl	puts
+ 107              	.LVL4:
+  39:ioLIB/w5500_phy.c ****             delay_ms(1500);
+ 108              		.loc 1 39 13 view .LVU21
+ 109 0032 40F2DC50 		movw	r0, #1500
+ 110 0036 FFF7FEFF 		bl	delay_ms
+ 111              	.LVL5:
+  41:ioLIB/w5500_phy.c **** 
+ 112              		.loc 1 41 13 view .LVU22
+  41:ioLIB/w5500_phy.c **** 
+ 113              		.loc 1 41 33 is_stmt 0 view .LVU23
+ 114 003a 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 115 003e 002B     		cmp	r3, #0
+ 116 0040 E5D0     		beq	.L2
+ 117 0042 EEE7     		b	.L6
+ 118              	.L13:
+  32:ioLIB/w5500_phy.c ****             continue;
+ 119              		.loc 1 32 13 is_stmt 1 view .LVU24
+ 120 0044 2846     		mov	r0, r5
+ 121 0046 FFF7FEFF 		bl	puts
+ 122              	.LVL6:
+  33:ioLIB/w5500_phy.c ****         }
+ 123              		.loc 1 33 13 view .LVU25
+  41:ioLIB/w5500_phy.c **** 
+ 124              		.loc 1 41 13 view .LVU26
+ 125 004a E0E7     		b	.L2
+ 126              	.L15:
+ 127              		.align	2
+ 128              	.L14:
+ 129 004c 00000000 		.word	.LC0
+ 130 0050 70000000 		.word	.LC3
+ 131 0054 28000000 		.word	.LC1
+ 132 0058 58000000 		.word	.LC2
+ 133              		.cfi_endproc
+ 134              	.LFE3:
+ 136              		.section	.rodata.check_phy_status.str1.4,"aMS",%progbits,1
+ 137              		.align	2
+ 138              	.LC4:
+ 139 0000 4661696C 		.ascii	"Failed to get PHY link status.\015\000"
+ 139      65642074 
+ 139      6F206765 
+ 139      74205048 
+ 139      59206C69 
+ 140              		.align	2
+ 141              	.LC5:
+ 142 0020 50485920 		.ascii	"PHY Link is ON.\015\000"
+ 142      4C696E6B 
+ 142      20697320 
+ 142      4F4E2E0D 
+ 142      00
+ 143 0031 000000   		.align	2
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 5
 
 
- 145      66747761 
- 146 0139 000000   		.align	2
- 147              	.LC11:
- 148 013c 556E6B6E 		.ascii	"Unknown.\015\000"
- 148      6F776E2E 
- 148      0D00
- 149 0146 0000     		.align	2
- 150              	.LC12:
- 151 0148 50485920 		.ascii	"PHY Speed: \000"
- 151      53706565 
- 151      643A2000 
- 152              		.align	2
- 153              	.LC13:
- 154 0154 3130204D 		.ascii	"10 Mbps.\015\000"
- 154      6270732E 
- 154      0D00
- 155 015e 0000     		.align	2
- 156              	.LC14:
- 157 0160 31303020 		.ascii	"100 Mbps.\015\000"
- 157      4D627073 
- 157      2E0D00
- 158 016b 00       		.align	2
- 159              	.LC15:
- 160 016c 50485920 		.ascii	"PHY Duplex: \000"
- 160      4475706C 
- 160      65783A20 
- 160      00
- 161 0179 000000   		.align	2
- 162              	.LC16:
- 163 017c 48616C66 		.ascii	"Half duplex.\015\000"
- 163      20647570 
- 163      6C65782E 
- 163      0D00
- 164 018a 0000     		.align	2
- 165              	.LC17:
- 166 018c 46756C6C 		.ascii	"Full duplex.\015\000"
- 166      20647570 
- 166      6C65782E 
+ 144              	.LC6:
+ 145 0034 50485920 		.ascii	"PHY Link is OFF.\015\000"
+ 145      4C696E6B 
+ 145      20697320 
+ 145      4F46462E 
+ 145      0D00
+ 146 0046 0000     		.align	2
+ 147              	.LC7:
+ 148 0048 4661696C 		.ascii	"Failed to get PHY configuration.\015\000"
+ 148      65642074 
+ 148      6F206765 
+ 148      74205048 
+ 148      5920636F 
+ 149 006a 0000     		.align	2
+ 150              	.LC8:
+ 151 006c 50485920 		.ascii	"PHY Mode: \000"
+ 151      4D6F6465 
+ 151      3A2000
+ 152 0077 00       		.align	2
+ 153              	.LC9:
+ 154 0078 436F6E66 		.ascii	"Configured by hardware.\015\000"
+ 154      69677572 
+ 154      65642062 
+ 154      79206861 
+ 154      72647761 
+ 155 0091 000000   		.align	2
+ 156              	.LC10:
+ 157 0094 436F6E66 		.ascii	"Configured by software.\015\000"
+ 157      69677572 
+ 157      65642062 
+ 157      7920736F 
+ 157      66747761 
+ 158 00ad 000000   		.align	2
+ 159              	.LC11:
+ 160 00b0 556E6B6E 		.ascii	"Unknown.\015\000"
+ 160      6F776E2E 
+ 160      0D00
+ 161 00ba 0000     		.align	2
+ 162              	.LC12:
+ 163 00bc 50485920 		.ascii	"PHY Speed: \000"
+ 163      53706565 
+ 163      643A2000 
+ 164              		.align	2
+ 165              	.LC13:
+ 166 00c8 3130204D 		.ascii	"10 Mbps.\015\000"
+ 166      6270732E 
  166      0D00
- 167 019a 0000     		.align	2
- 168              	.LC18:
- 169 019c 50485920 		.ascii	"PHY Negotiation Mode: \000"
- 169      4E65676F 
- 169      74696174 
- 169      696F6E20 
- 169      4D6F6465 
- 170 01b3 00       		.align	2
- 171              	.LC19:
- 172 01b4 4D616E75 		.ascii	"Manual.\015\000"
- 172      616C2E0D 
+ 167 00d2 0000     		.align	2
+ 168              	.LC14:
+ 169 00d4 31303020 		.ascii	"100 Mbps.\015\000"
+ 169      4D627073 
+ 169      2E0D00
+ 170 00df 00       		.align	2
+ 171              	.LC15:
+ 172 00e0 50485920 		.ascii	"PHY Duplex: \000"
+ 172      4475706C 
+ 172      65783A20 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 6
+
+
  172      00
- 173 01bd 000000   		.align	2
- 174              	.LC20:
- 175 01c0 4175746F 		.ascii	"Auto-negotiation.\015\000"
- 175      2D6E6567 
- 175      6F746961 
- 175      74696F6E 
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 6
-
-
- 175      2E0D00
- 176              		.section	.text.check_phy_status,"ax",%progbits
- 177              		.align	1
- 178              		.global	check_phy_status
- 179              		.syntax unified
- 180              		.thumb
- 181              		.thumb_func
- 183              	check_phy_status:
- 184              	.LFB4:
+ 173 00ed 000000   		.align	2
+ 174              	.LC16:
+ 175 00f0 48616C66 		.ascii	"Half duplex.\015\000"
+ 175      20647570 
+ 175      6C65782E 
+ 175      0D00
+ 176 00fe 0000     		.align	2
+ 177              	.LC17:
+ 178 0100 46756C6C 		.ascii	"Full duplex.\015\000"
+ 178      20647570 
+ 178      6C65782E 
+ 178      0D00
+ 179 010e 0000     		.align	2
+ 180              	.LC18:
+ 181 0110 50485920 		.ascii	"PHY Negotiation Mode: \000"
+ 181      4E65676F 
+ 181      74696174 
+ 181      696F6E20 
+ 181      4D6F6465 
+ 182 0127 00       		.align	2
+ 183              	.LC19:
+ 184 0128 4D616E75 		.ascii	"Manual.\015\000"
+ 184      616C2E0D 
+ 184      00
+ 185 0131 000000   		.align	2
+ 186              	.LC20:
+ 187 0134 4175746F 		.ascii	"Auto-negotiation.\015\000"
+ 187      2D6E6567 
+ 187      6F746961 
+ 187      74696F6E 
+ 187      2E0D00
+ 188              		.section	.text.check_phy_status,"ax",%progbits
+ 189              		.align	1
+ 190              		.p2align 2,,3
+ 191              		.global	check_phy_status
+ 192              		.syntax unified
+ 193              		.thumb
+ 194              		.thumb_func
+ 196              	check_phy_status:
+ 197              	.LFB4:
   45:ioLIB/w5500_phy.c **** 
   46:ioLIB/w5500_phy.c **** /**
   47:ioLIB/w5500_phy.c ****  * @brief Checks and prints the PHY status and configuration.
@@ -319,354 +351,455 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 1
   51:ioLIB/w5500_phy.c ****  * @return void
   52:ioLIB/w5500_phy.c ****  */
   53:ioLIB/w5500_phy.c **** void check_phy_status() {
- 185              		.loc 1 53 25
- 186              		.cfi_startproc
- 187              		@ args = 0, pretend = 0, frame = 8
- 188              		@ frame_needed = 1, uses_anonymous_args = 0
- 189 0000 80B5     		push	{r7, lr}
- 190              	.LCFI5:
- 191              		.cfi_def_cfa_offset 8
- 192              		.cfi_offset 7, -8
- 193              		.cfi_offset 14, -4
- 194 0002 82B0     		sub	sp, sp, #8
- 195              	.LCFI6:
- 196              		.cfi_def_cfa_offset 16
- 197 0004 00AF     		add	r7, sp, #0
- 198              	.LCFI7:
- 199              		.cfi_def_cfa_register 7
+ 198              		.loc 1 53 25 view -0
+ 199              		.cfi_startproc
+ 200              		@ args = 0, pretend = 0, frame = 8
+ 201              		@ frame_needed = 0, uses_anonymous_args = 0
   54:ioLIB/w5500_phy.c ****     uint8_t phy_status;
+ 202              		.loc 1 54 5 view .LVU28
   55:ioLIB/w5500_phy.c **** 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 7
+
+
   56:ioLIB/w5500_phy.c ****     // Get the PHY link status
   57:ioLIB/w5500_phy.c ****     if (ctlwizchip(CW_GET_PHYLINK, (void*)&phy_status) == -1) {
- 200              		.loc 1 57 9
- 201 0006 FB1D     		adds	r3, r7, #7
- 202 0008 1946     		mov	r1, r3
- 203 000a 0F20     		movs	r0, #15
- 204 000c FFF7FEFF 		bl	ctlwizchip
- 205 0010 0346     		mov	r3, r0
- 206              		.loc 1 57 8
- 207 0012 B3F1FF3F 		cmp	r3, #-1
- 208 0016 03D1     		bne	.L8
+ 203              		.loc 1 57 5 view .LVU29
+  53:ioLIB/w5500_phy.c ****     uint8_t phy_status;
+ 204              		.loc 1 53 25 is_stmt 0 view .LVU30
+ 205 0000 00B5     		push	{lr}
+ 206              	.LCFI4:
+ 207              		.cfi_def_cfa_offset 4
+ 208              		.cfi_offset 14, -4
+ 209 0002 83B0     		sub	sp, sp, #12
+ 210              	.LCFI5:
+ 211              		.cfi_def_cfa_offset 16
+ 212              		.loc 1 57 9 view .LVU31
+ 213 0004 0DF10301 		add	r1, sp, #3
+ 214 0008 0F20     		movs	r0, #15
+ 215 000a FFF7FEFF 		bl	ctlwizchip
+ 216              	.LVL7:
+ 217              		.loc 1 57 8 view .LVU32
+ 218 000e 0130     		adds	r0, r0, #1
+ 219 0010 79D0     		beq	.L42
   58:ioLIB/w5500_phy.c ****         printf("Failed to get PHY link status.\r\n");
- 209              		.loc 1 58 9
- 210 0018 3848     		ldr	r0, .L34
- 211 001a FFF7FEFF 		bl	puts
   59:ioLIB/w5500_phy.c ****         return;
- 212              		.loc 1 59 9
- 213 001e 6AE0     		b	.L7
- 214              	.L8:
   60:ioLIB/w5500_phy.c ****     }
   61:ioLIB/w5500_phy.c **** 
   62:ioLIB/w5500_phy.c ****     // Print the PHY link status
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 7
-
-
   63:ioLIB/w5500_phy.c ****     if (phy_status == PHY_LINK_ON) {
- 215              		.loc 1 63 20
- 216 0020 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
- 217              		.loc 1 63 8
- 218 0022 012B     		cmp	r3, #1
- 219 0024 03D1     		bne	.L10
+ 220              		.loc 1 63 5 is_stmt 1 view .LVU33
+ 221              		.loc 1 63 8 is_stmt 0 view .LVU34
+ 222 0012 9DF80330 		ldrb	r3, [sp, #3]	@ zero_extendqisi2
+ 223 0016 012B     		cmp	r3, #1
   64:ioLIB/w5500_phy.c ****         printf("PHY Link is ON.\r\n");
- 220              		.loc 1 64 9
- 221 0026 3648     		ldr	r0, .L34+4
- 222 0028 FFF7FEFF 		bl	puts
- 223 002c 02E0     		b	.L11
- 224              	.L10:
+ 224              		.loc 1 64 9 is_stmt 1 view .LVU35
+ 225 0018 0CBF     		ite	eq
+ 226 001a 3E48     		ldreq	r0, .L48
   65:ioLIB/w5500_phy.c ****     } else {
   66:ioLIB/w5500_phy.c ****         printf("PHY Link is OFF.\r\n");
- 225              		.loc 1 66 9
- 226 002e 3548     		ldr	r0, .L34+8
- 227 0030 FFF7FEFF 		bl	puts
- 228              	.L11:
+ 227              		.loc 1 66 9 view .LVU36
+ 228 001c 3E48     		ldrne	r0, .L48+4
+ 229 001e FFF7FEFF 		bl	puts
+ 230              	.LVL8:
   67:ioLIB/w5500_phy.c ****     }
   68:ioLIB/w5500_phy.c **** 
   69:ioLIB/w5500_phy.c ****     // Get the PHY configuration (optional, for more detailed information)
   70:ioLIB/w5500_phy.c ****     wiz_PhyConf phy_conf;
+ 231              		.loc 1 70 5 view .LVU37
   71:ioLIB/w5500_phy.c ****     if (ctlwizchip(CW_GET_PHYCONF, (void*)&phy_conf) == -1) {
- 229              		.loc 1 71 9
- 230 0034 3B46     		mov	r3, r7
- 231 0036 1946     		mov	r1, r3
- 232 0038 0B20     		movs	r0, #11
- 233 003a FFF7FEFF 		bl	ctlwizchip
- 234 003e 0346     		mov	r3, r0
- 235              		.loc 1 71 8
- 236 0040 B3F1FF3F 		cmp	r3, #-1
- 237 0044 03D1     		bne	.L12
+ 232              		.loc 1 71 5 view .LVU38
+ 233              		.loc 1 71 9 is_stmt 0 view .LVU39
+ 234 0022 01A9     		add	r1, sp, #4
+ 235 0024 0B20     		movs	r0, #11
+ 236 0026 FFF7FEFF 		bl	ctlwizchip
+ 237              	.LVL9:
+ 238              		.loc 1 71 8 view .LVU40
+ 239 002a 0130     		adds	r0, r0, #1
+ 240 002c 65D0     		beq	.L43
   72:ioLIB/w5500_phy.c ****         printf("Failed to get PHY configuration.\r\n");
- 238              		.loc 1 72 9
- 239 0046 3048     		ldr	r0, .L34+12
- 240 0048 FFF7FEFF 		bl	puts
   73:ioLIB/w5500_phy.c ****         return;
- 241              		.loc 1 73 9
- 242 004c 53E0     		b	.L7
- 243              	.L12:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 8
+
+
   74:ioLIB/w5500_phy.c ****     }
   75:ioLIB/w5500_phy.c **** 
   76:ioLIB/w5500_phy.c ****     // Print the PHY configuration
   77:ioLIB/w5500_phy.c ****     printf("PHY Mode: ");
- 244              		.loc 1 77 5
- 245 004e 2F48     		ldr	r0, .L34+16
- 246 0050 FFF7FEFF 		bl	printf
+ 241              		.loc 1 77 5 is_stmt 1 view .LVU41
+ 242 002e 3B48     		ldr	r0, .L48+8
+ 243 0030 FFF7FEFF 		bl	printf
+ 244              	.LVL10:
   78:ioLIB/w5500_phy.c ****     switch (phy_conf.by) {
- 247              		.loc 1 78 21
- 248 0054 3B78     		ldrb	r3, [r7]	@ zero_extendqisi2
- 249              		.loc 1 78 5
- 250 0056 002B     		cmp	r3, #0
- 251 0058 02D0     		beq	.L13
- 252 005a 012B     		cmp	r3, #1
- 253 005c 04D0     		beq	.L14
- 254 005e 07E0     		b	.L30
- 255              	.L13:
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 8
-
-
+ 245              		.loc 1 78 5 view .LVU42
+ 246              		.loc 1 78 21 is_stmt 0 view .LVU43
+ 247 0034 9DF80430 		ldrb	r3, [sp, #4]	@ zero_extendqisi2
+ 248              		.loc 1 78 5 view .LVU44
+ 249 0038 002B     		cmp	r3, #0
+ 250 003a 4CD0     		beq	.L22
+ 251 003c 012B     		cmp	r3, #1
+ 252 003e 26D1     		bne	.L44
   79:ioLIB/w5500_phy.c ****         case PHY_CONFBY_HW:
   80:ioLIB/w5500_phy.c ****             printf("Configured by hardware.\r\n");
- 256              		.loc 1 80 13
- 257 0060 2B48     		ldr	r0, .L34+20
- 258 0062 FFF7FEFF 		bl	puts
   81:ioLIB/w5500_phy.c ****             break;
- 259              		.loc 1 81 13
- 260 0066 07E0     		b	.L16
- 261              	.L14:
   82:ioLIB/w5500_phy.c ****         case PHY_CONFBY_SW:
   83:ioLIB/w5500_phy.c ****             printf("Configured by software.\r\n");
- 262              		.loc 1 83 13
- 263 0068 2A48     		ldr	r0, .L34+24
- 264 006a FFF7FEFF 		bl	puts
+ 253              		.loc 1 83 13 is_stmt 1 view .LVU45
+ 254 0040 3748     		ldr	r0, .L48+12
+ 255 0042 FFF7FEFF 		bl	puts
+ 256              	.LVL11:
   84:ioLIB/w5500_phy.c ****             break;
- 265              		.loc 1 84 13
- 266 006e 03E0     		b	.L16
- 267              	.L30:
+ 257              		.loc 1 84 13 view .LVU46
+ 258              	.L25:
   85:ioLIB/w5500_phy.c ****         default:
   86:ioLIB/w5500_phy.c ****             printf("Unknown.\r\n");
- 268              		.loc 1 86 13
- 269 0070 2948     		ldr	r0, .L34+28
- 270 0072 FFF7FEFF 		bl	puts
   87:ioLIB/w5500_phy.c ****             break;
- 271              		.loc 1 87 13
- 272 0076 00BF     		nop
- 273              	.L16:
   88:ioLIB/w5500_phy.c ****     }
   89:ioLIB/w5500_phy.c **** 
   90:ioLIB/w5500_phy.c ****     printf("PHY Speed: ");
- 274              		.loc 1 90 5
- 275 0078 2848     		ldr	r0, .L34+32
- 276 007a FFF7FEFF 		bl	printf
+ 259              		.loc 1 90 5 view .LVU47
+ 260 0046 3748     		ldr	r0, .L48+16
+ 261 0048 FFF7FEFF 		bl	printf
+ 262              	.LVL12:
   91:ioLIB/w5500_phy.c ****     switch (phy_conf.speed) {
- 277              		.loc 1 91 21
- 278 007e BB78     		ldrb	r3, [r7, #2]	@ zero_extendqisi2
- 279              		.loc 1 91 5
- 280 0080 002B     		cmp	r3, #0
- 281 0082 02D0     		beq	.L17
- 282 0084 012B     		cmp	r3, #1
- 283 0086 04D0     		beq	.L18
- 284 0088 07E0     		b	.L31
- 285              	.L17:
+ 263              		.loc 1 91 5 view .LVU48
+ 264              		.loc 1 91 21 is_stmt 0 view .LVU49
+ 265 004c 9DF80630 		ldrb	r3, [sp, #6]	@ zero_extendqisi2
+ 266              		.loc 1 91 5 view .LVU50
+ 267 0050 3BB3     		cbz	r3, .L26
+ 268              	.L45:
+ 269 0052 012B     		cmp	r3, #1
+ 270 0054 4DD0     		beq	.L27
   92:ioLIB/w5500_phy.c ****         case PHY_SPEED_10:
   93:ioLIB/w5500_phy.c ****             printf("10 Mbps.\r\n");
- 286              		.loc 1 93 13
- 287 008a 2548     		ldr	r0, .L34+36
- 288 008c FFF7FEFF 		bl	puts
   94:ioLIB/w5500_phy.c ****             break;
- 289              		.loc 1 94 13
- 290 0090 07E0     		b	.L20
- 291              	.L18:
   95:ioLIB/w5500_phy.c ****         case PHY_SPEED_100:
   96:ioLIB/w5500_phy.c ****             printf("100 Mbps.\r\n");
- 292              		.loc 1 96 13
- 293 0092 2448     		ldr	r0, .L34+40
- 294 0094 FFF7FEFF 		bl	puts
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 9
-
-
   97:ioLIB/w5500_phy.c ****             break;
- 295              		.loc 1 97 13
- 296 0098 03E0     		b	.L20
- 297              	.L31:
   98:ioLIB/w5500_phy.c ****         default:
   99:ioLIB/w5500_phy.c ****             printf("Unknown.\r\n");
- 298              		.loc 1 99 13
- 299 009a 1F48     		ldr	r0, .L34+28
- 300 009c FFF7FEFF 		bl	puts
+ 271              		.loc 1 99 13 is_stmt 1 view .LVU51
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 9
+
+
+ 272 0056 3448     		ldr	r0, .L48+20
+ 273 0058 FFF7FEFF 		bl	puts
+ 274              	.LVL13:
  100:ioLIB/w5500_phy.c ****             break;
- 301              		.loc 1 100 13
- 302 00a0 00BF     		nop
- 303              	.L20:
+ 275              		.loc 1 100 13 view .LVU52
+ 276              	.L29:
  101:ioLIB/w5500_phy.c ****     }
  102:ioLIB/w5500_phy.c **** 
  103:ioLIB/w5500_phy.c ****     printf("PHY Duplex: ");
- 304              		.loc 1 103 5
- 305 00a2 2148     		ldr	r0, .L34+44
- 306 00a4 FFF7FEFF 		bl	printf
+ 277              		.loc 1 103 5 view .LVU53
+ 278 005c 3348     		ldr	r0, .L48+24
+ 279 005e FFF7FEFF 		bl	printf
+ 280              	.LVL14:
  104:ioLIB/w5500_phy.c ****     switch (phy_conf.duplex) {
- 307              		.loc 1 104 21
- 308 00a8 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
- 309              		.loc 1 104 5
- 310 00aa 002B     		cmp	r3, #0
- 311 00ac 02D0     		beq	.L21
- 312 00ae 012B     		cmp	r3, #1
- 313 00b0 04D0     		beq	.L22
- 314 00b2 07E0     		b	.L32
- 315              	.L21:
+ 281              		.loc 1 104 5 view .LVU54
+ 282              		.loc 1 104 21 is_stmt 0 view .LVU55
+ 283 0062 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 284              		.loc 1 104 5 view .LVU56
+ 285 0066 33B3     		cbz	r3, .L30
+ 286              	.L46:
+ 287 0068 012B     		cmp	r3, #1
+ 288 006a 3ED0     		beq	.L31
  105:ioLIB/w5500_phy.c ****         case PHY_DUPLEX_HALF:
  106:ioLIB/w5500_phy.c ****             printf("Half duplex.\r\n");
- 316              		.loc 1 106 13
- 317 00b4 1D48     		ldr	r0, .L34+48
- 318 00b6 FFF7FEFF 		bl	puts
  107:ioLIB/w5500_phy.c ****             break;
- 319              		.loc 1 107 13
- 320 00ba 07E0     		b	.L24
- 321              	.L22:
  108:ioLIB/w5500_phy.c ****         case PHY_DUPLEX_FULL:
  109:ioLIB/w5500_phy.c ****             printf("Full duplex.\r\n");
- 322              		.loc 1 109 13
- 323 00bc 1C48     		ldr	r0, .L34+52
- 324 00be FFF7FEFF 		bl	puts
  110:ioLIB/w5500_phy.c ****             break;
- 325              		.loc 1 110 13
- 326 00c2 03E0     		b	.L24
- 327              	.L32:
  111:ioLIB/w5500_phy.c ****         default:
  112:ioLIB/w5500_phy.c ****             printf("Unknown.\r\n");
- 328              		.loc 1 112 13
- 329 00c4 1448     		ldr	r0, .L34+28
- 330 00c6 FFF7FEFF 		bl	puts
+ 289              		.loc 1 112 13 is_stmt 1 view .LVU57
+ 290 006c 2E48     		ldr	r0, .L48+20
+ 291 006e FFF7FEFF 		bl	puts
+ 292              	.LVL15:
  113:ioLIB/w5500_phy.c ****             break;
- 331              		.loc 1 113 13
- 332 00ca 00BF     		nop
- 333              	.L24:
+ 293              		.loc 1 113 13 view .LVU58
+ 294              	.L33:
  114:ioLIB/w5500_phy.c ****     }
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 10
-
-
  115:ioLIB/w5500_phy.c **** 
  116:ioLIB/w5500_phy.c ****     // Print the PHY negotiation mode
  117:ioLIB/w5500_phy.c ****     printf("PHY Negotiation Mode: ");
- 334              		.loc 1 117 5
- 335 00cc 1948     		ldr	r0, .L34+56
- 336 00ce FFF7FEFF 		bl	printf
+ 295              		.loc 1 117 5 view .LVU59
+ 296 0072 2F48     		ldr	r0, .L48+28
+ 297 0074 FFF7FEFF 		bl	printf
+ 298              	.LVL16:
  118:ioLIB/w5500_phy.c ****     switch (phy_conf.mode) {
- 337              		.loc 1 118 21
- 338 00d2 7B78     		ldrb	r3, [r7, #1]	@ zero_extendqisi2
- 339              		.loc 1 118 5
- 340 00d4 002B     		cmp	r3, #0
- 341 00d6 02D0     		beq	.L25
- 342 00d8 012B     		cmp	r3, #1
- 343 00da 04D0     		beq	.L26
- 344 00dc 07E0     		b	.L33
- 345              	.L25:
+ 299              		.loc 1 118 5 view .LVU60
+ 300              		.loc 1 118 21 is_stmt 0 view .LVU61
+ 301 0078 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 302              		.loc 1 118 5 view .LVU62
+ 303 007c 2BB3     		cbz	r3, .L34
+ 304              	.L47:
+ 305 007e 012B     		cmp	r3, #1
+ 306 0080 2DD0     		beq	.L35
  119:ioLIB/w5500_phy.c ****         case PHY_MODE_MANUAL:
  120:ioLIB/w5500_phy.c ****             printf("Manual.\r\n");
- 346              		.loc 1 120 13
- 347 00de 1648     		ldr	r0, .L34+60
- 348 00e0 FFF7FEFF 		bl	puts
  121:ioLIB/w5500_phy.c ****             break;
- 349              		.loc 1 121 13
- 350 00e4 07E0     		b	.L7
- 351              	.L26:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 10
+
+
  122:ioLIB/w5500_phy.c ****         case PHY_MODE_AUTONEGO:
  123:ioLIB/w5500_phy.c ****             printf("Auto-negotiation.\r\n");
- 352              		.loc 1 123 13
- 353 00e6 1548     		ldr	r0, .L34+64
- 354 00e8 FFF7FEFF 		bl	puts
  124:ioLIB/w5500_phy.c ****             break;
- 355              		.loc 1 124 13
- 356 00ec 03E0     		b	.L7
- 357              	.L33:
  125:ioLIB/w5500_phy.c ****         default:
  126:ioLIB/w5500_phy.c ****             printf("Unknown.\r\n");
- 358              		.loc 1 126 13
- 359 00ee 0A48     		ldr	r0, .L34+28
- 360 00f0 FFF7FEFF 		bl	puts
+ 307              		.loc 1 126 13 is_stmt 1 view .LVU63
+ 308 0082 2948     		ldr	r0, .L48+20
+ 309 0084 FFF7FEFF 		bl	puts
+ 310              	.LVL17:
  127:ioLIB/w5500_phy.c ****             break;
- 361              		.loc 1 127 13
- 362 00f4 00BF     		nop
- 363              	.L7:
+ 311              		.loc 1 127 13 view .LVU64
  128:ioLIB/w5500_phy.c ****     }
  129:ioLIB/w5500_phy.c **** }
- 364              		.loc 1 129 1
- 365 00f6 0837     		adds	r7, r7, #8
- 366              	.LCFI8:
- 367              		.cfi_def_cfa_offset 8
- 368 00f8 BD46     		mov	sp, r7
- 369              	.LCFI9:
- 370              		.cfi_def_cfa_register 13
- 371              		@ sp needed
- 372 00fa 80BD     		pop	{r7, pc}
- 373              	.L35:
- 374              		.align	2
- 375              	.L34:
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 11
+ 312              		.loc 1 129 1 is_stmt 0 view .LVU65
+ 313 0088 03B0     		add	sp, sp, #12
+ 314              	.LCFI6:
+ 315              		.cfi_remember_state
+ 316              		.cfi_def_cfa_offset 4
+ 317              		@ sp needed
+ 318 008a 5DF804FB 		ldr	pc, [sp], #4
+ 319              	.L44:
+ 320              	.LCFI7:
+ 321              		.cfi_restore_state
+  86:ioLIB/w5500_phy.c ****             break;
+ 322              		.loc 1 86 13 is_stmt 1 view .LVU66
+ 323 008e 2648     		ldr	r0, .L48+20
+ 324 0090 FFF7FEFF 		bl	puts
+ 325              	.LVL18:
+  87:ioLIB/w5500_phy.c ****     }
+ 326              		.loc 1 87 13 view .LVU67
+  90:ioLIB/w5500_phy.c ****     switch (phy_conf.speed) {
+ 327              		.loc 1 90 5 view .LVU68
+ 328 0094 2348     		ldr	r0, .L48+16
+ 329 0096 FFF7FEFF 		bl	printf
+ 330              	.LVL19:
+  91:ioLIB/w5500_phy.c ****         case PHY_SPEED_10:
+ 331              		.loc 1 91 5 view .LVU69
+  91:ioLIB/w5500_phy.c ****         case PHY_SPEED_10:
+ 332              		.loc 1 91 21 is_stmt 0 view .LVU70
+ 333 009a 9DF80630 		ldrb	r3, [sp, #6]	@ zero_extendqisi2
+  91:ioLIB/w5500_phy.c ****         case PHY_SPEED_10:
+ 334              		.loc 1 91 5 view .LVU71
+ 335 009e 002B     		cmp	r3, #0
+ 336 00a0 D7D1     		bne	.L45
+ 337              	.L26:
+  93:ioLIB/w5500_phy.c ****             break;
+ 338              		.loc 1 93 13 is_stmt 1 view .LVU72
+ 339 00a2 2448     		ldr	r0, .L48+32
+ 340 00a4 FFF7FEFF 		bl	puts
+ 341              	.LVL20:
+  94:ioLIB/w5500_phy.c ****         case PHY_SPEED_100:
+ 342              		.loc 1 94 13 view .LVU73
+ 103:ioLIB/w5500_phy.c ****     switch (phy_conf.duplex) {
+ 343              		.loc 1 103 5 view .LVU74
+ 344 00a8 2048     		ldr	r0, .L48+24
+ 345 00aa FFF7FEFF 		bl	printf
+ 346              	.LVL21:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 11
 
 
- 376 00fc 8C000000 		.word	.LC4
- 377 0100 AC000000 		.word	.LC5
- 378 0104 C0000000 		.word	.LC6
- 379 0108 D4000000 		.word	.LC7
- 380 010c F8000000 		.word	.LC8
- 381 0110 04010000 		.word	.LC9
- 382 0114 20010000 		.word	.LC10
- 383 0118 3C010000 		.word	.LC11
- 384 011c 48010000 		.word	.LC12
- 385 0120 54010000 		.word	.LC13
- 386 0124 60010000 		.word	.LC14
- 387 0128 6C010000 		.word	.LC15
- 388 012c 7C010000 		.word	.LC16
- 389 0130 8C010000 		.word	.LC17
- 390 0134 9C010000 		.word	.LC18
- 391 0138 B4010000 		.word	.LC19
- 392 013c C0010000 		.word	.LC20
- 393              		.cfi_endproc
- 394              	.LFE4:
- 396              		.section	.rodata
- 397 01d3 00       		.align	2
- 398              	.LC21:
- 399 01d4 4D41433A 		.ascii	"MAC: %02X:%02X:%02X:%02X:%02X:%02X\015\012\000"
- 399      20253032 
- 399      583A2530 
- 399      32583A25 
- 399      3032583A 
- 400 01f9 000000   		.align	2
- 401              	.LC22:
- 402 01fc 49503A20 		.ascii	"IP: %d.%d.%d.%d\015\012\000"
- 402      25642E25 
- 402      642E2564 
- 402      2E25640D 
- 402      0A00
- 403 020e 0000     		.align	2
- 404              	.LC23:
- 405 0210 534E3A20 		.ascii	"SN: %d.%d.%d.%d\015\012\000"
- 405      25642E25 
- 405      642E2564 
- 405      2E25640D 
- 405      0A00
- 406 0222 0000     		.align	2
- 407              	.LC24:
- 408 0224 47573A20 		.ascii	"GW: %d.%d.%d.%d\015\012\000"
- 408      25642E25 
- 408      642E2564 
- 408      2E25640D 
- 408      0A00
- 409 0236 0000     		.align	2
- 410              	.LC25:
- 411 0238 444E533A 		.ascii	"DNS: %d.%d.%d.%d\015\012\000"
- 411      2025642E 
- 411      25642E25 
- 411      642E2564 
- 411      0D0A00
- 412              		.section	.text.print_current_host_configuration,"ax",%progbits
- 413              		.align	1
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 12
+ 104:ioLIB/w5500_phy.c ****         case PHY_DUPLEX_HALF:
+ 347              		.loc 1 104 5 view .LVU75
+ 104:ioLIB/w5500_phy.c ****         case PHY_DUPLEX_HALF:
+ 348              		.loc 1 104 21 is_stmt 0 view .LVU76
+ 349 00ae 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 104:ioLIB/w5500_phy.c ****         case PHY_DUPLEX_HALF:
+ 350              		.loc 1 104 5 view .LVU77
+ 351 00b2 002B     		cmp	r3, #0
+ 352 00b4 D8D1     		bne	.L46
+ 353              	.L30:
+ 106:ioLIB/w5500_phy.c ****             break;
+ 354              		.loc 1 106 13 is_stmt 1 view .LVU78
+ 355 00b6 2048     		ldr	r0, .L48+36
+ 356 00b8 FFF7FEFF 		bl	puts
+ 357              	.LVL22:
+ 107:ioLIB/w5500_phy.c ****         case PHY_DUPLEX_FULL:
+ 358              		.loc 1 107 13 view .LVU79
+ 117:ioLIB/w5500_phy.c ****     switch (phy_conf.mode) {
+ 359              		.loc 1 117 5 view .LVU80
+ 360 00bc 1C48     		ldr	r0, .L48+28
+ 361 00be FFF7FEFF 		bl	printf
+ 362              	.LVL23:
+ 118:ioLIB/w5500_phy.c ****         case PHY_MODE_MANUAL:
+ 363              		.loc 1 118 5 view .LVU81
+ 118:ioLIB/w5500_phy.c ****         case PHY_MODE_MANUAL:
+ 364              		.loc 1 118 21 is_stmt 0 view .LVU82
+ 365 00c2 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 118:ioLIB/w5500_phy.c ****         case PHY_MODE_MANUAL:
+ 366              		.loc 1 118 5 view .LVU83
+ 367 00c6 002B     		cmp	r3, #0
+ 368 00c8 D9D1     		bne	.L47
+ 369              	.L34:
+ 120:ioLIB/w5500_phy.c ****             break;
+ 370              		.loc 1 120 13 is_stmt 1 view .LVU84
+ 371 00ca 1C48     		ldr	r0, .L48+40
+ 372 00cc FFF7FEFF 		bl	puts
+ 373              	.LVL24:
+ 121:ioLIB/w5500_phy.c ****         case PHY_MODE_AUTONEGO:
+ 374              		.loc 1 121 13 view .LVU85
+ 375              		.loc 1 129 1 is_stmt 0 view .LVU86
+ 376 00d0 03B0     		add	sp, sp, #12
+ 377              	.LCFI8:
+ 378              		.cfi_remember_state
+ 379              		.cfi_def_cfa_offset 4
+ 380              		@ sp needed
+ 381 00d2 5DF804FB 		ldr	pc, [sp], #4
+ 382              	.L22:
+ 383              	.LCFI9:
+ 384              		.cfi_restore_state
+  80:ioLIB/w5500_phy.c ****             break;
+ 385              		.loc 1 80 13 is_stmt 1 view .LVU87
+ 386 00d6 1A48     		ldr	r0, .L48+44
+ 387 00d8 FFF7FEFF 		bl	puts
+ 388              	.LVL25:
+  81:ioLIB/w5500_phy.c ****         case PHY_CONFBY_SW:
+ 389              		.loc 1 81 13 view .LVU88
+ 390 00dc B3E7     		b	.L25
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 12
 
 
- 414              		.global	print_current_host_configuration
- 415              		.syntax unified
- 416              		.thumb
- 417              		.thumb_func
- 419              	print_current_host_configuration:
- 420              	.LFB5:
+ 391              	.L35:
+ 123:ioLIB/w5500_phy.c ****             break;
+ 392              		.loc 1 123 13 view .LVU89
+ 393 00de 1948     		ldr	r0, .L48+48
+ 394 00e0 FFF7FEFF 		bl	puts
+ 395              	.LVL26:
+ 124:ioLIB/w5500_phy.c ****         default:
+ 396              		.loc 1 124 13 view .LVU90
+ 397              		.loc 1 129 1 is_stmt 0 view .LVU91
+ 398 00e4 03B0     		add	sp, sp, #12
+ 399              	.LCFI10:
+ 400              		.cfi_remember_state
+ 401              		.cfi_def_cfa_offset 4
+ 402              		@ sp needed
+ 403 00e6 5DF804FB 		ldr	pc, [sp], #4
+ 404              	.L31:
+ 405              	.LCFI11:
+ 406              		.cfi_restore_state
+ 109:ioLIB/w5500_phy.c ****             break;
+ 407              		.loc 1 109 13 is_stmt 1 view .LVU92
+ 408 00ea 1748     		ldr	r0, .L48+52
+ 409 00ec FFF7FEFF 		bl	puts
+ 410              	.LVL27:
+ 110:ioLIB/w5500_phy.c ****         default:
+ 411              		.loc 1 110 13 view .LVU93
+ 412 00f0 BFE7     		b	.L33
+ 413              	.L27:
+  96:ioLIB/w5500_phy.c ****             break;
+ 414              		.loc 1 96 13 view .LVU94
+ 415 00f2 1648     		ldr	r0, .L48+56
+ 416 00f4 FFF7FEFF 		bl	puts
+ 417              	.LVL28:
+  97:ioLIB/w5500_phy.c ****         default:
+ 418              		.loc 1 97 13 view .LVU95
+ 419 00f8 B0E7     		b	.L29
+ 420              	.L43:
+  72:ioLIB/w5500_phy.c ****         return;
+ 421              		.loc 1 72 9 view .LVU96
+ 422 00fa 1548     		ldr	r0, .L48+60
+ 423 00fc FFF7FEFF 		bl	puts
+ 424              	.LVL29:
+  73:ioLIB/w5500_phy.c ****     }
+ 425              		.loc 1 73 9 view .LVU97
+ 426              		.loc 1 129 1 is_stmt 0 view .LVU98
+ 427 0100 03B0     		add	sp, sp, #12
+ 428              	.LCFI12:
+ 429              		.cfi_remember_state
+ 430              		.cfi_def_cfa_offset 4
+ 431              		@ sp needed
+ 432 0102 5DF804FB 		ldr	pc, [sp], #4
+ 433              	.L42:
+ 434              	.LCFI13:
+ 435              		.cfi_restore_state
+  58:ioLIB/w5500_phy.c ****         return;
+ 436              		.loc 1 58 9 is_stmt 1 view .LVU99
+ 437 0106 1348     		ldr	r0, .L48+64
+ 438 0108 FFF7FEFF 		bl	puts
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 13
+
+
+ 439              	.LVL30:
+  59:ioLIB/w5500_phy.c ****     }
+ 440              		.loc 1 59 9 view .LVU100
+ 441              		.loc 1 129 1 is_stmt 0 view .LVU101
+ 442 010c 03B0     		add	sp, sp, #12
+ 443              	.LCFI14:
+ 444              		.cfi_def_cfa_offset 4
+ 445              		@ sp needed
+ 446 010e 5DF804FB 		ldr	pc, [sp], #4
+ 447              	.L49:
+ 448 0112 00BF     		.align	2
+ 449              	.L48:
+ 450 0114 20000000 		.word	.LC5
+ 451 0118 34000000 		.word	.LC6
+ 452 011c 6C000000 		.word	.LC8
+ 453 0120 94000000 		.word	.LC10
+ 454 0124 BC000000 		.word	.LC12
+ 455 0128 B0000000 		.word	.LC11
+ 456 012c E0000000 		.word	.LC15
+ 457 0130 10010000 		.word	.LC18
+ 458 0134 C8000000 		.word	.LC13
+ 459 0138 F0000000 		.word	.LC16
+ 460 013c 28010000 		.word	.LC19
+ 461 0140 78000000 		.word	.LC9
+ 462 0144 34010000 		.word	.LC20
+ 463 0148 00010000 		.word	.LC17
+ 464 014c D4000000 		.word	.LC14
+ 465 0150 48000000 		.word	.LC7
+ 466 0154 00000000 		.word	.LC4
+ 467              		.cfi_endproc
+ 468              	.LFE4:
+ 470              		.section	.rodata.print_current_host_configuration.str1.4,"aMS",%progbits,1
+ 471              		.align	2
+ 472              	.LC21:
+ 473 0000 4D41433A 		.ascii	"MAC: %02X:%02X:%02X:%02X:%02X:%02X\015\012\000"
+ 473      20253032 
+ 473      583A2530 
+ 473      32583A25 
+ 473      3032583A 
+ 474 0025 000000   		.align	2
+ 475              	.LC22:
+ 476 0028 49503A20 		.ascii	"IP: %d.%d.%d.%d\015\012\000"
+ 476      25642E25 
+ 476      642E2564 
+ 476      2E25640D 
+ 476      0A00
+ 477 003a 0000     		.align	2
+ 478              	.LC23:
+ 479 003c 534E3A20 		.ascii	"SN: %d.%d.%d.%d\015\012\000"
+ 479      25642E25 
+ 479      642E2564 
+ 479      2E25640D 
+ 479      0A00
+ 480 004e 0000     		.align	2
+ 481              	.LC24:
+ 482 0050 47573A20 		.ascii	"GW: %d.%d.%d.%d\015\012\000"
+ 482      25642E25 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 14
+
+
+ 482      642E2564 
+ 482      2E25640D 
+ 482      0A00
+ 483 0062 0000     		.align	2
+ 484              	.LC25:
+ 485 0064 444E533A 		.ascii	"DNS: %d.%d.%d.%d\015\012\000"
+ 485      2025642E 
+ 485      25642E25 
+ 485      642E2564 
+ 485      0D0A00
+ 486              		.section	.text.print_current_host_configuration,"ax",%progbits
+ 487              		.align	1
+ 488              		.p2align 2,,3
+ 489              		.global	print_current_host_configuration
+ 490              		.syntax unified
+ 491              		.thumb
+ 492              		.thumb_func
+ 494              	print_current_host_configuration:
+ 495              	.LFB5:
  130:ioLIB/w5500_phy.c **** 
  131:ioLIB/w5500_phy.c **** /**
  132:ioLIB/w5500_phy.c ****  * @brief Prints the current network configuration.
@@ -677,226 +810,148 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 1
  137:ioLIB/w5500_phy.c ****  * @return void
  138:ioLIB/w5500_phy.c ****  */
  139:ioLIB/w5500_phy.c **** void print_current_host_configuration() {
- 421              		.loc 1 139 41
- 422              		.cfi_startproc
- 423              		@ args = 0, pretend = 0, frame = 24
- 424              		@ frame_needed = 1, uses_anonymous_args = 0
- 425 0000 B0B5     		push	{r4, r5, r7, lr}
- 426              	.LCFI10:
- 427              		.cfi_def_cfa_offset 16
- 428              		.cfi_offset 4, -16
- 429              		.cfi_offset 5, -12
- 430              		.cfi_offset 7, -8
- 431              		.cfi_offset 14, -4
- 432 0002 8AB0     		sub	sp, sp, #40
- 433              	.LCFI11:
- 434              		.cfi_def_cfa_offset 56
- 435 0004 04AF     		add	r7, sp, #16
- 436              	.LCFI12:
- 437              		.cfi_def_cfa 7, 40
+ 496              		.loc 1 139 41 is_stmt 1 view -0
+ 497              		.cfi_startproc
+ 498              		@ args = 0, pretend = 0, frame = 24
+ 499              		@ frame_needed = 0, uses_anonymous_args = 0
  140:ioLIB/w5500_phy.c ****     wiz_NetInfo current_net_info;
+ 500              		.loc 1 140 5 view .LVU103
  141:ioLIB/w5500_phy.c **** 
  142:ioLIB/w5500_phy.c ****     // Retrieve the current network information from the WIZnet chip
  143:ioLIB/w5500_phy.c ****     ctlnetwork(CN_GET_NETINFO, (void*)&current_net_info);
- 438              		.loc 1 143 5
- 439 0006 3B46     		mov	r3, r7
- 440 0008 1946     		mov	r1, r3
- 441 000a 0120     		movs	r0, #1
- 442 000c FFF7FEFF 		bl	ctlnetwork
+ 501              		.loc 1 143 5 view .LVU104
+ 139:ioLIB/w5500_phy.c ****     wiz_NetInfo current_net_info;
+ 502              		.loc 1 139 41 is_stmt 0 view .LVU105
+ 503 0000 10B5     		push	{r4, lr}
+ 504              	.LCFI15:
+ 505              		.cfi_def_cfa_offset 8
+ 506              		.cfi_offset 4, -8
+ 507              		.cfi_offset 14, -4
+ 508 0002 8AB0     		sub	sp, sp, #40
+ 509              	.LCFI16:
+ 510              		.cfi_def_cfa_offset 48
+ 511              		.loc 1 143 5 view .LVU106
+ 512 0004 04A9     		add	r1, sp, #16
+ 513 0006 0120     		movs	r0, #1
+ 514 0008 FFF7FEFF 		bl	ctlnetwork
+ 515              	.LVL31:
  144:ioLIB/w5500_phy.c **** 
  145:ioLIB/w5500_phy.c ****     // Print the MAC address
  146:ioLIB/w5500_phy.c ****     printf("MAC: %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 15
+
+
+ 516              		.loc 1 146 5 is_stmt 1 view .LVU107
+ 517 000c 9DF81500 		ldrb	r0, [sp, #21]	@ zero_extendqisi2
+ 518 0010 9DF81410 		ldrb	r1, [sp, #20]	@ zero_extendqisi2
+ 519 0014 9DF81340 		ldrb	r4, [sp, #19]	@ zero_extendqisi2
+ 520 0018 9DF81230 		ldrb	r3, [sp, #18]	@ zero_extendqisi2
+ 521 001c 9DF81120 		ldrb	r2, [sp, #17]	@ zero_extendqisi2
+ 522 0020 0094     		str	r4, [sp]
+ 523 0022 CDE90110 		strd	r1, r0, [sp, #4]
+ 524 0026 9DF81010 		ldrb	r1, [sp, #16]	@ zero_extendqisi2
+ 525 002a 1A48     		ldr	r0, .L52
+ 526 002c FFF7FEFF 		bl	printf
+ 527              	.LVL32:
  147:ioLIB/w5500_phy.c ****            current_net_info.mac[0], current_net_info.mac[1], current_net_info.mac[2],
- 443              		.loc 1 147 32
- 444 0010 3B78     		ldrb	r3, [r7]	@ zero_extendqisi2
- 146:ioLIB/w5500_phy.c ****            current_net_info.mac[0], current_net_info.mac[1], current_net_info.mac[2],
- 445              		.loc 1 146 5
- 446 0012 1846     		mov	r0, r3
- 447              		.loc 1 147 57
- 448 0014 7B78     		ldrb	r3, [r7, #1]	@ zero_extendqisi2
- 146:ioLIB/w5500_phy.c ****            current_net_info.mac[0], current_net_info.mac[1], current_net_info.mac[2],
- 449              		.loc 1 146 5
- 450 0016 1C46     		mov	r4, r3
- 451              		.loc 1 147 82
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 13
-
-
- 452 0018 BB78     		ldrb	r3, [r7, #2]	@ zero_extendqisi2
- 146:ioLIB/w5500_phy.c ****            current_net_info.mac[0], current_net_info.mac[1], current_net_info.mac[2],
- 453              		.loc 1 146 5
- 454 001a 1D46     		mov	r5, r3
  148:ioLIB/w5500_phy.c ****            current_net_info.mac[3], current_net_info.mac[4], current_net_info.mac[5]);
- 455              		.loc 1 148 32
- 456 001c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
- 457              		.loc 1 148 57
- 458 001e 3A79     		ldrb	r2, [r7, #4]	@ zero_extendqisi2
- 459              		.loc 1 148 82
- 460 0020 7979     		ldrb	r1, [r7, #5]	@ zero_extendqisi2
- 146:ioLIB/w5500_phy.c ****            current_net_info.mac[0], current_net_info.mac[1], current_net_info.mac[2],
- 461              		.loc 1 146 5
- 462 0022 0291     		str	r1, [sp, #8]
- 463 0024 0192     		str	r2, [sp, #4]
- 464 0026 0093     		str	r3, [sp]
- 465 0028 2B46     		mov	r3, r5
- 466 002a 2246     		mov	r2, r4
- 467 002c 0146     		mov	r1, r0
- 468 002e 1B48     		ldr	r0, .L37
- 469 0030 FFF7FEFF 		bl	printf
  149:ioLIB/w5500_phy.c **** 
  150:ioLIB/w5500_phy.c ****     // Print the IP address
  151:ioLIB/w5500_phy.c ****     printf("IP: %d.%d.%d.%d\r\n",
+ 528              		.loc 1 151 5 view .LVU108
+ 529 0030 9DF81940 		ldrb	r4, [sp, #25]	@ zero_extendqisi2
+ 530 0034 9DF81830 		ldrb	r3, [sp, #24]	@ zero_extendqisi2
+ 531 0038 9DF81720 		ldrb	r2, [sp, #23]	@ zero_extendqisi2
+ 532 003c 9DF81610 		ldrb	r1, [sp, #22]	@ zero_extendqisi2
+ 533 0040 0094     		str	r4, [sp]
+ 534 0042 1548     		ldr	r0, .L52+4
+ 535 0044 FFF7FEFF 		bl	printf
+ 536              	.LVL33:
  152:ioLIB/w5500_phy.c ****            current_net_info.ip[0], current_net_info.ip[1], current_net_info.ip[2], current_net_info
- 470              		.loc 1 152 31
- 471 0034 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
- 151:ioLIB/w5500_phy.c ****            current_net_info.ip[0], current_net_info.ip[1], current_net_info.ip[2], current_net_info
- 472              		.loc 1 151 5
- 473 0036 1946     		mov	r1, r3
- 474              		.loc 1 152 55
- 475 0038 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
- 151:ioLIB/w5500_phy.c ****            current_net_info.ip[0], current_net_info.ip[1], current_net_info.ip[2], current_net_info
- 476              		.loc 1 151 5
- 477 003a 1A46     		mov	r2, r3
- 478              		.loc 1 152 79
- 479 003c 3B7A     		ldrb	r3, [r7, #8]	@ zero_extendqisi2
- 151:ioLIB/w5500_phy.c ****            current_net_info.ip[0], current_net_info.ip[1], current_net_info.ip[2], current_net_info
- 480              		.loc 1 151 5
- 481 003e 1846     		mov	r0, r3
- 482              		.loc 1 152 103
- 483 0040 7B7A     		ldrb	r3, [r7, #9]	@ zero_extendqisi2
- 151:ioLIB/w5500_phy.c ****            current_net_info.ip[0], current_net_info.ip[1], current_net_info.ip[2], current_net_info
- 484              		.loc 1 151 5
- 485 0042 0093     		str	r3, [sp]
- 486 0044 0346     		mov	r3, r0
- 487 0046 1648     		ldr	r0, .L37+4
- 488 0048 FFF7FEFF 		bl	printf
  153:ioLIB/w5500_phy.c **** 
  154:ioLIB/w5500_phy.c ****     // Print the subnet mask
  155:ioLIB/w5500_phy.c ****     printf("SN: %d.%d.%d.%d\r\n",
+ 537              		.loc 1 155 5 view .LVU109
+ 538 0048 9DF81D40 		ldrb	r4, [sp, #29]	@ zero_extendqisi2
+ 539 004c 9DF81C30 		ldrb	r3, [sp, #28]	@ zero_extendqisi2
+ 540 0050 9DF81B20 		ldrb	r2, [sp, #27]	@ zero_extendqisi2
+ 541 0054 9DF81A10 		ldrb	r1, [sp, #26]	@ zero_extendqisi2
+ 542 0058 0094     		str	r4, [sp]
+ 543 005a 1048     		ldr	r0, .L52+8
+ 544 005c FFF7FEFF 		bl	printf
+ 545              	.LVL34:
  156:ioLIB/w5500_phy.c ****            current_net_info.sn[0], current_net_info.sn[1], current_net_info.sn[2], current_net_info
- 489              		.loc 1 156 31
- 490 004c BB7A     		ldrb	r3, [r7, #10]	@ zero_extendqisi2
- 155:ioLIB/w5500_phy.c ****            current_net_info.sn[0], current_net_info.sn[1], current_net_info.sn[2], current_net_info
- 491              		.loc 1 155 5
- 492 004e 1946     		mov	r1, r3
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 14
-
-
- 493              		.loc 1 156 55
- 494 0050 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
- 155:ioLIB/w5500_phy.c ****            current_net_info.sn[0], current_net_info.sn[1], current_net_info.sn[2], current_net_info
- 495              		.loc 1 155 5
- 496 0052 1A46     		mov	r2, r3
- 497              		.loc 1 156 79
- 498 0054 3B7B     		ldrb	r3, [r7, #12]	@ zero_extendqisi2
- 155:ioLIB/w5500_phy.c ****            current_net_info.sn[0], current_net_info.sn[1], current_net_info.sn[2], current_net_info
- 499              		.loc 1 155 5
- 500 0056 1846     		mov	r0, r3
- 501              		.loc 1 156 103
- 502 0058 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
- 155:ioLIB/w5500_phy.c ****            current_net_info.sn[0], current_net_info.sn[1], current_net_info.sn[2], current_net_info
- 503              		.loc 1 155 5
- 504 005a 0093     		str	r3, [sp]
- 505 005c 0346     		mov	r3, r0
- 506 005e 1148     		ldr	r0, .L37+8
- 507 0060 FFF7FEFF 		bl	printf
  157:ioLIB/w5500_phy.c **** 
  158:ioLIB/w5500_phy.c ****     // Print the gateway address
  159:ioLIB/w5500_phy.c ****     printf("GW: %d.%d.%d.%d\r\n",
+ 546              		.loc 1 159 5 view .LVU110
+ 547 0060 9DF82140 		ldrb	r4, [sp, #33]	@ zero_extendqisi2
+ 548 0064 9DF82030 		ldrb	r3, [sp, #32]	@ zero_extendqisi2
+ 549 0068 9DF81F20 		ldrb	r2, [sp, #31]	@ zero_extendqisi2
+ 550 006c 9DF81E10 		ldrb	r1, [sp, #30]	@ zero_extendqisi2
+ 551 0070 0094     		str	r4, [sp]
+ 552 0072 0B48     		ldr	r0, .L52+12
+ 553 0074 FFF7FEFF 		bl	printf
+ 554              	.LVL35:
  160:ioLIB/w5500_phy.c ****            current_net_info.gw[0], current_net_info.gw[1], current_net_info.gw[2], current_net_info
- 508              		.loc 1 160 31
- 509 0064 BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
- 159:ioLIB/w5500_phy.c ****            current_net_info.gw[0], current_net_info.gw[1], current_net_info.gw[2], current_net_info
- 510              		.loc 1 159 5
- 511 0066 1946     		mov	r1, r3
- 512              		.loc 1 160 55
- 513 0068 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
- 159:ioLIB/w5500_phy.c ****            current_net_info.gw[0], current_net_info.gw[1], current_net_info.gw[2], current_net_info
- 514              		.loc 1 159 5
- 515 006a 1A46     		mov	r2, r3
- 516              		.loc 1 160 79
- 517 006c 3B7C     		ldrb	r3, [r7, #16]	@ zero_extendqisi2
- 159:ioLIB/w5500_phy.c ****            current_net_info.gw[0], current_net_info.gw[1], current_net_info.gw[2], current_net_info
- 518              		.loc 1 159 5
- 519 006e 1846     		mov	r0, r3
- 520              		.loc 1 160 103
- 521 0070 7B7C     		ldrb	r3, [r7, #17]	@ zero_extendqisi2
- 159:ioLIB/w5500_phy.c ****            current_net_info.gw[0], current_net_info.gw[1], current_net_info.gw[2], current_net_info
- 522              		.loc 1 159 5
- 523 0072 0093     		str	r3, [sp]
- 524 0074 0346     		mov	r3, r0
- 525 0076 0C48     		ldr	r0, .L37+12
- 526 0078 FFF7FEFF 		bl	printf
  161:ioLIB/w5500_phy.c **** 
  162:ioLIB/w5500_phy.c ****     // Print the DNS server address
  163:ioLIB/w5500_phy.c ****     printf("DNS: %d.%d.%d.%d\r\n",
+ 555              		.loc 1 163 5 view .LVU111
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 16
+
+
+ 556 0078 9DF82540 		ldrb	r4, [sp, #37]	@ zero_extendqisi2
+ 557 007c 9DF82430 		ldrb	r3, [sp, #36]	@ zero_extendqisi2
+ 558 0080 9DF82320 		ldrb	r2, [sp, #35]	@ zero_extendqisi2
+ 559 0084 9DF82210 		ldrb	r1, [sp, #34]	@ zero_extendqisi2
+ 560 0088 0094     		str	r4, [sp]
+ 561 008a 0648     		ldr	r0, .L52+16
+ 562 008c FFF7FEFF 		bl	printf
+ 563              	.LVL36:
  164:ioLIB/w5500_phy.c ****            current_net_info.dns[0], current_net_info.dns[1], current_net_info.dns[2], current_net_i
- 527              		.loc 1 164 32
- 528 007c BB7C     		ldrb	r3, [r7, #18]	@ zero_extendqisi2
- 163:ioLIB/w5500_phy.c ****            current_net_info.dns[0], current_net_info.dns[1], current_net_info.dns[2], current_net_i
- 529              		.loc 1 163 5
- 530 007e 1946     		mov	r1, r3
- 531              		.loc 1 164 57
- 532 0080 FB7C     		ldrb	r3, [r7, #19]	@ zero_extendqisi2
- 163:ioLIB/w5500_phy.c ****            current_net_info.dns[0], current_net_info.dns[1], current_net_info.dns[2], current_net_i
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 15
-
-
- 533              		.loc 1 163 5
- 534 0082 1A46     		mov	r2, r3
- 535              		.loc 1 164 82
- 536 0084 3B7D     		ldrb	r3, [r7, #20]	@ zero_extendqisi2
- 163:ioLIB/w5500_phy.c ****            current_net_info.dns[0], current_net_info.dns[1], current_net_info.dns[2], current_net_i
- 537              		.loc 1 163 5
- 538 0086 1846     		mov	r0, r3
- 539              		.loc 1 164 107
- 540 0088 7B7D     		ldrb	r3, [r7, #21]	@ zero_extendqisi2
- 163:ioLIB/w5500_phy.c ****            current_net_info.dns[0], current_net_info.dns[1], current_net_info.dns[2], current_net_i
- 541              		.loc 1 163 5
- 542 008a 0093     		str	r3, [sp]
- 543 008c 0346     		mov	r3, r0
- 544 008e 0748     		ldr	r0, .L37+16
- 545 0090 FFF7FEFF 		bl	printf
  165:ioLIB/w5500_phy.c **** }
- 546              		.loc 1 165 1
- 547 0094 00BF     		nop
- 548 0096 1837     		adds	r7, r7, #24
- 549              	.LCFI13:
- 550              		.cfi_def_cfa_offset 16
- 551 0098 BD46     		mov	sp, r7
- 552              	.LCFI14:
- 553              		.cfi_def_cfa_register 13
- 554              		@ sp needed
- 555 009a B0BD     		pop	{r4, r5, r7, pc}
- 556              	.L38:
- 557              		.align	2
- 558              	.L37:
- 559 009c D4010000 		.word	.LC21
- 560 00a0 FC010000 		.word	.LC22
- 561 00a4 10020000 		.word	.LC23
- 562 00a8 24020000 		.word	.LC24
- 563 00ac 38020000 		.word	.LC25
- 564              		.cfi_endproc
- 565              	.LFE5:
- 567              		.text
- 568              	.Letext0:
- 569              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
- 570              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
- 571              		.file 4 "ioLIB/wizchip_conf.h"
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s 			page 16
+ 564              		.loc 1 165 1 is_stmt 0 view .LVU112
+ 565 0090 0AB0     		add	sp, sp, #40
+ 566              	.LCFI17:
+ 567              		.cfi_def_cfa_offset 8
+ 568              		@ sp needed
+ 569 0092 10BD     		pop	{r4, pc}
+ 570              	.L53:
+ 571              		.align	2
+ 572              	.L52:
+ 573 0094 00000000 		.word	.LC21
+ 574 0098 28000000 		.word	.LC22
+ 575 009c 3C000000 		.word	.LC23
+ 576 00a0 50000000 		.word	.LC24
+ 577 00a4 64000000 		.word	.LC25
+ 578              		.cfi_endproc
+ 579              	.LFE5:
+ 581              		.text
+ 582              	.Letext0:
+ 583              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 584              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 585              		.file 4 "ioLIB/wizchip_conf.h"
+ 586              		.file 5 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\stdio.h"
+ 587              		.file 6 "Core/clock.h"
+ 588              		.file 7 "<built-in>"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s 			page 17
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 w5500_phy.c
-C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s:20     .rodata:00000000 $d
-C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s:34     .text.check_cable_presence:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s:40     .text.check_cable_presence:00000000 check_cable_presence
-C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s:117    .text.check_cable_presence:0000005c $d
-C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s:177    .text.check_phy_status:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s:183    .text.check_phy_status:00000000 check_phy_status
-C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s:376    .text.check_phy_status:000000fc $d
-C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s:413    .text.print_current_host_configuration:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s:419    .text.print_current_host_configuration:00000000 print_current_host_configuration
-C:\Users\clay0\AppData\Local\Temp\ccJJmRYQ.s:559    .text.print_current_host_configuration:0000009c $d
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:20     .rodata.check_cable_presence.str1.4:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:34     .text.check_cable_presence:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:41     .text.check_cable_presence:00000000 check_cable_presence
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:129    .text.check_cable_presence:0000004c $d
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:137    .rodata.check_phy_status.str1.4:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:189    .text.check_phy_status:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:196    .text.check_phy_status:00000000 check_phy_status
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:450    .text.check_phy_status:00000114 $d
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:471    .rodata.print_current_host_configuration.str1.4:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:487    .text.print_current_host_configuration:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:494    .text.print_current_host_configuration:00000000 print_current_host_configuration
+C:\Users\clay0\AppData\Local\Temp\ccYT8U8W.s:573    .text.print_current_host_configuration:00000094 $d
 
 UNDEFINED SYMBOLS
 puts

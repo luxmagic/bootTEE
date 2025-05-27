@@ -49,7 +49,13 @@
         "w5500.h": "c",
         "socket.h": "c",
         "coap.h": "c",
-        "coap_port.h": "c"
+        "coap_port.h": "c",
+        "boot.h": "c",
+        "aes.h": "c",
+        "cipher_coap.h": "c",
+        "p256-m_driver_entrypoints.h": "c",
+        "psa_crypto_driver_wrappers.h": "c",
+        "entropy.h": "c"
     },
     "cmake.ignoreCMakeListsMissing": true
 }

@@ -1,0 +1,475 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 2
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"syscall.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text._open,"ax",%progbits
+  20              		.align	1
+  21              		.p2align 2,,3
+  22              		.global	_open
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	_open:
+  28              	.LVL0:
+  29              	.LFB0:
+  30              		.file 1 "Core/syscall.c"
+   1:Core/syscall.c **** #include <sys/stat.h>
+   2:Core/syscall.c **** #include <sys/types.h>
+   3:Core/syscall.c **** #include <errno.h>
+   4:Core/syscall.c **** 
+   5:Core/syscall.c **** // Заглушка _open (открытие файла)
+   6:Core/syscall.c **** int _open(const char *name, int flags, int mode)
+   7:Core/syscall.c **** {
+  31              		.loc 1 7 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+   8:Core/syscall.c ****     errno = ENOSYS;
+  35              		.loc 1 8 5 view .LVU1
+   7:Core/syscall.c ****     errno = ENOSYS;
+  36              		.loc 1 7 1 is_stmt 0 view .LVU2
+  37 0000 08B5     		push	{r3, lr}
+  38              	.LCFI0:
+  39              		.cfi_def_cfa_offset 8
+  40              		.cfi_offset 3, -8
+  41              		.cfi_offset 14, -4
+  42              		.loc 1 8 5 view .LVU3
+  43 0002 FFF7FEFF 		bl	__errno
+  44              	.LVL1:
+  45              		.loc 1 8 11 view .LVU4
+  46 0006 5823     		movs	r3, #88
+  47 0008 0360     		str	r3, [r0]
+   9:Core/syscall.c ****     return -1;
+  48              		.loc 1 9 5 is_stmt 1 view .LVU5
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s 			page 2
+
+
+  10:Core/syscall.c **** }
+  49              		.loc 1 10 1 is_stmt 0 view .LVU6
+  50 000a 4FF0FF30 		mov	r0, #-1
+  51 000e 08BD     		pop	{r3, pc}
+  52              		.cfi_endproc
+  53              	.LFE0:
+  55              		.section	.text._close,"ax",%progbits
+  56              		.align	1
+  57              		.p2align 2,,3
+  58              		.global	_close
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  63              	_close:
+  64              	.LVL2:
+  65              	.LFB1:
+  11:Core/syscall.c **** 
+  12:Core/syscall.c **** // Заглушка _close
+  13:Core/syscall.c **** int _close(int file)
+  14:Core/syscall.c **** {
+  66              		.loc 1 14 1 is_stmt 1 view -0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70              		@ link register save eliminated.
+  15:Core/syscall.c ****     return -1;
+  71              		.loc 1 15 5 view .LVU8
+  16:Core/syscall.c **** }
+  72              		.loc 1 16 1 is_stmt 0 view .LVU9
+  73 0000 4FF0FF30 		mov	r0, #-1
+  74              	.LVL3:
+  75              		.loc 1 16 1 view .LVU10
+  76 0004 7047     		bx	lr
+  77              		.cfi_endproc
+  78              	.LFE1:
+  80 0006 00BF     		.section	.text._read,"ax",%progbits
+  81              		.align	1
+  82              		.p2align 2,,3
+  83              		.global	_read
+  84              		.syntax unified
+  85              		.thumb
+  86              		.thumb_func
+  88              	_read:
+  89              	.LVL4:
+  90              	.LFB2:
+  17:Core/syscall.c **** 
+  18:Core/syscall.c **** // Заглушка _read
+  19:Core/syscall.c **** int _read(int file, char *ptr, int len)
+  20:Core/syscall.c **** {
+  91              		.loc 1 20 1 is_stmt 1 view -0
+  92              		.cfi_startproc
+  93              		@ args = 0, pretend = 0, frame = 0
+  94              		@ frame_needed = 0, uses_anonymous_args = 0
+  95              		@ link register save eliminated.
+  21:Core/syscall.c ****     return 0;
+  96              		.loc 1 21 5 view .LVU12
+  22:Core/syscall.c **** }
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s 			page 3
+
+
+  97              		.loc 1 22 1 is_stmt 0 view .LVU13
+  98 0000 0020     		movs	r0, #0
+  99              	.LVL5:
+ 100              		.loc 1 22 1 view .LVU14
+ 101 0002 7047     		bx	lr
+ 102              		.cfi_endproc
+ 103              	.LFE2:
+ 105              		.section	.text._write,"ax",%progbits
+ 106              		.align	1
+ 107              		.p2align 2,,3
+ 108              		.global	_write
+ 109              		.syntax unified
+ 110              		.thumb
+ 111              		.thumb_func
+ 113              	_write:
+ 114              	.LVL6:
+ 115              	.LFB3:
+  23:Core/syscall.c **** 
+  24:Core/syscall.c **** // Заглушка _write
+  25:Core/syscall.c **** int _write(int file, char *ptr, int len)
+  26:Core/syscall.c **** {
+ 116              		.loc 1 26 1 is_stmt 1 view -0
+ 117              		.cfi_startproc
+ 118              		@ args = 0, pretend = 0, frame = 0
+ 119              		@ frame_needed = 0, uses_anonymous_args = 0
+ 120              		@ link register save eliminated.
+  27:Core/syscall.c ****     return len;
+ 121              		.loc 1 27 5 view .LVU16
+  28:Core/syscall.c **** }
+ 122              		.loc 1 28 1 is_stmt 0 view .LVU17
+ 123 0000 1046     		mov	r0, r2
+ 124              	.LVL7:
+ 125              		.loc 1 28 1 view .LVU18
+ 126 0002 7047     		bx	lr
+ 127              		.cfi_endproc
+ 128              	.LFE3:
+ 130              		.section	.text._lseek,"ax",%progbits
+ 131              		.align	1
+ 132              		.p2align 2,,3
+ 133              		.global	_lseek
+ 134              		.syntax unified
+ 135              		.thumb
+ 136              		.thumb_func
+ 138              	_lseek:
+ 139              	.LVL8:
+ 140              	.LFB4:
+  29:Core/syscall.c **** 
+  30:Core/syscall.c **** // Заглушка _lseek
+  31:Core/syscall.c **** int _lseek(int file, int ptr, int dir)
+  32:Core/syscall.c **** {
+ 141              		.loc 1 32 1 is_stmt 1 view -0
+ 142              		.cfi_startproc
+ 143              		@ args = 0, pretend = 0, frame = 0
+ 144              		@ frame_needed = 0, uses_anonymous_args = 0
+ 145              		@ link register save eliminated.
+  33:Core/syscall.c ****     return 0;
+ 146              		.loc 1 33 5 view .LVU20
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s 			page 4
+
+
+  34:Core/syscall.c **** }
+ 147              		.loc 1 34 1 is_stmt 0 view .LVU21
+ 148 0000 0020     		movs	r0, #0
+ 149              	.LVL9:
+ 150              		.loc 1 34 1 view .LVU22
+ 151 0002 7047     		bx	lr
+ 152              		.cfi_endproc
+ 153              	.LFE4:
+ 155              		.section	.text._fstat,"ax",%progbits
+ 156              		.align	1
+ 157              		.p2align 2,,3
+ 158              		.global	_fstat
+ 159              		.syntax unified
+ 160              		.thumb
+ 161              		.thumb_func
+ 163              	_fstat:
+ 164              	.LVL10:
+ 165              	.LFB5:
+  35:Core/syscall.c **** 
+  36:Core/syscall.c **** // Заглушка _fstat
+  37:Core/syscall.c **** int _fstat(int file, struct stat *st)
+  38:Core/syscall.c **** {
+ 166              		.loc 1 38 1 is_stmt 1 view -0
+ 167              		.cfi_startproc
+ 168              		@ args = 0, pretend = 0, frame = 0
+ 169              		@ frame_needed = 0, uses_anonymous_args = 0
+ 170              		@ link register save eliminated.
+  39:Core/syscall.c ****     st->st_mode = S_IFCHR;
+ 171              		.loc 1 39 5 view .LVU24
+ 172              		.loc 1 39 17 is_stmt 0 view .LVU25
+ 173 0000 4FF40053 		mov	r3, #8192
+ 174 0004 4B60     		str	r3, [r1, #4]
+  40:Core/syscall.c ****     return 0;
+ 175              		.loc 1 40 5 is_stmt 1 view .LVU26
+  41:Core/syscall.c **** }
+ 176              		.loc 1 41 1 is_stmt 0 view .LVU27
+ 177 0006 0020     		movs	r0, #0
+ 178              	.LVL11:
+ 179              		.loc 1 41 1 view .LVU28
+ 180 0008 7047     		bx	lr
+ 181              		.cfi_endproc
+ 182              	.LFE5:
+ 184 000a 00BF     		.section	.text._isatty,"ax",%progbits
+ 185              		.align	1
+ 186              		.p2align 2,,3
+ 187              		.global	_isatty
+ 188              		.syntax unified
+ 189              		.thumb
+ 190              		.thumb_func
+ 192              	_isatty:
+ 193              	.LVL12:
+ 194              	.LFB6:
+  42:Core/syscall.c **** 
+  43:Core/syscall.c **** // Заглушка _isatty
+  44:Core/syscall.c **** int _isatty(int file)
+  45:Core/syscall.c **** {
+ 195              		.loc 1 45 1 is_stmt 1 view -0
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s 			page 5
+
+
+ 196              		.cfi_startproc
+ 197              		@ args = 0, pretend = 0, frame = 0
+ 198              		@ frame_needed = 0, uses_anonymous_args = 0
+ 199              		@ link register save eliminated.
+  46:Core/syscall.c ****     return 1;
+ 200              		.loc 1 46 5 view .LVU30
+  47:Core/syscall.c **** }
+ 201              		.loc 1 47 1 is_stmt 0 view .LVU31
+ 202 0000 0120     		movs	r0, #1
+ 203              	.LVL13:
+ 204              		.loc 1 47 1 view .LVU32
+ 205 0002 7047     		bx	lr
+ 206              		.cfi_endproc
+ 207              	.LFE6:
+ 209              		.section	.text._unlink,"ax",%progbits
+ 210              		.align	1
+ 211              		.p2align 2,,3
+ 212              		.global	_unlink
+ 213              		.syntax unified
+ 214              		.thumb
+ 215              		.thumb_func
+ 217              	_unlink:
+ 218              	.LVL14:
+ 219              	.LFB7:
+  48:Core/syscall.c **** 
+  49:Core/syscall.c **** // Заглушка _unlink
+  50:Core/syscall.c **** int _unlink(const char *name)
+  51:Core/syscall.c **** {
+ 220              		.loc 1 51 1 is_stmt 1 view -0
+ 221              		.cfi_startproc
+ 222              		@ args = 0, pretend = 0, frame = 0
+ 223              		@ frame_needed = 0, uses_anonymous_args = 0
+  52:Core/syscall.c ****     errno = ENOENT;
+ 224              		.loc 1 52 5 view .LVU34
+  51:Core/syscall.c ****     errno = ENOENT;
+ 225              		.loc 1 51 1 is_stmt 0 view .LVU35
+ 226 0000 08B5     		push	{r3, lr}
+ 227              	.LCFI1:
+ 228              		.cfi_def_cfa_offset 8
+ 229              		.cfi_offset 3, -8
+ 230              		.cfi_offset 14, -4
+ 231              		.loc 1 52 5 view .LVU36
+ 232 0002 FFF7FEFF 		bl	__errno
+ 233              	.LVL15:
+ 234              		.loc 1 52 11 view .LVU37
+ 235 0006 0223     		movs	r3, #2
+ 236 0008 0360     		str	r3, [r0]
+  53:Core/syscall.c ****     return -1;
+ 237              		.loc 1 53 5 is_stmt 1 view .LVU38
+  54:Core/syscall.c **** }
+ 238              		.loc 1 54 1 is_stmt 0 view .LVU39
+ 239 000a 4FF0FF30 		mov	r0, #-1
+ 240 000e 08BD     		pop	{r3, pc}
+ 241              		.cfi_endproc
+ 242              	.LFE7:
+ 244              		.section	.text._link,"ax",%progbits
+ 245              		.align	1
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s 			page 6
+
+
+ 246              		.p2align 2,,3
+ 247              		.global	_link
+ 248              		.syntax unified
+ 249              		.thumb
+ 250              		.thumb_func
+ 252              	_link:
+ 253              	.LVL16:
+ 254              	.LFB8:
+  55:Core/syscall.c **** 
+  56:Core/syscall.c **** // Заглушка _link
+  57:Core/syscall.c **** int _link(const char *old, const char *new)
+  58:Core/syscall.c **** {
+ 255              		.loc 1 58 1 is_stmt 1 view -0
+ 256              		.cfi_startproc
+ 257              		@ args = 0, pretend = 0, frame = 0
+ 258              		@ frame_needed = 0, uses_anonymous_args = 0
+  59:Core/syscall.c ****     errno = EMLINK;
+ 259              		.loc 1 59 5 view .LVU41
+  58:Core/syscall.c ****     errno = EMLINK;
+ 260              		.loc 1 58 1 is_stmt 0 view .LVU42
+ 261 0000 08B5     		push	{r3, lr}
+ 262              	.LCFI2:
+ 263              		.cfi_def_cfa_offset 8
+ 264              		.cfi_offset 3, -8
+ 265              		.cfi_offset 14, -4
+ 266              		.loc 1 59 5 view .LVU43
+ 267 0002 FFF7FEFF 		bl	__errno
+ 268              	.LVL17:
+ 269              		.loc 1 59 11 view .LVU44
+ 270 0006 1F23     		movs	r3, #31
+ 271 0008 0360     		str	r3, [r0]
+  60:Core/syscall.c ****     return -1;
+ 272              		.loc 1 60 5 is_stmt 1 view .LVU45
+  61:Core/syscall.c **** }
+ 273              		.loc 1 61 1 is_stmt 0 view .LVU46
+ 274 000a 4FF0FF30 		mov	r0, #-1
+ 275 000e 08BD     		pop	{r3, pc}
+ 276              		.cfi_endproc
+ 277              	.LFE8:
+ 279              		.section	.text._exit,"ax",%progbits
+ 280              		.align	1
+ 281              		.p2align 2,,3
+ 282              		.global	_exit
+ 283              		.syntax unified
+ 284              		.thumb
+ 285              		.thumb_func
+ 287              	_exit:
+ 288              	.LFB9:
+  62:Core/syscall.c **** 
+  63:Core/syscall.c **** // Заглушка _exit
+  64:Core/syscall.c **** void _exit(int status)
+  65:Core/syscall.c **** {
+ 289              		.loc 1 65 1 is_stmt 1 view -0
+ 290              		.cfi_startproc
+ 291              		@ Volatile: function does not return.
+ 292              		@ args = 0, pretend = 0, frame = 0
+ 293              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s 			page 7
+
+
+ 294              		@ link register save eliminated.
+ 295              	.LVL18:
+ 296              	.L15:
+  66:Core/syscall.c ****     while (1)
+ 297              		.loc 1 66 5 discriminator 1 view .LVU48
+  67:Core/syscall.c ****         ;
+ 298              		.loc 1 67 9 discriminator 1 view .LVU49
+  66:Core/syscall.c ****     while (1)
+ 299              		.loc 1 66 11 discriminator 1 view .LVU50
+ 300 0000 FEE7     		b	.L15
+ 301              		.cfi_endproc
+ 302              	.LFE9:
+ 304 0002 00BF     		.section	.text._kill,"ax",%progbits
+ 305              		.align	1
+ 306              		.p2align 2,,3
+ 307              		.global	_kill
+ 308              		.syntax unified
+ 309              		.thumb
+ 310              		.thumb_func
+ 312              	_kill:
+ 313              	.LVL19:
+ 314              	.LFB10:
+  68:Core/syscall.c **** }
+  69:Core/syscall.c **** 
+  70:Core/syscall.c **** // Заглушка _kill
+  71:Core/syscall.c **** int _kill(int pid, int sig)
+  72:Core/syscall.c **** {
+ 315              		.loc 1 72 1 view -0
+ 316              		.cfi_startproc
+ 317              		@ args = 0, pretend = 0, frame = 0
+ 318              		@ frame_needed = 0, uses_anonymous_args = 0
+ 319              		@ link register save eliminated.
+  73:Core/syscall.c ****     return -1;
+ 320              		.loc 1 73 5 view .LVU52
+  74:Core/syscall.c **** }
+ 321              		.loc 1 74 1 is_stmt 0 view .LVU53
+ 322 0000 4FF0FF30 		mov	r0, #-1
+ 323              	.LVL20:
+ 324              		.loc 1 74 1 view .LVU54
+ 325 0004 7047     		bx	lr
+ 326              		.cfi_endproc
+ 327              	.LFE10:
+ 329 0006 00BF     		.section	.text._getpid,"ax",%progbits
+ 330              		.align	1
+ 331              		.p2align 2,,3
+ 332              		.global	_getpid
+ 333              		.syntax unified
+ 334              		.thumb
+ 335              		.thumb_func
+ 337              	_getpid:
+ 338              	.LFB11:
+  75:Core/syscall.c **** 
+  76:Core/syscall.c **** // Заглушка _getpid
+  77:Core/syscall.c **** int _getpid(void)
+  78:Core/syscall.c **** {
+ 339              		.loc 1 78 1 is_stmt 1 view -0
+ 340              		.cfi_startproc
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s 			page 8
+
+
+ 341              		@ args = 0, pretend = 0, frame = 0
+ 342              		@ frame_needed = 0, uses_anonymous_args = 0
+ 343              		@ link register save eliminated.
+  79:Core/syscall.c ****     return 1;
+ 344              		.loc 1 79 5 view .LVU56
+  80:Core/syscall.c **** }...
+ 345              		.loc 1 80 1 is_stmt 0 view .LVU57
+ 346 0000 0120     		movs	r0, #1
+ 347 0002 7047     		bx	lr
+ 348              		.cfi_endproc
+ 349              	.LFE11:
+ 351              		.text
+ 352              	.Letext0:
+ 353              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 354              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_types.h"
+ 355              		.file 4 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_timeval.h"
+ 356              		.file 5 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_timespec.h"
+ 357              		.file 6 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\types.h"
+ 358              		.file 7 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\stat.h"
+ 359              		.file 8 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\errno.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s 			page 9
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 syscall.c
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:20     .text._open:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:27     .text._open:00000000 _open
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:56     .text._close:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:63     .text._close:00000000 _close
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:81     .text._read:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:88     .text._read:00000000 _read
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:106    .text._write:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:113    .text._write:00000000 _write
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:131    .text._lseek:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:138    .text._lseek:00000000 _lseek
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:156    .text._fstat:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:163    .text._fstat:00000000 _fstat
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:185    .text._isatty:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:192    .text._isatty:00000000 _isatty
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:210    .text._unlink:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:217    .text._unlink:00000000 _unlink
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:245    .text._link:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:252    .text._link:00000000 _link
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:280    .text._exit:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:287    .text._exit:00000000 _exit
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:305    .text._kill:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:312    .text._kill:00000000 _kill
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:330    .text._getpid:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc5hv9EU.s:337    .text._getpid:00000000 _getpid
+
+UNDEFINED SYMBOLS
+__errno

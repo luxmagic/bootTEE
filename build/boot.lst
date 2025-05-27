@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,7 +12,7 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 30, 2
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"boot.c"
@@ -21,138 +21,226 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
   18              		.cfi_sections	.debug_frame
   19              		.section	.text.configure_mpu,"ax",%progbits
   20              		.align	1
-  21              		.global	configure_mpu
-  22              		.syntax unified
-  23              		.thumb
-  24              		.thumb_func
-  26              	configure_mpu:
-  27              	.LFB135:
-  28              		.file 1 "Core/boot.c"
+  21              		.p2align 2,,3
+  22              		.global	configure_mpu
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	configure_mpu:
+  28              	.LFB132:
+  29              		.file 1 "Core/boot.c"
    1:Core/boot.c   **** #include "main.h"
    2:Core/boot.c   **** #include "boot.h"
    3:Core/boot.c   **** 
    4:Core/boot.c   **** void configure_mpu(void)
    5:Core/boot.c   **** {
-  29              		.loc 1 5 1
-  30              		.cfi_startproc
-  31              		@ args = 0, pretend = 0, frame = 0
-  32              		@ frame_needed = 1, uses_anonymous_args = 0
-  33              		@ link register save eliminated.
-  34 0000 80B4     		push	{r7}
-  35              	.LCFI0:
-  36              		.cfi_def_cfa_offset 4
-  37              		.cfi_offset 7, -4
-  38 0002 00AF     		add	r7, sp, #0
-  39              	.LCFI1:
-  40              		.cfi_def_cfa_register 7
+  30              		.loc 1 5 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
    6:Core/boot.c   ****     MPU->RNR = 0;                                                                                //
-  41              		.loc 1 6 8
-  42 0004 0A4B     		ldr	r3, .L2
-  43              		.loc 1 6 14
-  44 0006 0022     		movs	r2, #0
-  45 0008 9A60     		str	r2, [r3, #8]
+  35              		.loc 1 6 5 view .LVU1
+  36              		.loc 1 6 14 is_stmt 0 view .LVU2
+  37 0000 084B     		ldr	r3, .L3
    7:Core/boot.c   ****     MPU->RBAR = 0x08000000;                                                                      //
-  46              		.loc 1 7 8
-  47 000a 094B     		ldr	r3, .L2
-  48              		.loc 1 7 15
-  49 000c 4FF00062 		mov	r2, #134217728
-  50 0010 DA60     		str	r2, [r3, #12]
    8:Core/boot.c   ****     MPU->RASR = (0x3 << MPU_RASR_AP_Pos) | (0x1 << MPU_RASR_XN_Pos) | (16 << MPU_RASR_SIZE_Pos); //
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 2
+  38              		.loc 1 8 15 view .LVU3
+  39 0002 094A     		ldr	r2, .L3+4
+   6:Core/boot.c   ****     MPU->RNR = 0;                                                                                //
+  40              		.loc 1 6 14 view .LVU4
+  41 0004 0020     		movs	r0, #0
+   7:Core/boot.c   ****     MPU->RBAR = 0x08000000;                                                                      //
+  42              		.loc 1 7 15 view .LVU5
+  43 0006 4FF00061 		mov	r1, #134217728
+   6:Core/boot.c   ****     MPU->RNR = 0;                                                                                //
+  44              		.loc 1 6 14 view .LVU6
+  45 000a C3F89800 		str	r0, [r3, #152]
+   7:Core/boot.c   ****     MPU->RBAR = 0x08000000;                                                                      //
+  46              		.loc 1 7 5 is_stmt 1 view .LVU7
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 2
 
 
-  51              		.loc 1 8 8
-  52 0012 074B     		ldr	r3, .L2
-  53              		.loc 1 8 15
-  54 0014 074A     		ldr	r2, .L2+4
-  55 0016 1A61     		str	r2, [r3, #16]
+   7:Core/boot.c   ****     MPU->RBAR = 0x08000000;                                                                      //
+  47              		.loc 1 7 15 is_stmt 0 view .LVU8
+  48 000e C3F89C10 		str	r1, [r3, #156]
+  49              		.loc 1 8 5 is_stmt 1 view .LVU9
+  50              		.loc 1 8 15 is_stmt 0 view .LVU10
+  51 0012 C3F8A020 		str	r2, [r3, #160]
    9:Core/boot.c   ****     MPU->CTRL |= MPU_CTRL_ENABLE_Msk;                                                            //
-  56              		.loc 1 9 15
-  57 0018 054B     		ldr	r3, .L2
-  58 001a 5B68     		ldr	r3, [r3, #4]
-  59 001c 044A     		ldr	r2, .L2
-  60 001e 43F00103 		orr	r3, r3, #1
-  61 0022 5360     		str	r3, [r2, #4]
+  52              		.loc 1 9 5 is_stmt 1 view .LVU11
+  53              		.loc 1 9 15 is_stmt 0 view .LVU12
+  54 0016 D3F89420 		ldr	r2, [r3, #148]
+  55 001a 42F00102 		orr	r2, r2, #1
+  56 001e C3F89420 		str	r2, [r3, #148]
   10:Core/boot.c   **** }
-  62              		.loc 1 10 1
-  63 0024 00BF     		nop
-  64 0026 BD46     		mov	sp, r7
-  65              	.LCFI2:
-  66              		.cfi_def_cfa_register 13
-  67              		@ sp needed
-  68 0028 5DF8047B 		ldr	r7, [sp], #4
-  69              	.LCFI3:
-  70              		.cfi_restore 7
-  71              		.cfi_def_cfa_offset 0
-  72 002c 7047     		bx	lr
-  73              	.L3:
-  74 002e 00BF     		.align	2
-  75              	.L2:
-  76 0030 90ED00E0 		.word	-536810096
-  77 0034 20000013 		.word	318767136
-  78              		.cfi_endproc
-  79              	.LFE135:
-  81              		.section	.boot,"ax",%progbits
-  82              		.align	1
-  83              		.global	Bootloader_Main
-  84              		.syntax unified
-  85              		.thumb
-  86              		.thumb_func
-  88              	Bootloader_Main:
-  89              	.LFB136:
+  57              		.loc 1 10 1 view .LVU13
+  58 0022 7047     		bx	lr
+  59              	.L4:
+  60              		.align	2
+  61              	.L3:
+  62 0024 00ED00E0 		.word	-536810240
+  63 0028 20000013 		.word	318767136
+  64              		.cfi_endproc
+  65              	.LFE132:
+  67              		.section	.boot,"ax",%progbits
+  68              		.align	1
+  69              		.p2align 2,,3
+  70              		.global	Bootloader_Main
+  71              		.syntax unified
+  72              		.thumb
+  73              		.thumb_func
+  75              	Bootloader_Main:
+  76              	.LFB133:
   11:Core/boot.c   **** 
   12:Core/boot.c   **** __attribute__((section(".boot"))) void Bootloader_Main(void)
   13:Core/boot.c   **** {
-  90              		.loc 1 13 1
-  91              		.cfi_startproc
-  92              		@ args = 0, pretend = 0, frame = 16
-  93              		@ frame_needed = 1, uses_anonymous_args = 0
-  94 0000 80B5     		push	{r7, lr}
-  95              	.LCFI4:
-  96              		.cfi_def_cfa_offset 8
-  97              		.cfi_offset 7, -8
-  98              		.cfi_offset 14, -4
-  99 0002 84B0     		sub	sp, sp, #16
- 100              	.LCFI5:
- 101              		.cfi_def_cfa_offset 24
- 102 0004 00AF     		add	r7, sp, #0
- 103              	.LCFI6:
- 104              		.cfi_def_cfa_register 7
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 3
-
-
+  77              		.loc 1 13 1 is_stmt 1 view -0
+  78              		.cfi_startproc
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
   14:Core/boot.c   ****     uint32_t app_start_address = 0x08010000;
- 105              		.loc 1 14 14
- 106 0006 0D4B     		ldr	r3, .L6
- 107 0008 FB60     		str	r3, [r7, #12]
+  81              		.loc 1 14 5 view .LVU15
+  82              	.LVL0:
   15:Core/boot.c   ****     uint32_t app_reset_vector = *(volatile uint32_t *)(app_start_address + 4);
- 108              		.loc 1 15 74
- 109 000a FB68     		ldr	r3, [r7, #12]
- 110 000c 0433     		adds	r3, r3, #4
- 111              		.loc 1 15 14
- 112 000e 1B68     		ldr	r3, [r3]
- 113 0010 BB60     		str	r3, [r7, #8]
- 114              	.LBB8:
+  83              		.loc 1 15 5 view .LVU16
+  13:Core/boot.c   ****     uint32_t app_start_address = 0x08010000;
+  84              		.loc 1 13 1 is_stmt 0 view .LVU17
+  85 0000 38B5     		push	{r3, r4, r5, lr}
+  86              	.LCFI0:
+  87              		.cfi_def_cfa_offset 16
+  88              		.cfi_offset 3, -16
+  89              		.cfi_offset 4, -12
+  90              		.cfi_offset 5, -8
+  91              		.cfi_offset 14, -4
+  92              		.loc 1 15 14 view .LVU18
+  93 0002 0B4B     		ldr	r3, .L12
+  94              	.LBB17:
+  95              	.LBB18:
+  96              	.LBB19:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 3
+
+
+  97              	.LBB20:
   16:Core/boot.c   **** 
   17:Core/boot.c   ****     if (validate_app(app_start_address))
- 115              		.loc 1 17 9
- 116 0012 F868     		ldr	r0, [r7, #12]
- 117 0014 FFF7FEFF 		bl	validate_app
- 118 0018 0346     		mov	r3, r0
- 119              		.loc 1 17 8
- 120 001a 002B     		cmp	r3, #0
- 121 001c 0CD0     		beq	.L5
- 122              	.LBB9:
   18:Core/boot.c   ****     {
   19:Core/boot.c   ****         void (*app_entry)(void) = (void (*)(void))app_reset_vector;
- 123              		.loc 1 19 16
- 124 001e BB68     		ldr	r3, [r7, #8]
- 125 0020 7B60     		str	r3, [r7, #4]
- 126              	.LBB10:
- 127              	.LBB11:
- 128              		.file 2 "CMSIS/Include/cmsis_gcc.h"
+  20:Core/boot.c   ****         __disable_irq();
+  21:Core/boot.c   ****         __set_MSP(*(volatile uint32_t *)app_start_address);
+  22:Core/boot.c   ****         app_entry();
+  23:Core/boot.c   ****     }
+  24:Core/boot.c   **** 
+  25:Core/boot.c   ****     while (1); // Ожидание отладки или перезапуска
+  26:Core/boot.c   **** }
+  27:Core/boot.c   **** 
+  28:Core/boot.c   **** int validate_app(uint32_t base_addr)
+  29:Core/boot.c   **** {
+  30:Core/boot.c   ****     uint32_t expected_crc = *(uint32_t *)(base_addr + 0x1000 - 4); // CRC в конце
+  31:Core/boot.c   ****     uint32_t calc_crc = 0;
+  32:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
+  98              		.loc 1 32 5 view .LVU19
+  99 0004 0B48     		ldr	r0, .L12+4
+ 100              	.LBE20:
+ 101              	.LBE19:
+ 102              	.LBE18:
+ 103              	.LBE17:
+  15:Core/boot.c   **** 
+ 104              		.loc 1 15 14 view .LVU20
+ 105 0006 5C68     		ldr	r4, [r3, #4]
+ 106              	.LVL1:
+  17:Core/boot.c   ****     {
+ 107              		.loc 1 17 5 is_stmt 1 view .LVU21
+ 108              	.LBB30:
+ 109              	.LBB24:
+ 110              	.LBI18:
+  28:Core/boot.c   **** {
+ 111              		.loc 1 28 5 view .LVU22
+ 112              	.LBB23:
+  30:Core/boot.c   ****     uint32_t calc_crc = 0;
+ 113              		.loc 1 30 5 view .LVU23
+  30:Core/boot.c   ****     uint32_t calc_crc = 0;
+ 114              		.loc 1 30 14 is_stmt 0 view .LVU24
+ 115 0008 D3F8FC5F 		ldr	r5, [r3, #4092]
+ 116              	.LVL2:
+  31:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
+ 117              		.loc 1 31 5 is_stmt 1 view .LVU25
+ 118              		.loc 1 32 5 view .LVU26
+ 119              	.LBB21:
+ 120              		.loc 1 32 10 view .LVU27
+ 121              		.loc 1 32 47 view .LVU28
+ 122              	.LBE21:
+  31:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
+ 123              		.loc 1 31 14 is_stmt 0 view .LVU29
+ 124 000c 0022     		movs	r2, #0
+ 125              	.LVL3:
+ 126              	.L6:
+ 127              	.LBB22:
+  33:Core/boot.c   ****     {
+  34:Core/boot.c   ****         calc_crc ^= *p; // Простейшая проверка — XOR
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 4
+
+
+ 128              		.loc 1 34 9 is_stmt 1 view .LVU30
+ 129              		.loc 1 34 18 is_stmt 0 view .LVU31
+ 130 000e 53F8041B 		ldr	r1, [r3], #4
+ 131              	.LVL4:
+  32:Core/boot.c   ****     {
+ 132              		.loc 1 32 5 view .LVU32
+ 133 0012 8342     		cmp	r3, r0
+ 134              		.loc 1 34 18 view .LVU33
+ 135 0014 82EA0102 		eor	r2, r2, r1
+ 136              	.LVL5:
+  32:Core/boot.c   ****     {
+ 137              		.loc 1 32 89 is_stmt 1 view .LVU34
+  32:Core/boot.c   ****     {
+ 138              		.loc 1 32 47 view .LVU35
+  32:Core/boot.c   ****     {
+ 139              		.loc 1 32 5 is_stmt 0 view .LVU36
+ 140 0018 F9D1     		bne	.L6
+ 141              	.LBE22:
+  35:Core/boot.c   ****     }
+  36:Core/boot.c   ****     return calc_crc == expected_crc;
+ 142              		.loc 1 36 5 is_stmt 1 view .LVU37
+ 143              	.LVL6:
+ 144              		.loc 1 36 5 is_stmt 0 view .LVU38
+ 145              	.LBE23:
+ 146              	.LBE24:
+  17:Core/boot.c   ****     {
+ 147              		.loc 1 17 8 view .LVU39
+ 148 001a 9542     		cmp	r5, r2
+ 149 001c 00D0     		beq	.L11
+ 150              	.L9:
+ 151              	.LBE30:
+  25:Core/boot.c   **** }
+ 152              		.loc 1 25 5 is_stmt 1 discriminator 1 view .LVU40
+  25:Core/boot.c   **** }
+ 153              		.loc 1 25 14 discriminator 1 view .LVU41
+  25:Core/boot.c   **** }
+ 154              		.loc 1 25 11 discriminator 1 view .LVU42
+  25:Core/boot.c   **** }
+ 155              		.loc 1 25 5 discriminator 1 view .LVU43
+  25:Core/boot.c   **** }
+ 156              		.loc 1 25 14 discriminator 1 view .LVU44
+  25:Core/boot.c   **** }
+ 157              		.loc 1 25 11 discriminator 1 view .LVU45
+ 158 001e FEE7     		b	.L9
+ 159              	.L11:
+ 160              	.LBB31:
+ 161              	.LBB25:
+  19:Core/boot.c   ****         __disable_irq();
+ 162              		.loc 1 19 9 view .LVU46
+ 163              	.LVL7:
+  20:Core/boot.c   ****         __set_MSP(*(volatile uint32_t *)app_start_address);
+ 164              		.loc 1 20 9 view .LVU47
+ 165              	.LBB26:
+ 166              	.LBI26:
+ 167              		.file 2 "CMSIS/Include/cmsis_gcc.h"
    1:CMSIS/Include/cmsis_gcc.h **** /**************************************************************************//**
    2:CMSIS/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 5
+
+
    3:CMSIS/Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
    4:CMSIS/Include/cmsis_gcc.h ****  * @version  V5.0.4
    5:CMSIS/Include/cmsis_gcc.h ****  * @date     09. April 2018
@@ -178,9 +266,6 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
   25:CMSIS/Include/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
   26:CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_H
   27:CMSIS/Include/cmsis_gcc.h **** 
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 4
-
-
   28:CMSIS/Include/cmsis_gcc.h **** /* ignore some GCC warnings */
   29:CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic push
   30:CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
@@ -213,6 +298,9 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
   57:CMSIS/Include/cmsis_gcc.h **** #endif
   58:CMSIS/Include/cmsis_gcc.h **** #ifndef   __WEAK
   59:CMSIS/Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 6
+
+
   60:CMSIS/Include/cmsis_gcc.h **** #endif
   61:CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED
   62:CMSIS/Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
@@ -238,9 +326,6 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
   82:CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_WRITE { uint16_t v; };
   83:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
   84:CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_WRITE(addr, val)    (void)((((struct T_UINT16_WRITE *)(void *)(addr))-
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 5
-
-
   85:CMSIS/Include/cmsis_gcc.h **** #endif
   86:CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_READ
   87:CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
@@ -273,6 +358,9 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
  114:CMSIS/Include/cmsis_gcc.h ****   #define __RESTRICT                             __restrict
  115:CMSIS/Include/cmsis_gcc.h **** #endif
  116:CMSIS/Include/cmsis_gcc.h **** 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 7
+
+
  117:CMSIS/Include/cmsis_gcc.h **** 
  118:CMSIS/Include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
  119:CMSIS/Include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
@@ -297,32 +385,27 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
  138:CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
  139:CMSIS/Include/cmsis_gcc.h ****  */
  140:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_irq(void)
+ 168              		.loc 2 140 27 view .LVU48
+ 169              	.LBB27:
  141:CMSIS/Include/cmsis_gcc.h **** {
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 6
-
-
  142:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
- 129              		.loc 2 142 3
- 130              		.syntax unified
- 131              	@ 142 "CMSIS/Include/cmsis_gcc.h" 1
- 132 0022 72B6     		cpsid i
- 133              	@ 0 "" 2
+ 170              		.loc 2 142 3 view .LVU49
+ 171              		.syntax unified
+ 172              	@ 142 "CMSIS/Include/cmsis_gcc.h" 1
+ 173 0020 72B6     		cpsid i
+ 174              	@ 0 "" 2
+ 175              		.thumb
+ 176              		.syntax unified
+ 177              	.LBE27:
+ 178              	.LBE26:
+  21:Core/boot.c   ****         app_entry();
+ 179              		.loc 1 21 9 view .LVU50
+ 180 0022 034B     		ldr	r3, .L12
+ 181 0024 1B68     		ldr	r3, [r3]
+ 182              	.LVL8:
+ 183              	.LBB28:
+ 184              	.LBI28:
  143:CMSIS/Include/cmsis_gcc.h **** }
- 134              		.loc 2 143 1
- 135              		.thumb
- 136              		.syntax unified
- 137 0024 00BF     		nop
- 138              	.LBE11:
- 139              	.LBE10:
-  20:Core/boot.c   ****         __disable_irq();
-  21:Core/boot.c   ****         __set_MSP(*(volatile uint32_t *)app_start_address);
- 140              		.loc 1 21 20
- 141 0026 FB68     		ldr	r3, [r7, #12]
- 142              		.loc 1 21 9
- 143 0028 1B68     		ldr	r3, [r3]
- 144 002a 3B60     		str	r3, [r7]
- 145              	.LBB12:
- 146              	.LBB13:
  144:CMSIS/Include/cmsis_gcc.h **** 
  145:CMSIS/Include/cmsis_gcc.h **** 
  146:CMSIS/Include/cmsis_gcc.h **** /**
@@ -335,6 +418,9 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
  153:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
  154:CMSIS/Include/cmsis_gcc.h **** 
  155:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, control" : "=r" (result) );
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 8
+
+
  156:CMSIS/Include/cmsis_gcc.h ****   return(result);
  157:CMSIS/Include/cmsis_gcc.h **** }
  158:CMSIS/Include/cmsis_gcc.h **** 
@@ -358,9 +444,6 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
  176:CMSIS/Include/cmsis_gcc.h **** /**
  177:CMSIS/Include/cmsis_gcc.h ****   \brief   Set Control Register
  178:CMSIS/Include/cmsis_gcc.h ****   \details Writes the given value to the Control Register.
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 7
-
-
  179:CMSIS/Include/cmsis_gcc.h ****   \param [in]    control  Control Register value to set
  180:CMSIS/Include/cmsis_gcc.h ****  */
  181:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_CONTROL(uint32_t control)
@@ -395,6 +478,9 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
  210:CMSIS/Include/cmsis_gcc.h ****   return(result);
  211:CMSIS/Include/cmsis_gcc.h **** }
  212:CMSIS/Include/cmsis_gcc.h **** 
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 9
+
+
  213:CMSIS/Include/cmsis_gcc.h **** 
  214:CMSIS/Include/cmsis_gcc.h **** /**
  215:CMSIS/Include/cmsis_gcc.h ****   \brief   Get APSR Register
@@ -418,9 +504,6 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
  233:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __get_xPSR(void)
  234:CMSIS/Include/cmsis_gcc.h **** {
  235:CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 8
-
-
  236:CMSIS/Include/cmsis_gcc.h **** 
  237:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MRS %0, xpsr" : "=r" (result) );
  238:CMSIS/Include/cmsis_gcc.h ****   return(result);
@@ -455,6 +538,9 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
  267:CMSIS/Include/cmsis_gcc.h ****   return(result);
  268:CMSIS/Include/cmsis_gcc.h **** }
  269:CMSIS/Include/cmsis_gcc.h **** #endif
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 10
+
+
  270:CMSIS/Include/cmsis_gcc.h **** 
  271:CMSIS/Include/cmsis_gcc.h **** 
  272:CMSIS/Include/cmsis_gcc.h **** /**
@@ -478,9 +564,6 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
  290:CMSIS/Include/cmsis_gcc.h **** {
  291:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MSR psp_ns, %0" : : "r" (topOfProcStack) : );
  292:CMSIS/Include/cmsis_gcc.h **** }
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 9
-
-
  293:CMSIS/Include/cmsis_gcc.h **** #endif
  294:CMSIS/Include/cmsis_gcc.h **** 
  295:CMSIS/Include/cmsis_gcc.h **** 
@@ -515,179 +598,348 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
  324:CMSIS/Include/cmsis_gcc.h **** 
  325:CMSIS/Include/cmsis_gcc.h **** 
  326:CMSIS/Include/cmsis_gcc.h **** /**
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 11
+
+
  327:CMSIS/Include/cmsis_gcc.h ****   \brief   Set Main Stack Pointer
  328:CMSIS/Include/cmsis_gcc.h ****   \details Assigns the given value to the Main Stack Pointer (MSP).
  329:CMSIS/Include/cmsis_gcc.h ****   \param [in]    topOfMainStack  Main Stack Pointer value to set
  330:CMSIS/Include/cmsis_gcc.h ****  */
  331:CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __set_MSP(uint32_t topOfMainStack)
+ 185              		.loc 2 331 27 view .LVU51
+ 186              	.LBB29:
  332:CMSIS/Include/cmsis_gcc.h **** {
  333:CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("MSR msp, %0" : : "r" (topOfMainStack) : );
- 147              		.loc 2 333 3
- 148 002c 3B68     		ldr	r3, [r7]
- 149              		.syntax unified
- 150              	@ 333 "CMSIS/Include/cmsis_gcc.h" 1
- 151 002e 83F30888 		MSR msp, r3
- 152              	@ 0 "" 2
- 334:CMSIS/Include/cmsis_gcc.h **** }
- 153              		.loc 2 334 1
- 154              		.thumb
- 155              		.syntax unified
- 156 0032 00BF     		nop
- 157              	.LBE13:
- 158              	.LBE12:
-  22:Core/boot.c   ****         app_entry();
- 159              		.loc 1 22 9
- 160 0034 7B68     		ldr	r3, [r7, #4]
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 10
+ 187              		.loc 2 333 3 view .LVU52
+ 188              		.syntax unified
+ 189              	@ 333 "CMSIS/Include/cmsis_gcc.h" 1
+ 190 0026 83F30888 		MSR msp, r3
+ 191              	@ 0 "" 2
+ 192              	.LVL9:
+ 193              		.loc 2 333 3 is_stmt 0 view .LVU53
+ 194              		.thumb
+ 195              		.syntax unified
+ 196              	.LBE29:
+ 197              	.LBE28:
+  22:Core/boot.c   ****     }
+ 198              		.loc 1 22 9 is_stmt 1 view .LVU54
+ 199 002a A047     		blx	r4
+ 200              	.LVL10:
+ 201 002c F7E7     		b	.L9
+ 202              	.L13:
+ 203 002e 00BF     		.align	2
+ 204              	.L12:
+ 205 0030 00000108 		.word	134283264
+ 206 0034 FC0F0108 		.word	134287356
+ 207              	.LBE25:
+ 208              	.LBE31:
+ 209              		.cfi_endproc
+ 210              	.LFE133:
+ 212              		.section	.text.validate_app,"ax",%progbits
+ 213              		.align	1
+ 214              		.p2align 2,,3
+ 215              		.global	validate_app
+ 216              		.syntax unified
+ 217              		.thumb
+ 218              		.thumb_func
+ 220              	validate_app:
+ 221              	.LVL11:
+ 222              	.LFB134:
+  29:Core/boot.c   ****     uint32_t expected_crc = *(uint32_t *)(base_addr + 0x1000 - 4); // CRC в конце
+ 223              		.loc 1 29 1 view -0
+ 224              		.cfi_startproc
+ 225              		@ args = 0, pretend = 0, frame = 0
+ 226              		@ frame_needed = 0, uses_anonymous_args = 0
+  30:Core/boot.c   ****     uint32_t calc_crc = 0;
+ 227              		.loc 1 30 5 view .LVU56
+  30:Core/boot.c   ****     uint32_t calc_crc = 0;
+ 228              		.loc 1 30 62 is_stmt 0 view .LVU57
+ 229 0000 00F6FC73 		addw	r3, r0, #4092
+ 230              	.LBB32:
+  32:Core/boot.c   ****     {
+ 231              		.loc 1 32 5 view .LVU58
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 12
 
 
- 161 0036 9847     		blx	r3
- 162              	.LVL0:
- 163              	.L5:
- 164              	.LBE9:
- 165              	.LBE8:
-  23:Core/boot.c   ****     }
-  24:Core/boot.c   **** 
-  25:Core/boot.c   ****     while (1); // Ожидание отладки или перезапуска
- 166              		.loc 1 25 11 discriminator 1
- 167 0038 FEE7     		b	.L5
- 168              	.L7:
- 169 003a 00BF     		.align	2
- 170              	.L6:
- 171 003c 00000108 		.word	134283264
- 172              		.cfi_endproc
- 173              	.LFE136:
- 175              		.section	.text.validate_app,"ax",%progbits
- 176              		.align	1
- 177              		.global	validate_app
- 178              		.syntax unified
- 179              		.thumb
- 180              		.thumb_func
- 182              	validate_app:
- 183              	.LFB137:
-  26:Core/boot.c   **** }
-  27:Core/boot.c   **** 
-  28:Core/boot.c   **** int validate_app(uint32_t base_addr)
-  29:Core/boot.c   **** {
- 184              		.loc 1 29 1
- 185              		.cfi_startproc
- 186              		@ args = 0, pretend = 0, frame = 24
- 187              		@ frame_needed = 1, uses_anonymous_args = 0
- 188              		@ link register save eliminated.
- 189 0000 80B4     		push	{r7}
- 190              	.LCFI7:
- 191              		.cfi_def_cfa_offset 4
- 192              		.cfi_offset 7, -4
- 193 0002 87B0     		sub	sp, sp, #28
- 194              	.LCFI8:
- 195              		.cfi_def_cfa_offset 32
- 196 0004 00AF     		add	r7, sp, #0
- 197              	.LCFI9:
- 198              		.cfi_def_cfa_register 7
- 199 0006 7860     		str	r0, [r7, #4]
-  30:Core/boot.c   ****     uint32_t expected_crc = *(uint32_t *)(base_addr + 0x1000 - 4); // CRC в конце
- 200              		.loc 1 30 62
- 201 0008 7B68     		ldr	r3, [r7, #4]
- 202 000a 03F6FC73 		addw	r3, r3, #4092
- 203              		.loc 1 30 14
- 204 000e 1B68     		ldr	r3, [r3]
- 205 0010 FB60     		str	r3, [r7, #12]
-  31:Core/boot.c   ****     uint32_t calc_crc = 0;
- 206              		.loc 1 31 14
- 207 0012 0023     		movs	r3, #0
- 208 0014 7B61     		str	r3, [r7, #20]
- 209              	.LBB14:
-  32:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 11
+ 232 0004 8342     		cmp	r3, r0
+ 233              	.LBE32:
+  29:Core/boot.c   ****     uint32_t expected_crc = *(uint32_t *)(base_addr + 0x1000 - 4); // CRC в конце
+ 234              		.loc 1 29 1 view .LVU59
+ 235 0006 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 236              	.LCFI1:
+ 237              		.cfi_def_cfa_offset 24
+ 238              		.cfi_offset 4, -24
+ 239              		.cfi_offset 5, -20
+ 240              		.cfi_offset 6, -16
+ 241              		.cfi_offset 7, -12
+ 242              		.cfi_offset 8, -8
+ 243              		.cfi_offset 14, -4
+  30:Core/boot.c   ****     uint32_t calc_crc = 0;
+ 244              		.loc 1 30 14 view .LVU60
+ 245 000a D0F8FC7F 		ldr	r7, [r0, #4092]
+ 246              	.LVL12:
+  31:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
+ 247              		.loc 1 31 5 is_stmt 1 view .LVU61
+  32:Core/boot.c   ****     {
+ 248              		.loc 1 32 5 view .LVU62
+ 249              	.LBB33:
+  32:Core/boot.c   ****     {
+ 250              		.loc 1 32 10 view .LVU63
+  32:Core/boot.c   ****     {
+ 251              		.loc 1 32 47 view .LVU64
+  32:Core/boot.c   ****     {
+ 252              		.loc 1 32 5 is_stmt 0 view .LVU65
+ 253 000e 5AD9     		bls	.L21
+ 254 0010 00F1040E 		add	lr, r0, #4
+ 255 0014 40F2FF32 		movw	r2, #1023
+ 256 0018 7345     		cmp	r3, lr
+ 257 001a 38BF     		it	cc
+ 258 001c 0122     		movcc	r2, #1
+ 259 001e 551E     		subs	r5, r2, #1
+ 260 0020 062D     		cmp	r5, #6
+ 261 0022 C0F38003 		ubfx	r3, r0, #2, #1
+ 262 0026 2C46     		mov	r4, r5
+ 263 0028 4AD9     		bls	.L22
+ 264 002a 002B     		cmp	r3, #0
+ 265 002c 44D0     		beq	.L23
+  34:Core/boot.c   ****     }
+ 266              		.loc 1 34 9 is_stmt 1 view .LVU66
+  34:Core/boot.c   ****     }
+ 267              		.loc 1 34 21 is_stmt 0 view .LVU67
+ 268 002e D0F80080 		ldr	r8, [r0]
+ 269              	.LVL13:
+  32:Core/boot.c   ****     {
+ 270              		.loc 1 32 89 is_stmt 1 view .LVU68
+  32:Core/boot.c   ****     {
+ 271              		.loc 1 32 47 view .LVU69
+ 272              	.L17:
+  32:Core/boot.c   ****     {
+ 273              		.loc 1 32 47 is_stmt 0 view .LVU70
+ 274 0032 D61A     		subs	r6, r2, r3
+ 275 0034 4FEA560C 		lsr	ip, r6, #1
+ 276 0038 00EB8303 		add	r3, r0, r3, lsl #2
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 13
 
 
- 210              		.loc 1 32 20
- 211 0016 7B68     		ldr	r3, [r7, #4]
- 212 0018 3B61     		str	r3, [r7, #16]
- 213              		.loc 1 32 5
- 214 001a 07E0     		b	.L9
- 215              	.L10:
-  33:Core/boot.c   ****     {
-  34:Core/boot.c   ****         calc_crc ^= *p; // Простейшая проверка — XOR
- 216              		.loc 1 34 21 discriminator 3
- 217 001c 3B69     		ldr	r3, [r7, #16]
- 218 001e 1B68     		ldr	r3, [r3]
- 219              		.loc 1 34 18 discriminator 3
- 220 0020 7A69     		ldr	r2, [r7, #20]
- 221 0022 5340     		eors	r3, r3, r2
- 222 0024 7B61     		str	r3, [r7, #20]
-  32:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
- 223              		.loc 1 32 89 discriminator 3
- 224 0026 3B69     		ldr	r3, [r7, #16]
- 225 0028 0433     		adds	r3, r3, #4
- 226 002a 3B61     		str	r3, [r7, #16]
- 227              	.L9:
-  32:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
- 228              		.loc 1 32 83 discriminator 1
- 229 002c 7B68     		ldr	r3, [r7, #4]
- 230 002e 03F6FC73 		addw	r3, r3, #4092
-  32:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
- 231              		.loc 1 32 51 discriminator 1
- 232 0032 1A46     		mov	r2, r3
-  32:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
- 233              		.loc 1 32 5 discriminator 1
- 234 0034 3B69     		ldr	r3, [r7, #16]
- 235 0036 9342     		cmp	r3, r2
- 236 0038 F0D3     		bcc	.L10
- 237              	.LBE14:
-  35:Core/boot.c   ****     }
-  36:Core/boot.c   ****     return calc_crc == expected_crc;
- 238              		.loc 1 36 21
- 239 003a 7A69     		ldr	r2, [r7, #20]
- 240 003c FB68     		ldr	r3, [r7, #12]
- 241 003e 9A42     		cmp	r2, r3
- 242 0040 0CBF     		ite	eq
- 243 0042 0123     		moveq	r3, #1
- 244 0044 0023     		movne	r3, #0
- 245 0046 DBB2     		uxtb	r3, r3
+ 277              	.LBE33:
+  31:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
+ 278              		.loc 1 31 14 view .LVU71
+ 279 003c 0021     		movs	r1, #0
+ 280 003e 03EBCC0C 		add	ip, r3, ip, lsl #3
+ 281 0042 0A46     		mov	r2, r1
+ 282              	.LVL14:
+ 283              	.L18:
+ 284              	.LBB34:
+  34:Core/boot.c   ****     }
+ 285              		.loc 1 34 9 is_stmt 1 discriminator 3 view .LVU72
+  34:Core/boot.c   ****     }
+ 286              		.loc 1 34 21 is_stmt 0 discriminator 3 view .LVU73
+ 287 0044 D3E90040 		ldrd	r4, r0, [r3]
+  32:Core/boot.c   ****     {
+ 288              		.loc 1 32 5 discriminator 3 view .LVU74
+ 289 0048 0833     		adds	r3, r3, #8
+ 290 004a 9C45     		cmp	ip, r3
+  34:Core/boot.c   ****     }
+ 291              		.loc 1 34 18 discriminator 3 view .LVU75
+ 292 004c 81EA0401 		eor	r1, r1, r4
+ 293 0050 82EA0002 		eor	r2, r2, r0
+  32:Core/boot.c   ****     {
+ 294              		.loc 1 32 89 is_stmt 1 discriminator 3 view .LVU76
+  32:Core/boot.c   ****     {
+ 295              		.loc 1 32 47 discriminator 3 view .LVU77
+ 296 0054 F6D1     		bne	.L18
+ 297 0056 26F00100 		bic	r0, r6, #1
+ 298 005a 82EA0103 		eor	r3, r2, r1
+ 299 005e 8642     		cmp	r6, r0
+ 300 0060 83EA0803 		eor	r3, r3, r8
+ 301 0064 0EEB8001 		add	r1, lr, r0, lsl #2
+ 302 0068 A5EB0002 		sub	r2, r5, r0
+ 303 006c 1ED0     		beq	.L15
+ 304 006e 541E     		subs	r4, r2, #1
+ 305              	.L16:
+ 306              	.LVL15:
+  34:Core/boot.c   ****     }
+ 307              		.loc 1 34 9 view .LVU78
+  34:Core/boot.c   ****     }
+ 308              		.loc 1 34 18 is_stmt 0 view .LVU79
+ 309 0070 0868     		ldr	r0, [r1]
+ 310 0072 4340     		eors	r3, r3, r0
+ 311              	.LVL16:
+  32:Core/boot.c   ****     {
+ 312              		.loc 1 32 89 is_stmt 1 view .LVU80
+  32:Core/boot.c   ****     {
+ 313              		.loc 1 32 47 view .LVU81
+  32:Core/boot.c   ****     {
+ 314              		.loc 1 32 5 is_stmt 0 view .LVU82
+ 315 0074 D4B1     		cbz	r4, .L15
+  34:Core/boot.c   ****     }
+ 316              		.loc 1 34 9 is_stmt 1 view .LVU83
+  34:Core/boot.c   ****     }
+ 317              		.loc 1 34 18 is_stmt 0 view .LVU84
+ 318 0076 4868     		ldr	r0, [r1, #4]
+  32:Core/boot.c   ****     {
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 14
+
+
+ 319              		.loc 1 32 5 view .LVU85
+ 320 0078 022A     		cmp	r2, #2
+  34:Core/boot.c   ****     }
+ 321              		.loc 1 34 18 view .LVU86
+ 322 007a 83EA0003 		eor	r3, r3, r0
+ 323              	.LVL17:
+  32:Core/boot.c   ****     {
+ 324              		.loc 1 32 89 is_stmt 1 view .LVU87
+  32:Core/boot.c   ****     {
+ 325              		.loc 1 32 47 view .LVU88
+  32:Core/boot.c   ****     {
+ 326              		.loc 1 32 5 is_stmt 0 view .LVU89
+ 327 007e 15D0     		beq	.L15
+  34:Core/boot.c   ****     }
+ 328              		.loc 1 34 9 is_stmt 1 view .LVU90
+  34:Core/boot.c   ****     }
+ 329              		.loc 1 34 18 is_stmt 0 view .LVU91
+ 330 0080 8868     		ldr	r0, [r1, #8]
+  32:Core/boot.c   ****     {
+ 331              		.loc 1 32 5 view .LVU92
+ 332 0082 032A     		cmp	r2, #3
+  34:Core/boot.c   ****     }
+ 333              		.loc 1 34 18 view .LVU93
+ 334 0084 83EA0003 		eor	r3, r3, r0
+ 335              	.LVL18:
+  32:Core/boot.c   ****     {
+ 336              		.loc 1 32 89 is_stmt 1 view .LVU94
+  32:Core/boot.c   ****     {
+ 337              		.loc 1 32 47 view .LVU95
+  32:Core/boot.c   ****     {
+ 338              		.loc 1 32 5 is_stmt 0 view .LVU96
+ 339 0088 10D0     		beq	.L15
+  34:Core/boot.c   ****     }
+ 340              		.loc 1 34 9 is_stmt 1 view .LVU97
+  34:Core/boot.c   ****     }
+ 341              		.loc 1 34 18 is_stmt 0 view .LVU98
+ 342 008a C868     		ldr	r0, [r1, #12]
+  32:Core/boot.c   ****     {
+ 343              		.loc 1 32 5 view .LVU99
+ 344 008c 042A     		cmp	r2, #4
+  34:Core/boot.c   ****     }
+ 345              		.loc 1 34 18 view .LVU100
+ 346 008e 83EA0003 		eor	r3, r3, r0
+ 347              	.LVL19:
+  32:Core/boot.c   ****     {
+ 348              		.loc 1 32 89 is_stmt 1 view .LVU101
+  32:Core/boot.c   ****     {
+ 349              		.loc 1 32 47 view .LVU102
+  32:Core/boot.c   ****     {
+ 350              		.loc 1 32 5 is_stmt 0 view .LVU103
+ 351 0092 0BD0     		beq	.L15
+  34:Core/boot.c   ****     }
+ 352              		.loc 1 34 9 is_stmt 1 view .LVU104
+  34:Core/boot.c   ****     }
+ 353              		.loc 1 34 18 is_stmt 0 view .LVU105
+ 354 0094 0869     		ldr	r0, [r1, #16]
+  32:Core/boot.c   ****     {
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 15
+
+
+ 355              		.loc 1 32 5 view .LVU106
+ 356 0096 052A     		cmp	r2, #5
+  34:Core/boot.c   ****     }
+ 357              		.loc 1 34 18 view .LVU107
+ 358 0098 83EA0003 		eor	r3, r3, r0
+ 359              	.LVL20:
+  32:Core/boot.c   ****     {
+ 360              		.loc 1 32 89 is_stmt 1 view .LVU108
+  32:Core/boot.c   ****     {
+ 361              		.loc 1 32 47 view .LVU109
+  32:Core/boot.c   ****     {
+ 362              		.loc 1 32 5 is_stmt 0 view .LVU110
+ 363 009c 06D0     		beq	.L15
+  34:Core/boot.c   ****     }
+ 364              		.loc 1 34 9 is_stmt 1 view .LVU111
+  34:Core/boot.c   ****     }
+ 365              		.loc 1 34 18 is_stmt 0 view .LVU112
+ 366 009e 4869     		ldr	r0, [r1, #20]
+  32:Core/boot.c   ****     {
+ 367              		.loc 1 32 5 view .LVU113
+ 368 00a0 062A     		cmp	r2, #6
+  34:Core/boot.c   ****     }
+ 369              		.loc 1 34 18 view .LVU114
+ 370 00a2 83EA0003 		eor	r3, r3, r0
+ 371              	.LVL21:
+  32:Core/boot.c   ****     {
+ 372              		.loc 1 32 89 is_stmt 1 view .LVU115
+  32:Core/boot.c   ****     {
+ 373              		.loc 1 32 47 view .LVU116
+  32:Core/boot.c   ****     {
+ 374              		.loc 1 32 5 is_stmt 0 view .LVU117
+ 375 00a6 01D0     		beq	.L15
+  34:Core/boot.c   ****     }
+ 376              		.loc 1 34 9 is_stmt 1 view .LVU118
+  34:Core/boot.c   ****     }
+ 377              		.loc 1 34 18 is_stmt 0 view .LVU119
+ 378 00a8 8A69     		ldr	r2, [r1, #24]
+ 379 00aa 5340     		eors	r3, r3, r2
+ 380              	.LVL22:
+  32:Core/boot.c   ****     {
+ 381              		.loc 1 32 89 is_stmt 1 view .LVU120
+  32:Core/boot.c   ****     {
+ 382              		.loc 1 32 47 view .LVU121
+ 383              	.L15:
+  32:Core/boot.c   ****     {
+ 384              		.loc 1 32 47 is_stmt 0 view .LVU122
+ 385              	.LBE34:
+ 386              		.loc 1 36 5 is_stmt 1 view .LVU123
   37:Core/boot.c   **** }
- 246              		.loc 1 37 1
- 247 0048 1846     		mov	r0, r3
- 248 004a 1C37     		adds	r7, r7, #28
- 249              	.LCFI10:
- 250              		.cfi_def_cfa_offset 4
- 251 004c BD46     		mov	sp, r7
- 252              	.LCFI11:
- 253              		.cfi_def_cfa_register 13
- 254              		@ sp needed
- 255 004e 5DF8047B 		ldr	r7, [sp], #4
- 256              	.LCFI12:
- 257              		.cfi_restore 7
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 12
+ 387              		.loc 1 37 1 is_stmt 0 view .LVU124
+ 388 00ac F81A     		subs	r0, r7, r3
+ 389 00ae B0FA80F0 		clz	r0, r0
+ 390 00b2 4009     		lsrs	r0, r0, #5
+ 391 00b4 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 392              	.LVL23:
+ 393              	.L23:
+ 394              	.LBB35:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 16
 
 
- 258              		.cfi_def_cfa_offset 0
- 259 0052 7047     		bx	lr
- 260              		.cfi_endproc
- 261              	.LFE137:
- 263              		.section	.text.jump_to_application,"ax",%progbits
- 264              		.align	1
- 265              		.global	jump_to_application
- 266              		.syntax unified
- 267              		.thumb
- 268              		.thumb_func
- 270              	jump_to_application:
- 271              	.LFB138:
+  32:Core/boot.c   ****     {
+ 395              		.loc 1 32 5 view .LVU125
+ 396 00b8 1546     		mov	r5, r2
+ 397 00ba 8646     		mov	lr, r0
+ 398              	.LBE35:
+  31:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
+ 399              		.loc 1 31 14 view .LVU126
+ 400 00bc 9846     		mov	r8, r3
+ 401 00be B8E7     		b	.L17
+ 402              	.L22:
+  31:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
+ 403              		.loc 1 31 14 view .LVU127
+ 404 00c0 0146     		mov	r1, r0
+ 405 00c2 0023     		movs	r3, #0
+ 406 00c4 D4E7     		b	.L16
+ 407              	.L21:
+  31:Core/boot.c   ****     for (uint32_t *p = (uint32_t *)base_addr; p < (uint32_t *)(base_addr + 0x1000 - 4); ++p)
+ 408              		.loc 1 31 14 view .LVU128
+ 409 00c6 0023     		movs	r3, #0
+ 410 00c8 F0E7     		b	.L15
+ 411              		.cfi_endproc
+ 412              	.LFE134:
+ 414 00ca 00BF     		.section	.text.jump_to_application,"ax",%progbits
+ 415              		.align	1
+ 416              		.p2align 2,,3
+ 417              		.global	jump_to_application
+ 418              		.syntax unified
+ 419              		.thumb
+ 420              		.thumb_func
+ 422              	jump_to_application:
+ 423              	.LFB135:
   38:Core/boot.c   **** 
   39:Core/boot.c   **** void jump_to_application(void)
   40:Core/boot.c   **** {
- 272              		.loc 1 40 1
- 273              		.cfi_startproc
- 274              		@ args = 0, pretend = 0, frame = 0
- 275              		@ frame_needed = 1, uses_anonymous_args = 0
- 276              		@ link register save eliminated.
- 277 0000 80B4     		push	{r7}
- 278              	.LCFI13:
- 279              		.cfi_def_cfa_offset 4
- 280              		.cfi_offset 7, -4
- 281 0002 00AF     		add	r7, sp, #0
- 282              	.LCFI14:
- 283              		.cfi_def_cfa_register 7
+ 424              		.loc 1 40 1 is_stmt 1 view -0
+ 425              		.cfi_startproc
+ 426              		@ args = 0, pretend = 0, frame = 0
+ 427              		@ frame_needed = 0, uses_anonymous_args = 0
+ 428              		@ link register save eliminated.
   41:Core/boot.c   ****     // // Адрес начала приложения
   42:Core/boot.c   ****     // uint32_t app_address = 0x08004000;
   43:Core/boot.c   **** 
@@ -705,88 +957,63 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 1
   55:Core/boot.c   ****     //     app_reset_handler();
   56:Core/boot.c   ****     // }
   57:Core/boot.c   **** }
- 284              		.loc 1 57 1
- 285 0004 00BF     		nop
- 286 0006 BD46     		mov	sp, r7
- 287              	.LCFI15:
- 288              		.cfi_def_cfa_register 13
- 289              		@ sp needed
- 290 0008 5DF8047B 		ldr	r7, [sp], #4
- 291              	.LCFI16:
- 292              		.cfi_restore 7
- 293              		.cfi_def_cfa_offset 0
- 294 000c 7047     		bx	lr
- 295              		.cfi_endproc
- 296              	.LFE138:
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 13
+ 429              		.loc 1 57 1 view .LVU130
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 17
 
 
- 298              		.section	.text.check_flash_protection,"ax",%progbits
- 299              		.align	1
- 300              		.global	check_flash_protection
- 301              		.syntax unified
- 302              		.thumb
- 303              		.thumb_func
- 305              	check_flash_protection:
- 306              	.LFB139:
+ 430 0000 7047     		bx	lr
+ 431              		.cfi_endproc
+ 432              	.LFE135:
+ 434 0002 00BF     		.section	.text.check_flash_protection,"ax",%progbits
+ 435              		.align	1
+ 436              		.p2align 2,,3
+ 437              		.global	check_flash_protection
+ 438              		.syntax unified
+ 439              		.thumb
+ 440              		.thumb_func
+ 442              	check_flash_protection:
+ 443              	.LFB136:
   58:Core/boot.c   **** 
   59:Core/boot.c   **** void check_flash_protection(void)
   60:Core/boot.c   **** {
- 307              		.loc 1 60 1
- 308              		.cfi_startproc
- 309              		@ args = 0, pretend = 0, frame = 0
- 310              		@ frame_needed = 1, uses_anonymous_args = 0
- 311 0000 80B5     		push	{r7, lr}
- 312              	.LCFI17:
- 313              		.cfi_def_cfa_offset 8
- 314              		.cfi_offset 7, -8
- 315              		.cfi_offset 14, -4
- 316 0002 00AF     		add	r7, sp, #0
- 317              	.LCFI18:
- 318              		.cfi_def_cfa_register 7
+ 444              		.loc 1 60 1 view -0
+ 445              		.cfi_startproc
+ 446              		@ args = 0, pretend = 0, frame = 0
+ 447              		@ frame_needed = 0, uses_anonymous_args = 0
+ 448              		@ link register save eliminated.
   61:Core/boot.c   ****     // if (FLASH->OPTCR1 & FLASH_OPTCR1_nWRP_0)
   62:Core/boot.c   ****     // {
   63:Core/boot.c   ****         // Сектор 0 защищён
   64:Core/boot.c   ****         blink_run(50);
- 319              		.loc 1 64 9
- 320 0004 3220     		movs	r0, #50
- 321 0006 FFF7FEFF 		bl	blink_run
-  65:Core/boot.c   ****     // }
-  66:Core/boot.c   ****     // else
-  67:Core/boot.c   ****     // {
-  68:Core/boot.c   ****     //     // Ошибка: защита не активна
-  69:Core/boot.c   ****         
-  70:Core/boot.c   ****     //     blink_run(1000);
-  71:Core/boot.c   ****     //     while(1);
-  72:Core/boot.c   ****     // }
-  73:Core/boot.c   **** }
- 322              		.loc 1 73 1
- 323 000a 00BF     		nop
- 324 000c 80BD     		pop	{r7, pc}
- 325              		.cfi_endproc
- 326              	.LFE139:
- 328              		.text
- 329              	.Letext0:
- 330              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
- 331              		.file 4 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
- 332              		.file 5 "CMSIS/Include/core_cm4.h"
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s 			page 14
+ 449              		.loc 1 64 9 view .LVU132
+ 450 0000 3220     		movs	r0, #50
+ 451 0002 FFF7FEBF 		b	blink_run
+ 452              	.LVL24:
+ 453              		.cfi_endproc
+ 454              	.LFE136:
+ 456 0006 00BF     		.text
+ 457              	.Letext0:
+ 458              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 459              		.file 4 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 460              		.file 5 "CMSIS/Include/core_cm4.h"
+ 461              		.file 6 "Core/main.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s 			page 18
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 boot.c
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:20     .text.configure_mpu:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:26     .text.configure_mpu:00000000 configure_mpu
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:76     .text.configure_mpu:00000030 $d
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:82     .boot:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:88     .boot:00000000 Bootloader_Main
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:182    .text.validate_app:00000000 validate_app
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:171    .boot:0000003c $d
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:176    .text.validate_app:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:264    .text.jump_to_application:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:270    .text.jump_to_application:00000000 jump_to_application
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:299    .text.check_flash_protection:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccvxsZx7.s:305    .text.check_flash_protection:00000000 check_flash_protection
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:20     .text.configure_mpu:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:27     .text.configure_mpu:00000000 configure_mpu
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:62     .text.configure_mpu:00000024 $d
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:68     .boot:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:75     .boot:00000000 Bootloader_Main
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:205    .boot:00000030 $d
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:213    .text.validate_app:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:220    .text.validate_app:00000000 validate_app
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:415    .text.jump_to_application:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:422    .text.jump_to_application:00000000 jump_to_application
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:435    .text.check_flash_protection:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccIfPzvX.s:442    .text.check_flash_protection:00000000 check_flash_protection
 
 UNDEFINED SYMBOLS
 blink_run

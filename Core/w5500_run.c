@@ -10,7 +10,7 @@ void w5500_network_init(void)
     uint8_t dns[4] = {8, 8, 8, 8};
 
     w5500_init();
-    // ext_init();
+    
     wiz_NetInfo netInfo = {
         .mac = {mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]},
         .ip = {ip[0], ip[1], ip[2], ip[3]},

@@ -14,7 +14,6 @@ extern "C" {
 
 void blink_init(void);
 void blink_run(uint32_t ms);
-void ext_init(void);
 
 #ifdef __cplusplus
 }

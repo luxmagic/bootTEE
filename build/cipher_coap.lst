@@ -1,0 +1,769 @@
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 2
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"cipher_coap.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.rodata.encrypt_payload.str1.4,"aMS",%progbits,1
+  20              		.align	2
+  21              	.LC0:
+  22 0000 68656C6C 		.ascii	"helloFriend2025!helloFriend2025!\000"
+  22      6F467269 
+  22      656E6432 
+  22      30323521 
+  22      68656C6C 
+  23              		.section	.text.encrypt_payload,"ax",%progbits
+  24              		.align	1
+  25              		.p2align 2,,3
+  26              		.global	encrypt_payload
+  27              		.syntax unified
+  28              		.thumb
+  29              		.thumb_func
+  31              	encrypt_payload:
+  32              	.LVL0:
+  33              	.LFB147:
+  34              		.file 1 "Core/cipher_coap.c"
+   1:Core/cipher_coap.c **** #include "main.h"
+   2:Core/cipher_coap.c **** #include <mbedTLS/gcm.h>
+   3:Core/cipher_coap.c **** #include <mbedTLS/sha256.h>
+   4:Core/cipher_coap.c **** 
+   5:Core/cipher_coap.c **** #include "cipher_coap.h"
+   6:Core/cipher_coap.c **** 
+   7:Core/cipher_coap.c **** #define COAP_MAX_PACKET_SIZE 256
+   8:Core/cipher_coap.c **** 
+   9:Core/cipher_coap.c **** #define AES_KEY "helloFriend2025!helloFriend2025!"
+  10:Core/cipher_coap.c **** #define NONCE_LEN 12
+  11:Core/cipher_coap.c **** #define TAG_LEN 16
+  12:Core/cipher_coap.c **** 
+  13:Core/cipher_coap.c **** int encrypt_payload(const uint8_t *input, size_t input_len, uint8_t *output, size_t *output_len)
+  14:Core/cipher_coap.c **** {
+  35              		.loc 1 14 1 view -0
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 4272
+  38              		@ frame_needed = 0, uses_anonymous_args = 0
+  15:Core/cipher_coap.c ****     mbedtls_gcm_context gcm;
+  39              		.loc 1 15 5 view .LVU1
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 2
+
+
+  16:Core/cipher_coap.c ****     uint8_t nonce[NONCE_LEN];
+  40              		.loc 1 16 5 view .LVU2
+  17:Core/cipher_coap.c ****     uint8_t tag[TAG_LEN];
+  41              		.loc 1 17 5 view .LVU3
+  18:Core/cipher_coap.c **** 
+  19:Core/cipher_coap.c ****     if (*output_len < NONCE_LEN + input_len + TAG_LEN)
+  42              		.loc 1 19 5 view .LVU4
+  14:Core/cipher_coap.c ****     mbedtls_gcm_context gcm;
+  43              		.loc 1 14 1 is_stmt 0 view .LVU5
+  44 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+  45              	.LCFI0:
+  46              		.cfi_def_cfa_offset 32
+  47              		.cfi_offset 4, -32
+  48              		.cfi_offset 5, -28
+  49              		.cfi_offset 6, -24
+  50              		.cfi_offset 7, -20
+  51              		.cfi_offset 8, -16
+  52              		.cfi_offset 9, -12
+  53              		.cfi_offset 10, -8
+  54              		.cfi_offset 14, -4
+  55 0004 1F46     		mov	r7, r3
+  56              		.loc 1 19 8 view .LVU6
+  57 0006 1B68     		ldr	r3, [r3]
+  58              	.LVL1:
+  59              		.loc 1 19 45 view .LVU7
+  60 0008 01F11C08 		add	r8, r1, #28
+  14:Core/cipher_coap.c ****     mbedtls_gcm_context gcm;
+  61              		.loc 1 14 1 view .LVU8
+  62 000c ADF5865D 		sub	sp, sp, #4288
+  63              	.LCFI1:
+  64              		.cfi_def_cfa_offset 4320
+  65              		.loc 1 19 8 view .LVU9
+  66 0010 4345     		cmp	r3, r8
+  14:Core/cipher_coap.c ****     mbedtls_gcm_context gcm;
+  67              		.loc 1 14 1 view .LVU10
+  68 0012 84B0     		sub	sp, sp, #16
+  69              	.LCFI2:
+  70              		.cfi_def_cfa_offset 4336
+  71              		.loc 1 19 8 view .LVU11
+  72 0014 45D3     		bcc	.L9
+  73 0016 8946     		mov	r9, r1
+  74 0018 8246     		mov	r10, r0
+  75 001a 1646     		mov	r6, r2
+  76 001c 0CAD     		add	r5, sp, #48
+  77 001e 09AC     		add	r4, sp, #36
+  78              	.LVL2:
+  79              	.L4:
+  80              	.LBB2:
+  20:Core/cipher_coap.c ****         return -1;
+  21:Core/cipher_coap.c **** 
+  22:Core/cipher_coap.c ****     // Generate nonce (random, seeded by SysTick)
+  23:Core/cipher_coap.c ****     for (size_t i = 0; i < NONCE_LEN; i++)
+  24:Core/cipher_coap.c ****     {
+  25:Core/cipher_coap.c ****         nonce[i] = rand() & 0xFF;
+  81              		.loc 1 25 9 is_stmt 1 discriminator 3 view .LVU12
+  82              		.loc 1 25 20 is_stmt 0 discriminator 3 view .LVU13
+  83 0020 FFF7FEFF 		bl	rand
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 3
+
+
+  84              	.LVL3:
+  85              		.loc 1 25 18 discriminator 3 view .LVU14
+  86 0024 04F8010B 		strb	r0, [r4], #1
+  87              	.LVL4:
+  23:Core/cipher_coap.c ****     {
+  88              		.loc 1 23 39 is_stmt 1 discriminator 3 view .LVU15
+  23:Core/cipher_coap.c ****     {
+  89              		.loc 1 23 24 discriminator 3 view .LVU16
+  23:Core/cipher_coap.c ****     {
+  90              		.loc 1 23 5 is_stmt 0 discriminator 3 view .LVU17
+  91 0028 AC42     		cmp	r4, r5
+  92 002a F9D1     		bne	.L4
+  93              	.LBE2:
+  26:Core/cipher_coap.c ****     }
+  27:Core/cipher_coap.c **** 
+  28:Core/cipher_coap.c ****     mbedtls_gcm_init(&gcm);
+  94              		.loc 1 28 5 is_stmt 1 view .LVU18
+  95 002c 10A8     		add	r0, sp, #64
+  96 002e FFF7FEFF 		bl	mbedtls_gcm_init
+  97              	.LVL5:
+  29:Core/cipher_coap.c ****     int ret = mbedtls_gcm_setkey(&gcm, MBEDTLS_CIPHER_ID_AES, (const unsigned char *)AES_KEY, 256);
+  98              		.loc 1 29 5 view .LVU19
+  99              		.loc 1 29 15 is_stmt 0 view .LVU20
+ 100 0032 1D4A     		ldr	r2, .L12
+ 101 0034 4FF48073 		mov	r3, #256
+ 102 0038 0221     		movs	r1, #2
+ 103 003a 10A8     		add	r0, sp, #64
+ 104 003c FFF7FEFF 		bl	mbedtls_gcm_setkey
+ 105              	.LVL6:
+  30:Core/cipher_coap.c ****     if (ret != 0)
+ 106              		.loc 1 30 5 is_stmt 1 view .LVU21
+ 107              		.loc 1 30 8 is_stmt 0 view .LVU22
+ 108 0040 60BB     		cbnz	r0, .L11
+  31:Core/cipher_coap.c ****     {
+  32:Core/cipher_coap.c ****         mbedtls_gcm_free(&gcm);
+  33:Core/cipher_coap.c ****         return -1;
+  34:Core/cipher_coap.c ****     }
+  35:Core/cipher_coap.c **** 
+  36:Core/cipher_coap.c ****     // Encrypt
+  37:Core/cipher_coap.c ****     ret = mbedtls_gcm_crypt_and_tag(&gcm, MBEDTLS_GCM_ENCRYPT, input_len,
+ 109              		.loc 1 37 5 is_stmt 1 view .LVU23
+ 110              		.loc 1 37 11 is_stmt 0 view .LVU24
+ 111 0042 1022     		movs	r2, #16
+ 112 0044 0592     		str	r2, [sp, #20]
+  38:Core/cipher_coap.c ****                                     nonce, NONCE_LEN, NULL, 0, // No additional data
+  39:Core/cipher_coap.c ****                                     input, output + NONCE_LEN, TAG_LEN, tag);
+ 113              		.loc 1 39 51 view .LVU25
+ 114 0046 06F10C02 		add	r2, r6, #12
+  37:Core/cipher_coap.c ****                                     nonce, NONCE_LEN, NULL, 0, // No additional data
+ 115              		.loc 1 37 11 view .LVU26
+ 116 004a 0492     		str	r2, [sp, #16]
+ 117 004c 0C22     		movs	r2, #12
+ 118 004e CDE90100 		strd	r0, r0, [sp, #4]
+ 119 0052 CDF80CA0 		str	r10, [sp, #12]
+ 120 0056 0092     		str	r2, [sp]
+ 121 0058 0694     		str	r4, [sp, #24]
+ 122 005a 09AB     		add	r3, sp, #36
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 4
+
+
+ 123 005c 4A46     		mov	r2, r9
+ 124 005e 0121     		movs	r1, #1
+ 125 0060 10A8     		add	r0, sp, #64
+ 126              	.LVL7:
+  37:Core/cipher_coap.c ****                                     nonce, NONCE_LEN, NULL, 0, // No additional data
+ 127              		.loc 1 37 11 view .LVU27
+ 128 0062 FFF7FEFF 		bl	mbedtls_gcm_crypt_and_tag
+ 129              	.LVL8:
+  37:Core/cipher_coap.c ****                                     nonce, NONCE_LEN, NULL, 0, // No additional data
+ 130              		.loc 1 37 11 view .LVU28
+ 131 0066 8246     		mov	r10, r0
+ 132              	.LVL9:
+  40:Core/cipher_coap.c ****     mbedtls_gcm_free(&gcm);
+ 133              		.loc 1 40 5 is_stmt 1 view .LVU29
+ 134 0068 10A8     		add	r0, sp, #64
+ 135              	.LVL10:
+ 136              		.loc 1 40 5 is_stmt 0 view .LVU30
+ 137 006a FFF7FEFF 		bl	mbedtls_gcm_free
+ 138              	.LVL11:
+  41:Core/cipher_coap.c **** 
+  42:Core/cipher_coap.c ****     if (ret != 0)
+ 139              		.loc 1 42 5 is_stmt 1 view .LVU31
+ 140              		.loc 1 42 8 is_stmt 0 view .LVU32
+ 141 006e BAF1000F 		cmp	r10, #0
+ 142 0072 16D1     		bne	.L9
+  43:Core/cipher_coap.c ****         return -1;
+  44:Core/cipher_coap.c **** 
+  45:Core/cipher_coap.c ****     // Output: nonce + ciphertext + tag
+  46:Core/cipher_coap.c ****     memcpy(output, nonce, NONCE_LEN);
+ 143              		.loc 1 46 5 is_stmt 1 view .LVU33
+ 144 0074 09AB     		add	r3, sp, #36
+ 145 0076 07CB     		ldmia	r3!, {r0, r1, r2}
+ 146 0078 3060     		str	r0, [r6]	@ unaligned
+ 147 007a 7160     		str	r1, [r6, #4]	@ unaligned
+ 148 007c B260     		str	r2, [r6, #8]	@ unaligned
+  47:Core/cipher_coap.c ****     memcpy(output + NONCE_LEN + input_len, tag, TAG_LEN);
+ 149              		.loc 1 47 5 view .LVU34
+ 150 007e 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
+ 151              	.LVL12:
+ 152              		.loc 1 47 5 is_stmt 0 view .LVU35
+ 153 0080 06EB0905 		add	r5, r6, r9
+ 154 0084 E860     		str	r0, [r5, #12]	@ unaligned
+ 155 0086 2961     		str	r1, [r5, #16]	@ unaligned
+ 156 0088 6A61     		str	r2, [r5, #20]	@ unaligned
+ 157 008a AB61     		str	r3, [r5, #24]	@ unaligned
+  48:Core/cipher_coap.c ****     *output_len = NONCE_LEN + input_len + TAG_LEN;
+ 158              		.loc 1 48 5 is_stmt 1 view .LVU36
+ 159              		.loc 1 48 17 is_stmt 0 view .LVU37
+ 160 008c C7F80080 		str	r8, [r7]
+  49:Core/cipher_coap.c ****     return 0;
+ 161              		.loc 1 49 5 is_stmt 1 view .LVU38
+ 162              	.LVL13:
+ 163              	.L1:
+  50:Core/cipher_coap.c **** }
+ 164              		.loc 1 50 1 is_stmt 0 view .LVU39
+ 165 0090 5046     		mov	r0, r10
+ 166 0092 0DF5865D 		add	sp, sp, #4288
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 5
+
+
+ 167 0096 04B0     		add	sp, sp, #16
+ 168              	.LCFI3:
+ 169              		.cfi_remember_state
+ 170              		.cfi_def_cfa_offset 32
+ 171              		@ sp needed
+ 172 0098 BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 173              	.LVL14:
+ 174              	.L11:
+ 175              	.LCFI4:
+ 176              		.cfi_restore_state
+  32:Core/cipher_coap.c ****         return -1;
+ 177              		.loc 1 32 9 is_stmt 1 view .LVU40
+ 178 009c 10A8     		add	r0, sp, #64
+ 179              	.LVL15:
+  32:Core/cipher_coap.c ****         return -1;
+ 180              		.loc 1 32 9 is_stmt 0 view .LVU41
+ 181 009e FFF7FEFF 		bl	mbedtls_gcm_free
+ 182              	.LVL16:
+ 183              	.L9:
+  33:Core/cipher_coap.c ****     }
+ 184              		.loc 1 33 9 is_stmt 1 view .LVU42
+  33:Core/cipher_coap.c ****     }
+ 185              		.loc 1 33 16 is_stmt 0 view .LVU43
+ 186 00a2 4FF0FF3A 		mov	r10, #-1
+ 187 00a6 F3E7     		b	.L1
+ 188              	.L13:
+ 189              		.align	2
+ 190              	.L12:
+ 191 00a8 00000000 		.word	.LC0
+ 192              		.cfi_endproc
+ 193              	.LFE147:
+ 195              		.section	.text.decrypt_payload,"ax",%progbits
+ 196              		.align	1
+ 197              		.p2align 2,,3
+ 198              		.global	decrypt_payload
+ 199              		.syntax unified
+ 200              		.thumb
+ 201              		.thumb_func
+ 203              	decrypt_payload:
+ 204              	.LVL17:
+ 205              	.LFB148:
+  51:Core/cipher_coap.c **** 
+  52:Core/cipher_coap.c **** int decrypt_payload(const uint8_t *input, size_t input_len, uint8_t *output, size_t *output_len)
+  53:Core/cipher_coap.c **** {
+ 206              		.loc 1 53 1 is_stmt 1 view -0
+ 207              		.cfi_startproc
+ 208              		@ args = 0, pretend = 0, frame = 4240
+ 209              		@ frame_needed = 0, uses_anonymous_args = 0
+  54:Core/cipher_coap.c ****     if (input_len < NONCE_LEN + TAG_LEN)
+ 210              		.loc 1 54 5 view .LVU45
+  53:Core/cipher_coap.c ****     if (input_len < NONCE_LEN + TAG_LEN)
+ 211              		.loc 1 53 1 is_stmt 0 view .LVU46
+ 212 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 213              	.LCFI5:
+ 214              		.cfi_def_cfa_offset 24
+ 215              		.cfi_offset 4, -24
+ 216              		.cfi_offset 5, -20
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 6
+
+
+ 217              		.cfi_offset 6, -16
+ 218              		.cfi_offset 7, -12
+ 219              		.cfi_offset 8, -8
+ 220              		.cfi_offset 14, -4
+ 221              		.loc 1 54 8 view .LVU47
+ 222 0004 1B29     		cmp	r1, #27
+  53:Core/cipher_coap.c ****     if (input_len < NONCE_LEN + TAG_LEN)
+ 223              		.loc 1 53 1 view .LVU48
+ 224 0006 ADF5855D 		sub	sp, sp, #4256
+ 225              	.LCFI6:
+ 226              		.cfi_def_cfa_offset 4280
+ 227 000a 82B0     		sub	sp, sp, #8
+ 228              	.LCFI7:
+ 229              		.cfi_def_cfa_offset 4288
+ 230              		.loc 1 54 8 view .LVU49
+ 231 000c 33D9     		bls	.L20
+ 232 000e 1E46     		mov	r6, r3
+  55:Core/cipher_coap.c ****         return -1;
+  56:Core/cipher_coap.c **** 
+  57:Core/cipher_coap.c ****     mbedtls_gcm_context gcm;
+ 233              		.loc 1 57 5 is_stmt 1 view .LVU50
+  58:Core/cipher_coap.c ****     size_t ciphertext_len = input_len - NONCE_LEN - TAG_LEN;
+ 234              		.loc 1 58 5 view .LVU51
+  59:Core/cipher_coap.c **** 
+  60:Core/cipher_coap.c ****     if (*output_len < ciphertext_len)
+ 235              		.loc 1 60 8 is_stmt 0 view .LVU52
+ 236 0010 1B68     		ldr	r3, [r3]
+ 237              	.LVL18:
+  58:Core/cipher_coap.c ****     size_t ciphertext_len = input_len - NONCE_LEN - TAG_LEN;
+ 238              		.loc 1 58 12 view .LVU53
+ 239 0012 A1F11C08 		sub	r8, r1, #28
+ 240              	.LVL19:
+ 241              		.loc 1 60 5 is_stmt 1 view .LVU54
+ 242              		.loc 1 60 8 is_stmt 0 view .LVU55
+ 243 0016 4345     		cmp	r3, r8
+ 244 0018 2DD3     		bcc	.L20
+  61:Core/cipher_coap.c ****         return -1;
+  62:Core/cipher_coap.c **** 
+  63:Core/cipher_coap.c ****     const uint8_t *nonce = input;
+ 245              		.loc 1 63 5 is_stmt 1 view .LVU56
+ 246              	.LVL20:
+  64:Core/cipher_coap.c ****     const uint8_t *ciphertext = input + NONCE_LEN;
+ 247              		.loc 1 64 5 view .LVU57
+  65:Core/cipher_coap.c ****     const uint8_t *tag = input + NONCE_LEN + ciphertext_len;
+ 248              		.loc 1 65 44 is_stmt 0 view .LVU58
+ 249 001a 1039     		subs	r1, r1, #16
+ 250              	.LVL21:
+ 251              		.loc 1 65 20 view .LVU59
+ 252 001c 4418     		adds	r4, r0, r1
+ 253 001e 0546     		mov	r5, r0
+  66:Core/cipher_coap.c **** 
+  67:Core/cipher_coap.c ****     mbedtls_gcm_init(&gcm);
+ 254              		.loc 1 67 5 view .LVU60
+ 255 0020 06A8     		add	r0, sp, #24
+ 256              	.LVL22:
+ 257              		.loc 1 67 5 view .LVU61
+ 258 0022 1746     		mov	r7, r2
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 7
+
+
+ 259 0024 FFF7FEFF 		bl	mbedtls_gcm_init
+ 260              	.LVL23:
+  68:Core/cipher_coap.c ****     int ret = mbedtls_gcm_setkey(&gcm, MBEDTLS_CIPHER_ID_AES, (const unsigned char *)AES_KEY, 256);
+ 261              		.loc 1 68 15 view .LVU62
+ 262 0028 4FF48073 		mov	r3, #256
+ 263 002c 134A     		ldr	r2, .L22
+ 264 002e 0221     		movs	r1, #2
+ 265 0030 06A8     		add	r0, sp, #24
+ 266 0032 FFF7FEFF 		bl	mbedtls_gcm_setkey
+ 267              	.LVL24:
+  64:Core/cipher_coap.c ****     const uint8_t *tag = input + NONCE_LEN + ciphertext_len;
+ 268              		.loc 1 64 20 view .LVU63
+ 269 0036 05F10C03 		add	r3, r5, #12
+ 270              	.LVL25:
+  65:Core/cipher_coap.c **** 
+ 271              		.loc 1 65 5 is_stmt 1 view .LVU64
+  67:Core/cipher_coap.c ****     int ret = mbedtls_gcm_setkey(&gcm, MBEDTLS_CIPHER_ID_AES, (const unsigned char *)AES_KEY, 256);
+ 272              		.loc 1 67 5 view .LVU65
+ 273              		.loc 1 68 5 view .LVU66
+  69:Core/cipher_coap.c ****     if (ret != 0)
+ 274              		.loc 1 69 5 view .LVU67
+ 275              		.loc 1 69 8 is_stmt 0 view .LVU68
+ 276 003a C8B9     		cbnz	r0, .L21
+  70:Core/cipher_coap.c ****     {
+  71:Core/cipher_coap.c ****         mbedtls_gcm_free(&gcm);
+  72:Core/cipher_coap.c ****         return -1;
+  73:Core/cipher_coap.c ****     }
+  74:Core/cipher_coap.c **** 
+  75:Core/cipher_coap.c ****     // Decrypt and verify
+  76:Core/cipher_coap.c ****     ret = mbedtls_gcm_auth_decrypt(&gcm, ciphertext_len,
+ 277              		.loc 1 76 5 is_stmt 1 view .LVU69
+ 278              		.loc 1 76 11 is_stmt 0 view .LVU70
+ 279 003c 1021     		movs	r1, #16
+ 280 003e CDE90104 		strd	r0, r4, [sp, #4]
+ 281 0042 CDE90437 		strd	r3, r7, [sp, #16]
+ 282 0046 0090     		str	r0, [sp]
+ 283 0048 0391     		str	r1, [sp, #12]
+ 284 004a 0C23     		movs	r3, #12
+ 285              	.LVL26:
+ 286              		.loc 1 76 11 view .LVU71
+ 287 004c 2A46     		mov	r2, r5
+ 288 004e 4146     		mov	r1, r8
+ 289 0050 06A8     		add	r0, sp, #24
+ 290              	.LVL27:
+ 291              		.loc 1 76 11 view .LVU72
+ 292 0052 FFF7FEFF 		bl	mbedtls_gcm_auth_decrypt
+ 293              	.LVL28:
+ 294              		.loc 1 76 11 view .LVU73
+ 295 0056 0446     		mov	r4, r0
+ 296              	.LVL29:
+  77:Core/cipher_coap.c ****                                    nonce, NONCE_LEN, NULL, 0, // No additional data
+  78:Core/cipher_coap.c ****                                    tag, TAG_LEN, ciphertext, output);
+  79:Core/cipher_coap.c ****     mbedtls_gcm_free(&gcm);
+ 297              		.loc 1 79 5 is_stmt 1 view .LVU74
+ 298 0058 06A8     		add	r0, sp, #24
+ 299              	.LVL30:
+ 300              		.loc 1 79 5 is_stmt 0 view .LVU75
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 8
+
+
+ 301 005a FFF7FEFF 		bl	mbedtls_gcm_free
+ 302              	.LVL31:
+  80:Core/cipher_coap.c **** 
+  81:Core/cipher_coap.c ****     if (ret != 0)
+ 303              		.loc 1 81 5 is_stmt 1 view .LVU76
+ 304              		.loc 1 81 8 is_stmt 0 view .LVU77
+ 305 005e 54B9     		cbnz	r4, .L20
+  82:Core/cipher_coap.c ****         return -1;
+  83:Core/cipher_coap.c ****     *output_len = ciphertext_len;
+ 306              		.loc 1 83 5 is_stmt 1 view .LVU78
+ 307              		.loc 1 83 17 is_stmt 0 view .LVU79
+ 308 0060 C6F80080 		str	r8, [r6]
+  84:Core/cipher_coap.c ****     return 0;
+ 309              		.loc 1 84 5 is_stmt 1 view .LVU80
+ 310              	.LVL32:
+ 311              	.L14:
+  85:Core/cipher_coap.c **** }
+ 312              		.loc 1 85 1 is_stmt 0 view .LVU81
+ 313 0064 2046     		mov	r0, r4
+ 314 0066 0DF5855D 		add	sp, sp, #4256
+ 315 006a 02B0     		add	sp, sp, #8
+ 316              	.LCFI8:
+ 317              		.cfi_remember_state
+ 318              		.cfi_def_cfa_offset 24
+ 319              		@ sp needed
+ 320 006c BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 321              	.LVL33:
+ 322              	.L21:
+ 323              	.LCFI9:
+ 324              		.cfi_restore_state
+  71:Core/cipher_coap.c ****         return -1;
+ 325              		.loc 1 71 9 is_stmt 1 view .LVU82
+ 326 0070 06A8     		add	r0, sp, #24
+ 327              	.LVL34:
+  71:Core/cipher_coap.c ****         return -1;
+ 328              		.loc 1 71 9 is_stmt 0 view .LVU83
+ 329 0072 FFF7FEFF 		bl	mbedtls_gcm_free
+ 330              	.LVL35:
+ 331              	.L20:
+  72:Core/cipher_coap.c ****     }
+ 332              		.loc 1 72 9 is_stmt 1 view .LVU84
+  72:Core/cipher_coap.c ****     }
+ 333              		.loc 1 72 16 is_stmt 0 view .LVU85
+ 334 0076 4FF0FF34 		mov	r4, #-1
+ 335 007a F3E7     		b	.L14
+ 336              	.L23:
+ 337              		.align	2
+ 338              	.L22:
+ 339 007c 00000000 		.word	.LC0
+ 340              		.cfi_endproc
+ 341              	.LFE148:
+ 343              		.section	.text.compute_hmac,"ax",%progbits
+ 344              		.align	1
+ 345              		.p2align 2,,3
+ 346              		.global	compute_hmac
+ 347              		.syntax unified
+ 348              		.thumb
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 9
+
+
+ 349              		.thumb_func
+ 351              	compute_hmac:
+ 352              	.LVL36:
+ 353              	.LFB149:
+  86:Core/cipher_coap.c **** 
+  87:Core/cipher_coap.c **** int compute_hmac(const uint8_t *data, size_t data_len, uint8_t *hmac, size_t *hmac_len)
+  88:Core/cipher_coap.c **** {
+ 354              		.loc 1 88 1 is_stmt 1 view -0
+ 355              		.cfi_startproc
+ 356              		@ args = 0, pretend = 0, frame = 104
+ 357              		@ frame_needed = 0, uses_anonymous_args = 0
+  89:Core/cipher_coap.c ****     if (*hmac_len < 32)
+ 358              		.loc 1 89 5 view .LVU87
+  88:Core/cipher_coap.c ****     if (*hmac_len < 32)
+ 359              		.loc 1 88 1 is_stmt 0 view .LVU88
+ 360 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 361              	.LCFI10:
+ 362              		.cfi_def_cfa_offset 20
+ 363              		.cfi_offset 4, -20
+ 364              		.cfi_offset 5, -16
+ 365              		.cfi_offset 6, -12
+ 366              		.cfi_offset 7, -8
+ 367              		.cfi_offset 14, -4
+ 368 0002 1C46     		mov	r4, r3
+ 369              		.loc 1 89 8 view .LVU89
+ 370 0004 1B68     		ldr	r3, [r3]
+ 371              	.LVL37:
+ 372              		.loc 1 89 8 view .LVU90
+ 373 0006 1F2B     		cmp	r3, #31
+  88:Core/cipher_coap.c ****     if (*hmac_len < 32)
+ 374              		.loc 1 88 1 view .LVU91
+ 375 0008 9BB0     		sub	sp, sp, #108
+ 376              	.LCFI11:
+ 377              		.cfi_def_cfa_offset 128
+ 378              		.loc 1 89 8 view .LVU92
+ 379 000a 1AD9     		bls	.L26
+ 380 000c 0646     		mov	r6, r0
+  90:Core/cipher_coap.c ****         return -1;
+  91:Core/cipher_coap.c **** 
+  92:Core/cipher_coap.c ****     mbedtls_sha256_context sha;
+  93:Core/cipher_coap.c ****     mbedtls_sha256_init(&sha);
+ 381              		.loc 1 93 5 view .LVU93
+ 382 000e 6846     		mov	r0, sp
+ 383              	.LVL38:
+ 384              		.loc 1 93 5 view .LVU94
+ 385 0010 1546     		mov	r5, r2
+  92:Core/cipher_coap.c ****     mbedtls_sha256_init(&sha);
+ 386              		.loc 1 92 5 is_stmt 1 view .LVU95
+ 387              		.loc 1 93 5 view .LVU96
+ 388 0012 0F46     		mov	r7, r1
+ 389 0014 FFF7FEFF 		bl	mbedtls_sha256_init
+ 390              	.LVL39:
+  94:Core/cipher_coap.c ****     mbedtls_sha256_starts(&sha, 0); // 0 for SHA-256
+ 391              		.loc 1 94 5 view .LVU97
+ 392 0018 0021     		movs	r1, #0
+ 393 001a 6846     		mov	r0, sp
+ 394 001c FFF7FEFF 		bl	mbedtls_sha256_starts
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 10
+
+
+ 395              	.LVL40:
+  95:Core/cipher_coap.c ****     // mbedtls_sha256_update(&sha, (const unsigned char *)HMAC_KEY, strlen(HMAC_KEY));
+  96:Core/cipher_coap.c ****     mbedtls_sha256_update(&sha, data, data_len);
+ 396              		.loc 1 96 5 view .LVU98
+ 397 0020 3A46     		mov	r2, r7
+ 398 0022 3146     		mov	r1, r6
+ 399 0024 6846     		mov	r0, sp
+ 400 0026 FFF7FEFF 		bl	mbedtls_sha256_update
+ 401              	.LVL41:
+  97:Core/cipher_coap.c ****     mbedtls_sha256_finish(&sha, hmac);
+ 402              		.loc 1 97 5 view .LVU99
+ 403 002a 2946     		mov	r1, r5
+ 404 002c 6846     		mov	r0, sp
+ 405 002e FFF7FEFF 		bl	mbedtls_sha256_finish
+ 406              	.LVL42:
+  98:Core/cipher_coap.c ****     mbedtls_sha256_free(&sha);
+ 407              		.loc 1 98 5 view .LVU100
+ 408 0032 6846     		mov	r0, sp
+ 409 0034 FFF7FEFF 		bl	mbedtls_sha256_free
+ 410              	.LVL43:
+  99:Core/cipher_coap.c **** 
+ 100:Core/cipher_coap.c ****     *hmac_len = 32;
+ 411              		.loc 1 100 5 view .LVU101
+ 412              		.loc 1 100 15 is_stmt 0 view .LVU102
+ 413 0038 2023     		movs	r3, #32
+ 414 003a 2360     		str	r3, [r4]
+ 101:Core/cipher_coap.c ****     return 0;
+ 415              		.loc 1 101 5 is_stmt 1 view .LVU103
+ 416              		.loc 1 101 12 is_stmt 0 view .LVU104
+ 417 003c 0020     		movs	r0, #0
+ 418              	.LVL44:
+ 419              	.L24:
+ 102:Core/cipher_coap.c **** }
+ 420              		.loc 1 102 1 view .LVU105
+ 421 003e 1BB0     		add	sp, sp, #108
+ 422              	.LCFI12:
+ 423              		.cfi_remember_state
+ 424              		.cfi_def_cfa_offset 20
+ 425              		@ sp needed
+ 426 0040 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 427              	.LVL45:
+ 428              	.L26:
+ 429              	.LCFI13:
+ 430              		.cfi_restore_state
+  90:Core/cipher_coap.c **** 
+ 431              		.loc 1 90 16 view .LVU106
+ 432 0042 4FF0FF30 		mov	r0, #-1
+ 433              	.LVL46:
+  90:Core/cipher_coap.c **** 
+ 434              		.loc 1 90 16 view .LVU107
+ 435 0046 FAE7     		b	.L24
+ 436              		.cfi_endproc
+ 437              	.LFE149:
+ 439              		.section	.text.verify_hmac,"ax",%progbits
+ 440              		.align	1
+ 441              		.p2align 2,,3
+ 442              		.global	verify_hmac
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 11
+
+
+ 443              		.syntax unified
+ 444              		.thumb
+ 445              		.thumb_func
+ 447              	verify_hmac:
+ 448              	.LVL47:
+ 449              	.LFB150:
+ 103:Core/cipher_coap.c **** 
+ 104:Core/cipher_coap.c **** int verify_hmac(const uint8_t *data, size_t data_len, const uint8_t *expected_hmac)
+ 105:Core/cipher_coap.c **** {
+ 450              		.loc 1 105 1 is_stmt 1 view -0
+ 451              		.cfi_startproc
+ 452              		@ args = 0, pretend = 0, frame = 144
+ 453              		@ frame_needed = 0, uses_anonymous_args = 0
+ 106:Core/cipher_coap.c ****     uint8_t computed_hmac[32];
+ 454              		.loc 1 106 5 view .LVU109
+ 107:Core/cipher_coap.c ****     size_t hmac_len = 32;
+ 455              		.loc 1 107 5 view .LVU110
+ 108:Core/cipher_coap.c ****     if (compute_hmac(data, data_len, computed_hmac, &hmac_len) != 0)
+ 456              		.loc 1 108 5 view .LVU111
+ 105:Core/cipher_coap.c ****     uint8_t computed_hmac[32];
+ 457              		.loc 1 105 1 is_stmt 0 view .LVU112
+ 458 0000 30B5     		push	{r4, r5, lr}
+ 459              	.LCFI14:
+ 460              		.cfi_def_cfa_offset 12
+ 461              		.cfi_offset 4, -12
+ 462              		.cfi_offset 5, -8
+ 463              		.cfi_offset 14, -4
+ 464 0002 A5B0     		sub	sp, sp, #148
+ 465              	.LCFI15:
+ 466              		.cfi_def_cfa_offset 160
+ 105:Core/cipher_coap.c ****     uint8_t computed_hmac[32];
+ 467              		.loc 1 105 1 view .LVU113
+ 468 0004 0546     		mov	r5, r0
+ 469              	.LBB5:
+ 470              	.LBB6:
+  93:Core/cipher_coap.c ****     mbedtls_sha256_starts(&sha, 0); // 0 for SHA-256
+ 471              		.loc 1 93 5 view .LVU114
+ 472 0006 0AA8     		add	r0, sp, #40
+ 473              	.LVL48:
+  93:Core/cipher_coap.c ****     mbedtls_sha256_starts(&sha, 0); // 0 for SHA-256
+ 474              		.loc 1 93 5 view .LVU115
+ 475              	.LBE6:
+ 476              	.LBE5:
+ 105:Core/cipher_coap.c ****     uint8_t computed_hmac[32];
+ 477              		.loc 1 105 1 view .LVU116
+ 478 0008 1446     		mov	r4, r2
+ 479 000a 0191     		str	r1, [sp, #4]
+ 480              	.LVL49:
+ 481              	.LBB8:
+ 482              	.LBI5:
+  87:Core/cipher_coap.c **** {
+ 483              		.loc 1 87 5 is_stmt 1 view .LVU117
+ 484              	.LBB7:
+  89:Core/cipher_coap.c ****         return -1;
+ 485              		.loc 1 89 5 view .LVU118
+  92:Core/cipher_coap.c ****     mbedtls_sha256_init(&sha);
+ 486              		.loc 1 92 5 view .LVU119
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 12
+
+
+  93:Core/cipher_coap.c ****     mbedtls_sha256_starts(&sha, 0); // 0 for SHA-256
+ 487              		.loc 1 93 5 view .LVU120
+ 488 000c FFF7FEFF 		bl	mbedtls_sha256_init
+ 489              	.LVL50:
+  94:Core/cipher_coap.c ****     // mbedtls_sha256_update(&sha, (const unsigned char *)HMAC_KEY, strlen(HMAC_KEY));
+ 490              		.loc 1 94 5 view .LVU121
+ 491 0010 0021     		movs	r1, #0
+ 492 0012 0AA8     		add	r0, sp, #40
+ 493 0014 FFF7FEFF 		bl	mbedtls_sha256_starts
+ 494              	.LVL51:
+  96:Core/cipher_coap.c ****     mbedtls_sha256_finish(&sha, hmac);
+ 495              		.loc 1 96 5 view .LVU122
+ 496 0018 019A     		ldr	r2, [sp, #4]
+ 497 001a 2946     		mov	r1, r5
+ 498 001c 0AA8     		add	r0, sp, #40
+ 499 001e FFF7FEFF 		bl	mbedtls_sha256_update
+ 500              	.LVL52:
+  97:Core/cipher_coap.c ****     mbedtls_sha256_free(&sha);
+ 501              		.loc 1 97 5 view .LVU123
+ 502 0022 02A9     		add	r1, sp, #8
+ 503              	.LVL53:
+  97:Core/cipher_coap.c ****     mbedtls_sha256_free(&sha);
+ 504              		.loc 1 97 5 is_stmt 0 view .LVU124
+ 505 0024 0AA8     		add	r0, sp, #40
+ 506 0026 FFF7FEFF 		bl	mbedtls_sha256_finish
+ 507              	.LVL54:
+  98:Core/cipher_coap.c **** 
+ 508              		.loc 1 98 5 is_stmt 1 view .LVU125
+ 509 002a 0AA8     		add	r0, sp, #40
+ 510 002c FFF7FEFF 		bl	mbedtls_sha256_free
+ 511              	.LVL55:
+ 100:Core/cipher_coap.c ****     return 0;
+ 512              		.loc 1 100 5 view .LVU126
+ 101:Core/cipher_coap.c **** }
+ 513              		.loc 1 101 5 view .LVU127
+ 101:Core/cipher_coap.c **** }
+ 514              		.loc 1 101 5 is_stmt 0 view .LVU128
+ 515              	.LBE7:
+ 516              	.LBE8:
+ 109:Core/cipher_coap.c ****         return -1;
+ 110:Core/cipher_coap.c ****     return memcmp(computed_hmac, expected_hmac, 32) == 0 ? 0 : -1;
+ 517              		.loc 1 110 5 is_stmt 1 view .LVU129
+ 518              		.loc 1 110 12 is_stmt 0 view .LVU130
+ 519 0030 2022     		movs	r2, #32
+ 520 0032 2146     		mov	r1, r4
+ 521 0034 02A8     		add	r0, sp, #8
+ 522 0036 FFF7FEFF 		bl	memcmp
+ 523              	.LVL56:
+ 524              		.loc 1 110 62 view .LVU131
+ 525 003a 0038     		subs	r0, r0, #0
+ 526 003c 18BF     		it	ne
+ 527 003e 0120     		movne	r0, #1
+ 111:Core/cipher_coap.c **** }...
+ 528              		.loc 1 111 1 view .LVU132
+ 529 0040 4042     		rsbs	r0, r0, #0
+ 530 0042 25B0     		add	sp, sp, #148
+ 531              	.LCFI16:
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 13
+
+
+ 532              		.cfi_def_cfa_offset 12
+ 533              		@ sp needed
+ 534 0044 30BD     		pop	{r4, r5, pc}
+ 535              		.loc 1 111 1 view .LVU133
+ 536              		.cfi_endproc
+ 537              	.LFE150:
+ 539 0046 00BF     		.text
+ 540              	.Letext0:
+ 541              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 542              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 543              		.file 4 "d:\\gcc arm\\10 2021.10\\lib\\gcc\\arm-none-eabi\\10.3.1\\include\\stddef.h"
+ 544              		.file 5 "mbedTLS/include/mbedtls/sha256.h"
+ 545              		.file 6 "mbedTLS/include/mbedtls/cipher.h"
+ 546              		.file 7 "mbedTLS/include/mbedTLS/gcm.h"
+ 547              		.file 8 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\stdlib.h"
+ 548              		.file 9 "<built-in>"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\cc506UOb.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 cipher_coap.c
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:20     .rodata.encrypt_payload.str1.4:00000000 $d
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:24     .text.encrypt_payload:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:31     .text.encrypt_payload:00000000 encrypt_payload
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:191    .text.encrypt_payload:000000a8 $d
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:196    .text.decrypt_payload:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:203    .text.decrypt_payload:00000000 decrypt_payload
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:339    .text.decrypt_payload:0000007c $d
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:344    .text.compute_hmac:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:351    .text.compute_hmac:00000000 compute_hmac
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:440    .text.verify_hmac:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\cc506UOb.s:447    .text.verify_hmac:00000000 verify_hmac
+
+UNDEFINED SYMBOLS
+rand
+mbedtls_gcm_init
+mbedtls_gcm_setkey
+mbedtls_gcm_crypt_and_tag
+mbedtls_gcm_free
+mbedtls_gcm_auth_decrypt
+mbedtls_sha256_init
+mbedtls_sha256_starts
+mbedtls_sha256_update
+mbedtls_sha256_finish
+mbedtls_sha256_free
+memcmp

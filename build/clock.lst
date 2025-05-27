@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s 			page 1
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -12,27 +12,23 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s 			page 1
    9              		.eabi_attribute 24, 1
   10              		.eabi_attribute 25, 1
   11              		.eabi_attribute 26, 1
-  12              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 30, 2
   13              		.eabi_attribute 34, 1
   14              		.eabi_attribute 18, 4
   15              		.file	"clock.c"
   16              		.text
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
-  19              		.global	ticks
-  20              		.section	.bss.ticks,"aw",%nobits
-  21              		.align	2
-  24              	ticks:
-  25 0000 00000000 		.space	4
-  26              		.section	.text.SysTick_Handler,"ax",%progbits
-  27              		.align	1
-  28              		.global	SysTick_Handler
-  29              		.syntax unified
-  30              		.thumb
-  31              		.thumb_func
-  33              	SysTick_Handler:
-  34              	.LFB135:
-  35              		.file 1 "Core/clock.c"
+  19              		.section	.text.SysTick_Handler,"ax",%progbits
+  20              		.align	1
+  21              		.p2align 2,,3
+  22              		.global	SysTick_Handler
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	SysTick_Handler:
+  28              	.LFB132:
+  29              		.file 1 "Core/clock.c"
    1:Core/clock.c  **** #include <stdint.h>
    2:Core/clock.c  **** #include "main.h"
    3:Core/clock.c  **** #include "clock.h"
@@ -42,132 +38,96 @@ ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s 			page 1
    7:Core/clock.c  **** 
    8:Core/clock.c  **** void  SysTick_Handler(void)
    9:Core/clock.c  **** {
-  36              		.loc 1 9 1
-  37              		.cfi_startproc
-  38              		@ args = 0, pretend = 0, frame = 0
-  39              		@ frame_needed = 1, uses_anonymous_args = 0
-  40              		@ link register save eliminated.
-  41 0000 80B4     		push	{r7}
-  42              	.LCFI0:
-  43              		.cfi_def_cfa_offset 4
-  44              		.cfi_offset 7, -4
-  45 0002 00AF     		add	r7, sp, #0
-  46              	.LCFI1:
-  47              		.cfi_def_cfa_register 7
+  30              		.loc 1 9 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
   10:Core/clock.c  **** 	ticks++;
-  48              		.loc 1 10 7
-  49 0004 044B     		ldr	r3, .L2
-  50 0006 1B68     		ldr	r3, [r3]
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s 			page 2
-
-
-  51 0008 0133     		adds	r3, r3, #1
-  52 000a 034A     		ldr	r2, .L2
-  53 000c 1360     		str	r3, [r2]
+  35              		.loc 1 10 2 view .LVU1
+  36              		.loc 1 10 7 is_stmt 0 view .LVU2
+  37 0000 024A     		ldr	r2, .L3
+  38 0002 1368     		ldr	r3, [r2]
+  39 0004 0133     		adds	r3, r3, #1
+  40 0006 1360     		str	r3, [r2]
   11:Core/clock.c  **** }
-  54              		.loc 1 11 1
-  55 000e 00BF     		nop
-  56 0010 BD46     		mov	sp, r7
-  57              	.LCFI2:
-  58              		.cfi_def_cfa_register 13
-  59              		@ sp needed
-  60 0012 5DF8047B 		ldr	r7, [sp], #4
-  61              	.LCFI3:
-  62              		.cfi_restore 7
-  63              		.cfi_def_cfa_offset 0
-  64 0016 7047     		bx	lr
-  65              	.L3:
-  66              		.align	2
-  67              	.L2:
-  68 0018 00000000 		.word	ticks
-  69              		.cfi_endproc
-  70              	.LFE135:
-  72              		.section	.text.delay_ms,"ax",%progbits
-  73              		.align	1
-  74              		.global	delay_ms
-  75              		.syntax unified
-  76              		.thumb
-  77              		.thumb_func
-  79              	delay_ms:
-  80              	.LFB136:
+  41              		.loc 1 11 1 view .LVU3
+  42 0008 7047     		bx	lr
+  43              	.L4:
+  44 000a 00BF     		.align	2
+  45              	.L3:
+  46 000c 00000000 		.word	.LANCHOR0
+  47              		.cfi_endproc
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s 			page 2
+
+
+  48              	.LFE132:
+  50              		.section	.text.delay_ms,"ax",%progbits
+  51              		.align	1
+  52              		.p2align 2,,3
+  53              		.global	delay_ms
+  54              		.syntax unified
+  55              		.thumb
+  56              		.thumb_func
+  58              	delay_ms:
+  59              	.LVL0:
+  60              	.LFB133:
   12:Core/clock.c  **** 
   13:Core/clock.c  **** void delay_ms(uint32_t ms)
   14:Core/clock.c  **** {
-  81              		.loc 1 14 1
-  82              		.cfi_startproc
-  83              		@ args = 0, pretend = 0, frame = 16
-  84              		@ frame_needed = 1, uses_anonymous_args = 0
-  85              		@ link register save eliminated.
-  86 0000 80B4     		push	{r7}
-  87              	.LCFI4:
-  88              		.cfi_def_cfa_offset 4
-  89              		.cfi_offset 7, -4
-  90 0002 85B0     		sub	sp, sp, #20
-  91              	.LCFI5:
-  92              		.cfi_def_cfa_offset 24
-  93 0004 00AF     		add	r7, sp, #0
-  94              	.LCFI6:
-  95              		.cfi_def_cfa_register 7
-  96 0006 7860     		str	r0, [r7, #4]
+  61              		.loc 1 14 1 is_stmt 1 view -0
+  62              		.cfi_startproc
+  63              		@ args = 0, pretend = 0, frame = 0
+  64              		@ frame_needed = 0, uses_anonymous_args = 0
+  65              		@ link register save eliminated.
   15:Core/clock.c  **** 	uint32_t started = ticks;
-  97              		.loc 1 15 11
-  98 0008 084B     		ldr	r3, .L6
-  99 000a 1B68     		ldr	r3, [r3]
- 100 000c FB60     		str	r3, [r7, #12]
+  66              		.loc 1 15 2 view .LVU5
+  67              		.loc 1 15 11 is_stmt 0 view .LVU6
+  68 0000 034A     		ldr	r2, .L8
+  69 0002 1168     		ldr	r1, [r2]
+  70              	.LVL1:
   16:Core/clock.c  **** 	while((ticks-started)<=ms);
- 101              		.loc 1 16 7
- 102 000e 00BF     		nop
- 103              	.L5:
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s 			page 3
-
-
- 104              		.loc 1 16 14 discriminator 1
- 105 0010 064B     		ldr	r3, .L6
- 106 0012 1A68     		ldr	r2, [r3]
- 107 0014 FB68     		ldr	r3, [r7, #12]
- 108 0016 D31A     		subs	r3, r2, r3
- 109              		.loc 1 16 7 discriminator 1
- 110 0018 7A68     		ldr	r2, [r7, #4]
- 111 001a 9A42     		cmp	r2, r3
- 112 001c F8D2     		bcs	.L5
+  71              		.loc 1 16 2 is_stmt 1 view .LVU7
+  72              	.L6:
+  73              		.loc 1 16 28 discriminator 1 view .LVU8
+  74              		.loc 1 16 7 discriminator 1 view .LVU9
+  75              		.loc 1 16 14 is_stmt 0 discriminator 1 view .LVU10
+  76 0004 1368     		ldr	r3, [r2]
+  77 0006 5B1A     		subs	r3, r3, r1
+  78              		.loc 1 16 7 discriminator 1 view .LVU11
+  79 0008 8342     		cmp	r3, r0
+  80 000a FBD9     		bls	.L6
   17:Core/clock.c  **** }...
- 113              		.loc 1 17 1
- 114 001e 00BF     		nop
- 115 0020 00BF     		nop
- 116 0022 1437     		adds	r7, r7, #20
- 117              	.LCFI7:
- 118              		.cfi_def_cfa_offset 4
- 119 0024 BD46     		mov	sp, r7
- 120              	.LCFI8:
- 121              		.cfi_def_cfa_register 13
- 122              		@ sp needed
- 123 0026 5DF8047B 		ldr	r7, [sp], #4
- 124              	.LCFI9:
- 125              		.cfi_restore 7
- 126              		.cfi_def_cfa_offset 0
- 127 002a 7047     		bx	lr
- 128              	.L7:
- 129              		.align	2
- 130              	.L6:
- 131 002c 00000000 		.word	ticks
- 132              		.cfi_endproc
- 133              	.LFE136:
- 135              		.text
- 136              	.Letext0:
- 137              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
- 138              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
-ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s 			page 4
+  81              		.loc 1 17 1 view .LVU12
+  82 000c 7047     		bx	lr
+  83              	.L9:
+  84 000e 00BF     		.align	2
+  85              	.L8:
+  86 0010 00000000 		.word	.LANCHOR0
+  87              		.cfi_endproc
+  88              	.LFE133:
+  90              		.global	ticks
+  91              		.section	.bss.ticks,"aw",%nobits
+  92              		.align	2
+  93              		.set	.LANCHOR0,. + 0
+  96              	ticks:
+  97 0000 00000000 		.space	4
+  98              		.text
+  99              	.Letext0:
+ 100              		.file 2 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 101              		.file 3 "d:\\gcc arm\\10 2021.10\\arm-none-eabi\\include\\sys\\_stdint.h"
+ARM GAS  C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s 			page 3
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 clock.c
-C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s:24     .bss.ticks:00000000 ticks
-C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s:21     .bss.ticks:00000000 $d
-C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s:27     .text.SysTick_Handler:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s:33     .text.SysTick_Handler:00000000 SysTick_Handler
-C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s:68     .text.SysTick_Handler:00000018 $d
-C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s:73     .text.delay_ms:00000000 $t
-C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s:79     .text.delay_ms:00000000 delay_ms
-C:\Users\clay0\AppData\Local\Temp\ccGAFW9z.s:131    .text.delay_ms:0000002c $d
+C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s:20     .text.SysTick_Handler:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s:27     .text.SysTick_Handler:00000000 SysTick_Handler
+C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s:46     .text.SysTick_Handler:0000000c $d
+C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s:51     .text.delay_ms:00000000 $t
+C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s:58     .text.delay_ms:00000000 delay_ms
+C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s:86     .text.delay_ms:00000010 $d
+C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s:96     .bss.ticks:00000000 ticks
+C:\Users\clay0\AppData\Local\Temp\ccZb63CA.s:92     .bss.ticks:00000000 $d
 
 NO UNDEFINED SYMBOLS

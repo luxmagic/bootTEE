@@ -8,15 +8,12 @@
 #include "boot.h"
 #include "tee.h"
 
-const uint8_t * msg = "hello";
-uint8_t *ptr_buff = NULL;
-bool flag_receive = false;
-bool flag_transmit = false;
-volatile uint8_t  size = 0;
+uint8_t response_msg[COAP_MAX_PACKET_SIZE] = {0,};
+uint16_t response_len = 0;
+volatile bool flag_recv = false;
 
 int main(void) 
 {
-    ptr_buff = malloc(20*sizeof(uint8_t));
     
     SysTick_Config(SystemCoreClock/1000);
     blink_init();
@@ -24,38 +21,21 @@ int main(void)
     w5500_network_init();
 
     coap_init();
-    coap_send_get("check_firmware");
-    
+    coap_send_get("iot", "cmd");
+    // response_len = sizeof(response_msg);
+    // if (response_len > 0)
+    // {
+    //     coap_send_put("iot", "cmd", response_msg, response_len);
+    // }
+    // uart_send(response_msg, response_len);
+
     while (1) 
     {
-        
-
-        if (flag_receive)
+        if (flag_recv)
         {
-            // compltReceive(size, ptr_buff);
-            flag_receive = false;
-            blink_run(100);
-
+            flag_recv = false;
+            coap_send_put("iot", "cmd", response_msg, response_len);
+            response_len = 0;
         }
-    }
-}
-
-////////////////////////////////////////////////////////////
-//Handlers
-////////////////////////////////////////////////////////////
-void USART1_IRQHandler(void)
-{
-	if (USART1->SR & USART_SR_RXNE) 
-	{
-        if (USART1->DR == 0x1f)
-        {
-            flag_receive = true;
-        }
-        *(ptr_buff++) = USART1->DR;
-        size++;
-	}
-    if (USART1->SR & USART_SR_TXE)
-    {
-        flag_transmit = true;
     }
 }

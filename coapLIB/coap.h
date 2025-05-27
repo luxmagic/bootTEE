@@ -11,7 +11,6 @@ extern "C" {
 
 #define MAXOPT 16
 #define COAP_VERSION 1
-#define COAP_MAX_PACKET_SIZE 256
 
 //http://tools.ietf.org/html/rfc7252#section-3
 typedef struct

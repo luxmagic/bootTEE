@@ -14,24 +14,11 @@ void uart_init(uint32_t baudrate)
     USART1->BRR = SystemCoreClock / baudrate;
     USART1->CR1 = USART_CR1_TE | USART_CR1_RE | USART_CR1_UE;
 
-    SET_BIT(USART1->CR1, USART_CR1_RXNEIE);
-    SET_BIT(USART1->CR1, USART_CR1_TXEIE);
+    // SET_BIT(USART1->CR1, USART_CR1_RXNEIE);
+    // SET_BIT(USART1->CR1, USART_CR1_TXEIE);
 
-    NVIC_EnableIRQ(USART1_IRQn);
-    NVIC_SetPriority(USART1_IRQn, 1);
-}
-
-void compltReceive(uint8_t size, uint8_t * ptr_buff)
-{
-    while(USART1->SR & USART_SR_RXNE)
-	{
-		*ptr_buff++ = USART1->DR;
-        size++;
-        if (size > 50)
-		{
-            (void)USART1->DR;
-		}
-	}
+    // NVIC_EnableIRQ(USART1_IRQn);
+    // NVIC_SetPriority(USART1_IRQn, 1);
 }
 
 void uart_send(const uint8_t *data, uint32_t len)
