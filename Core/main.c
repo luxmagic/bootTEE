@@ -2,40 +2,93 @@
 #include "clock.h"
 
 #include "uart.h"
-#include "w5500_run.h"
-#include <coap_port.h>
 
 #include "boot.h"
 #include "tee.h"
 
-uint8_t response_msg[COAP_MAX_PACKET_SIZE] = {0,};
-uint16_t response_len = 0;
+uint16_t calc_len(const uint8_t * input, uint16_t input_len)
+{
+    uint16_t out = 0;
+    for(uint16_t i = 0; i < input_len; i++)
+    {
+        if (input[i] == '\n')
+        {
+            return out;
+        }
+        out++;
+    }
+}
+
+const uint8_t * msg = "hello";
+uint8_t *ptr_buff = NULL;
+
+uint8_t rx_buff[MAX_BUFF_SIZE] = {0,};
+static uint8_t tx_buff[MAX_BUFF_SIZE] = {0,};
+
+
+uint16_t size = 0;
 volatile bool flag_recv = false;
+volatile bool flag_trns = false;
 
 int main(void) 
 {
+    ptr_buff = &rx_buff[0];
+    uint32_t check_cmd = 0;
     
+    uint8_t decrypted_rx[MAX_BUFF_SIZE] = {0,};
+    size_t decrypted_rx_len = 0;
+    size_t size_after_check = 0;
+
     SysTick_Config(SystemCoreClock/1000);
     blink_init();
-    // uart_init(115200);
-    w5500_network_init();
+    uart_init(115200);
 
-    coap_init();
-    coap_send_get("iot", "cmd");
-    // response_len = sizeof(response_msg);
-    // if (response_len > 0)
-    // {
-    //     coap_send_put("iot", "cmd", response_msg, response_len);
-    // }
-    // uart_send(response_msg, response_len);
+    blink_run(50);
+   
 
     while (1) 
     {
         if (flag_recv)
         {
+            
             flag_recv = false;
-            coap_send_put("iot", "cmd", response_msg, response_len);
-            response_len = 0;
+
+            if (crypto_handle_recv(rx_buff, size-1, decrypted_rx, &decrypted_rx_len) == 0)
+            {
+                blink_run(50);
+            }
+            check_cmd = atoi(decrypted_rx);
+            // size_after_check = calc_len(decrypted_rx, decrypted_rx_len);
+            if (crypto_handle_trns(decrypted_rx, decrypted_rx_len) == 0)
+            {
+                blink_run(50);
+            }
+            check_cmd = 0;
+            // size_after_check = 0;
+            memset(decrypted_rx, 0, decrypted_rx_len);
+            decrypted_rx_len = sizeof(decrypted_rx);
+            flag_trns = true;
+            ptr_buff -= size;
+            size = 0;
+            memset(rx_buff, 0, size);
         }
     }
+}
+
+
+////////////////////////////////////////////////////////////
+//Handlers
+////////////////////////////////////////////////////////////
+void USART1_IRQHandler(void)
+{
+	if (USART1->SR & USART_SR_RXNE) 
+	{
+        CLEAR_BIT(USART1->SR, USART_SR_RXNE);
+        if (USART1->DR == 0x1f)
+        {
+            flag_recv = true;
+        }
+        *(ptr_buff++) = USART1->DR;
+        size++;
+	}
 }

@@ -1,8 +1,7 @@
 TARGET = tee_boot
 BUILD_DIR = build
 
-OPT = -O3
-
+OPT = -O0
 
 PREFIX = arm-none-eabi-
 # The gcc compiler bin path can be either defined in make command via GCC_PATH variable (> make GCC_PATH=xxx)
@@ -42,12 +41,9 @@ C_INCLUDES = \
         	-ICMSIS/Device/ST/STM32F4xx/Include
 
 C_SOURCES = \
-			ioLIB/W5500/w5500.c \
 			CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c
 
 C_SOURCES += $(wildcard Core/*.c)
-C_SOURCES += $(wildcard ioLIB/*.c)
-C_SOURCES += $(wildcard coapLIB/*.c)
 
 C_DEFS =
 
@@ -69,9 +65,9 @@ CFLAGS += -g -gdwarf-2
 CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
 
 # libraries
-LIBS = -lc -lm -lnosys -lmbedcrypto
+LIBS =  -lmbedcrypto
 LIBDIR = -LmbedTLS/library
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
+LDFLAGS = $(MCU) -specs=nosys.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
 all: $(BUILD_DIR)/$(TARGET).bin $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).elf
 
@@ -103,4 +99,4 @@ $(BUILD_DIR):
 clean:
 	rmdir /s $(BUILD_DIR)
 
-# -include $(wildcard $(BUILD_DIR)/*.d)
+-include $(wildcard $(BUILD_DIR)/*.d)
