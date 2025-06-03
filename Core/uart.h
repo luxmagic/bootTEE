@@ -11,9 +11,7 @@ int uart_receive(uint8_t *data, uint32_t len);
 
 int crypto_handle_trns(const uint8_t *input, uint16_t input_len);
 int crypto_handle_recv(const uint8_t *  input, uint16_t input_len, uint8_t *response, size_t *response_len);
-uint32_t buff_to_number(const uint8_t * input, uint16_t input_len);
-
-#define MAX_BUFF_SIZE 256
+bool handle_cmd(const uint8_t *input, uint16_t input_len);
 
 #ifdef __cplusplus
 }

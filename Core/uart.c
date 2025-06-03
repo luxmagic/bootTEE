@@ -1,25 +1,64 @@
 #include "main.h"
 #include "uart.h"
 
+#include "tee.h"
+
 #include "cipher_uart.h"
 
-int crypto_handle_recv(
-    const uint8_t *input, uint16_t input_len,
-    uint8_t *response, size_t *response_len  
-)
+bool handle_cmd(const uint8_t *input, uint16_t input_len)
 {
-    // Проверка HMAC
-    // uint8_t encrypted[COAP_MAX_PACKET_SIZE];
-    // uint8_t hmac[32];
-    // size_t encrypted_len = data[0];
-    // if (encrypted_len > len - 33)
-    //     return -1;
-    // memcpy(encrypted, data + 1, encrypted_len);
-    // memcpy(hmac, data + 1 + encrypted_len, 32);
-    // if (verify_hmac(encrypted, encrypted_len, hmac) != 0)
-    //     return -1;
+    uint8_t ecrypted_tx[MAX_BUFF_SIZE];
+    uint16_t ecrypted_tx_len = input_len;
+    memcpy(ecrypted_tx, input, input_len);
 
-    // Дешифрование
+    // ecrypted_tx[ecrypted_tx_len] = ':';
+    // ecrypted_tx_len++;
+
+    uint32_t cmd = atoi(input);
+    int ret = 0;
+
+    switch (cmd)
+    {
+    case CMD_INIT:
+        ret = parse_init_packet(input, input_len, ecrypted_tx, ecrypted_tx_len);
+        ecrypted_tx_len += 80;
+        if (crypto_handle_trns(ecrypted_tx, ecrypted_tx_len) != 0) return false;
+
+        if (ret == 0)
+        {
+            jump_to_application(); //.6
+        }
+
+        break;
+    case CMD_STATUS:
+        ret = parse_status_packet(input, input_len, ecrypted_tx, ecrypted_tx_len);
+        ecrypted_tx_len++;
+        if (crypto_handle_trns(ecrypted_tx, ecrypted_tx_len) != 0) return false;
+        break;
+    case CMD_START:
+        ret = parse_secure(input, input_len, ecrypted_tx, ecrypted_tx_len);
+        ecrypted_tx_len++;
+        if (crypto_handle_trns(ecrypted_tx, ecrypted_tx_len) != 0) return false;
+
+        if (ret == 0)
+        {
+            jump_to_application(); //.6
+        }
+        break;
+    case CMD_INFO:
+        memcpy(ecrypted_tx+ecrypted_tx_len, (const unsigned char *)INFO, INFO_SIZE);
+        if (crypto_handle_trns(ecrypted_tx, ecrypted_tx_len+INFO_SIZE) != 0) return false;
+        break;
+    default:
+        break;
+    }
+
+    memset(ecrypted_tx, 0, MAX_BUFF_SIZE);
+    return true;
+}
+
+int crypto_handle_recv(const uint8_t *input, uint16_t input_len, uint8_t *response, size_t *response_len)
+{
     uint8_t decrypted[MAX_BUFF_SIZE];
     size_t decrypted_len = sizeof(decrypted);
     if (decrypt_payload(input, input_len, decrypted, &decrypted_len) != 0)
@@ -32,18 +71,17 @@ int crypto_handle_recv(
 
 int crypto_handle_trns(const uint8_t *input, uint16_t input_len)
 {
-    //Шифрование
     uint8_t ecrypted[MAX_BUFF_SIZE] = {0,};
     size_t ecrypted_len = 0;
     if (encrypt_payload(input, input_len, ecrypted, &ecrypted_len) != 0)
         return -1;
 
-    ecrypted[ecrypted_len] = 0x1f;
+    ecrypted[ecrypted_len] = '\r';
+    ecrypted[ecrypted_len+1] = '\n';
 
-    uart_send(ecrypted, ecrypted_len+1);
+    uart_send(ecrypted, ecrypted_len+2);
     return 0;
 }
-
 
 void uart_init(uint32_t baudrate)
 {

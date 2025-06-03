@@ -57,7 +57,9 @@
     "psa_crypto_driver_wrappers.h": "c",
     "entropy.h": "c",
     "cipher_uart.h": "c",
-    "string.h": "c"
+    "string.h": "c",
+    "clock.h": "c",
+    "flash.h": "c"
   },
   "cmake.ignoreCMakeListsMissing": true,
   "C_Cpp_Runner.cCompilerPath": "gcc",

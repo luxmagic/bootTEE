@@ -5,11 +5,14 @@
 extern "C" {
 #endif
 
-void TEE_Init(void);
+void chek_tee(void);
 
-#define FIRMWARE_ADDR       (0x08004000)
-#define FIRMWARE_SIZE       (0x10000)
-#define SIGNATURE_SIZE      64
+int parse_init_packet(const uint8_t *input, uint16_t input_len, const uint8_t *ecrypted_tx, uint16_t ecrypted_tx_len);
+int parse_status_packet(const uint8_t *input, uint16_t input_len, const uint8_t *ecrypted_tx, uint16_t ecrypted_tx_len);
+int parse_secure(const uint8_t *input, uint16_t input_len, const uint8_t *ecrypted_tx, uint16_t ecrypted_tx_len);
+
+int enc_hash(const uint8_t *input, uint16_t input_len, uint8_t *request, size_t *request_len);
+int dec_hash(const uint8_t *input, uint16_t input_len, uint8_t *response, size_t *response_len);
 
 #ifdef __cplusplus
 }

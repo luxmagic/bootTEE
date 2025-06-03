@@ -7,7 +7,6 @@ extern "C" {
 
 #include <stdint.h>
 
-// int Clock_Init(void);
 void  SysTick_Handler(void);
 void delay_ms(uint32_t ms);
 

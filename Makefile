@@ -53,7 +53,7 @@ AS_INCLUDES =
 
 LDSCRIPT = stm32f401.ld
 
-ASM_SOURCES = startup_stm32f401xc.s
+ASM_SOURCES = startup_stm32f401.s
 
 
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
